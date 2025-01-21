@@ -8,6 +8,7 @@ import Register from "./Pages/Register/Register";
 import SignIn from "./Pages/SignIn/SignIn";
 import NotFound from "./Pages/NotFound/NotFound";
 import Categories from "./Pages/Categories/Categories";
+import CounterContextProvider from "./Context/CounterContext/CounterContext";
 
 function App() {
   const routes = createBrowserRouter([
@@ -25,7 +26,11 @@ function App() {
       ],
     },
   ]);
-  return <RouterProvider router={routes}></RouterProvider>;
+  return (
+    <CounterContextProvider>
+      <RouterProvider router={routes}></RouterProvider>
+    </CounterContextProvider>
+  );
 }
 
 export default App;

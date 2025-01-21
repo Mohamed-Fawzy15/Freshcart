@@ -1,19 +1,44 @@
+import axios from "axios";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 
 // import styles from "./SignIn.module.css";
 export default function SignIn() {
+  // const [errorMsg, setErrorMsg] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const validationSchema = Yup.object({
+    email: Yup.string().required("Email Is Required").email(),
+    password: Yup.string()
+      .required("This Field is required")
+      .matches(/^[A-Za-z0-9]{8,16}$/, "Invalid Password"),
+  });
   const initialValues = {
     email: "",
     password: "",
   };
 
-  const handleLogin = (values) => {
-    console.log(values);
+  const handleLogin = async (values) => {
+    setIsLoading(true);
+    await axios
+      .post("https://ecommerce.routemisr.com/api/v1/auth/signin", values)
+      .then(() => {
+        navigate("/");
+        setIsLoading(false);
+        // setErrorMsg(null);
+      })
+      .catch((error) => {
+        setErrorMsg(error.response.data.message);
+        // setIsLoading(false);
+      });
   };
 
   const formik = useFormik({
     initialValues,
+    validationSchema,
     onSubmit: handleLogin,
   });
   return (
@@ -35,7 +60,11 @@ export default function SignIn() {
             placeholder="Enter Your Email"
             onChange={formik.handleChange}
             value={formik.values.email}
+            onBlur={formik.handleBlur}
           />
+          {formik.touched.email && formik.errors.email && (
+            <p className="text-red-500">{formik.errors.email}</p>
+          )}
         </div>
         <div className="mb-5">
           <label
@@ -52,15 +81,23 @@ export default function SignIn() {
             placeholder="Enter Your Password"
             onChange={formik.handleChange}
             value={formik.values.password}
+            onBlur={formik.handleBlur}
           />
+          {formik.touched.password && formik.errors.password && (
+            <p className="text-red-500">{formik.errors.password}</p>
+          )}
         </div>
-        <button type="submit" className="btn-main">
-          Log In
-        </button>
+        {isLoading ? (
+          <button className="btn-main">loading...</button>
+        ) : (
+          <button type="submit" className="btn-main" disabled={!formik.isValid}>
+            Log In
+          </button>
+        )}
         <small>
           don&apos;t have account{" "}
           <Link to={"/register"} className="text-blue-500 underline">
-            SignUp
+            Register
           </Link>
         </small>
       </form>
