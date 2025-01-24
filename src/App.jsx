@@ -9,6 +9,8 @@ import SignIn from "./Pages/SignIn/SignIn";
 import NotFound from "./Pages/NotFound/NotFound";
 import Categories from "./Pages/Categories/Categories";
 import CounterContextProvider from "./Context/CounterContext/CounterContext";
+import TokenContextProvider from "./Context/Token/TokenContext";
+import ProtectedRoutes from "./Component/ProtectedRoutes/ProtectedRoutes";
 
 function App() {
   const routes = createBrowserRouter([
@@ -16,9 +18,30 @@ function App() {
       path: "",
       element: <Mainlayout />,
       children: [
-        { index: true, element: <Home /> },
-        { path: "cart", element: <Cart /> },
-        { path: "products", element: <Products /> },
+        {
+          index: true,
+          element: (
+            <ProtectedRoutes>
+              <Home />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "cart",
+          element: (
+            <ProtectedRoutes>
+              <Cart />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "products",
+          element: (
+            <ProtectedRoutes>
+              <Products />
+            </ProtectedRoutes>
+          ),
+        },
         { path: "register", element: <Register /> },
         { path: "signin", element: <SignIn /> },
         { path: "categories", element: <Categories /> },
@@ -27,9 +50,11 @@ function App() {
     },
   ]);
   return (
-    <CounterContextProvider>
-      <RouterProvider router={routes}></RouterProvider>
-    </CounterContextProvider>
+    <TokenContextProvider>
+      <CounterContextProvider>
+        <RouterProvider router={routes}></RouterProvider>
+      </CounterContextProvider>
+    </TokenContextProvider>
   );
 }
 

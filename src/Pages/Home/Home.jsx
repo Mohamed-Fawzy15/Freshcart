@@ -1,12 +1,13 @@
-import { useContext } from "react";
-import styles from "./Home.module.css";
-import { CounterContext } from "../../Context/CounterContext/CounterContext";
+// import { useContext } from "react";
+// import styles from "./Home.module.css";
+// import { CounterContext } from "../../Context/CounterContext/CounterContext";
+import LatestProducts from "../../Component/LatestProducts/LatestProducts";
 
 export default function Home() {
-  const { counter, setCounter } = useContext(CounterContext);
+  // const { counter, setCounter } = useContext(CounterContext);
   return (
     <div>
-      Home {counter}
+      {/* Home {counter}
       <div>
         <button
           className="btn-main m-3"
@@ -14,7 +15,9 @@ export default function Home() {
         >
           Change
         </button>
-      </div>
+      </div> */}
+
+      <LatestProducts />
     </div>
   );
 }

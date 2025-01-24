@@ -39,9 +39,9 @@ export default function Register() {
     await axios
       .post("https://ecommerce.routemisr.com/api/v1/auth/signup", values)
       .then(() => {
-        navigate("/signin");
         setErrorMsg(null);
         setIsLoading(false);
+        navigate("/signin");
       })
       .catch((error) => {
         setErrorMsg(error.response.data.message);

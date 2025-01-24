@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { tokenContext } from "../../Context/Token/TokenContext";
 
-// import styles from "./SignIn.module.css";
 export default function SignIn() {
-  // const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const { setToken } = useContext(tokenContext);
 
   const navigate = useNavigate();
   const validationSchema = Yup.object({
@@ -25,14 +26,16 @@ export default function SignIn() {
     setIsLoading(true);
     await axios
       .post("https://ecommerce.routemisr.com/api/v1/auth/signin", values)
-      .then(() => {
-        navigate("/");
+      .then((res) => {
+        setToken(res.data.token);
+        localStorage.setItem("token", res.data.token);
         setIsLoading(false);
-        // setErrorMsg(null);
+        setErrorMsg(null);
+        navigate("/");
       })
       .catch((error) => {
         setErrorMsg(error.response.data.message);
-        // setIsLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -44,6 +47,7 @@ export default function SignIn() {
   return (
     <section className="md:w-2/3 lg:w-1/2 mx-auto bg-gray-100  my-4 rounded-md shadow p-4">
       <h1 className="text-3xl font-semibold my-3 text-center">Login Now</h1>
+      {errorMsg && <p className="bg-red-300 p-3 rounded-md my-2">{errorMsg}</p>}
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-5">
           <label
