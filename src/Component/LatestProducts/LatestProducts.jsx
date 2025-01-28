@@ -28,7 +28,10 @@ export default function LatestProducts() {
   return (
     <div className="row">
       {products.map((product) => (
-        <div key={product._id} className="w-1/6 p-3">
+        <div
+          key={product._id}
+          className="w-full md:w-1/2 lg:w-1/3 xl:w-1/6 p-3"
+        >
           {isLoading ? <Loader /> : <ProductItem product={product} />}
         </div>
       ))}
