@@ -11,6 +11,13 @@ const settings = {
   initialSlide: 0,
   responsive: [
     {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 6,
+        slidesToScroll: 2,
+      },
+    },
+    {
       breakpoint: 1024,
       settings: {
         slidesToShow: 4,
@@ -49,17 +56,22 @@ export default function CategorySilder() {
   }, []);
 
   return (
-    <Slider {...settings} className="my-3">
-      {categories.map((category) => (
-        <div key={category._id}>
-          <img
-            src={category.image}
-            className="w-full h-[300px]"
-            alt={category.name}
-          />
-          <h4 className="m-3 font-semibold">{category.name}</h4>
-        </div>
-      ))}
-    </Slider>
+    <div className="container">
+      <h2 className="capitalize text-2xl font-semibold">
+        shop popular category
+      </h2>
+      <Slider {...settings} className="my-3">
+        {categories.map((category) => (
+          <div key={category._id}>
+            <img
+              src={category.image}
+              className="w-full h-[300px]"
+              alt={category.name}
+            />
+            <h4 className="m-3 font-semibold">{category.name}</h4>
+          </div>
+        ))}
+      </Slider>
+    </div>
   );
 }
