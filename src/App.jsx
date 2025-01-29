@@ -11,6 +11,7 @@ import Categories from "./Pages/Categories/Categories";
 import CounterContextProvider from "./Context/CounterContext/CounterContext";
 import TokenContextProvider from "./Context/Token/TokenContext";
 import ProtectedRoutes from "./Component/ProtectedRoutes/ProtectedRoutes";
+import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 
 function App() {
   const routes = createBrowserRouter([
@@ -39,6 +40,14 @@ function App() {
           element: (
             <ProtectedRoutes>
               <Products />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "productdetails/:productId",
+          element: (
+            <ProtectedRoutes>
+              <ProductDetails />
             </ProtectedRoutes>
           ),
         },
