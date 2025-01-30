@@ -1,10 +1,10 @@
-import React from "react";
+import { CiHeart } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 export default function ProductItem({ product }) {
   return (
-    <div className="inner product p-1 border border-transparent rounded-md ">
+    <div className="group/product inner product p-1 border border-transparent rounded-md relative ">
       <Link to={`/productdetails/${product._id}`}>
         <img src={product.imageCover} className="w-full " alt="" />
         <small className="text-green-600">{product.category?.name}</small>
@@ -19,7 +19,9 @@ export default function ProductItem({ product }) {
           </div>
         </div>
       </Link>
-
+      <div>
+        <CiHeart className="favorite " />
+      </div>
       <button className="btn-main capitalize">add to cart</button>
     </div>
   );

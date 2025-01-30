@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useFormik } from "formik";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
@@ -57,6 +58,9 @@ export default function Register() {
 
   return (
     <section className="md:w-2/3 lg:w-1/2 mx-auto bg-gray-100 my-4 rounded-md shadow p-4">
+      <Helmet>
+        <title>Sign Up</title>
+      </Helmet>
       <h1 className="text-3xl font-semibold my-3 text-center">Register Now</h1>
       {errorMsg && <p className="bg-red-300 p-3 rounded-md my-2">{errorMsg}</p>}
       <form onSubmit={formik.handleSubmit}>
