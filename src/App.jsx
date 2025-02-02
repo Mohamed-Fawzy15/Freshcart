@@ -11,6 +11,9 @@ import Categories from "./Pages/Categories/Categories";
 import CounterContextProvider from "./Context/CounterContext/CounterContext";
 import TokenContextProvider from "./Context/Token/TokenContext";
 import ProtectedRoutes from "./Component/ProtectedRoutes/ProtectedRoutes";
+import ProductDetails from "./Pages/ProductDetails/ProductDetails";
+import { Offline, Online } from "react-detect-offline";
+import { CiWifiOff } from "react-icons/ci";
 
 function App() {
   const routes = createBrowserRouter([
@@ -42,6 +45,14 @@ function App() {
             </ProtectedRoutes>
           ),
         },
+        {
+          path: "productdetails/:productId",
+          element: (
+            <ProtectedRoutes>
+              <ProductDetails />
+            </ProtectedRoutes>
+          ),
+        },
         { path: "register", element: <Register /> },
         { path: "signin", element: <SignIn /> },
         { path: "categories", element: <Categories /> },
@@ -52,6 +63,13 @@ function App() {
   return (
     <TokenContextProvider>
       <CounterContextProvider>
+        <Offline>
+          <div className="offline fixed bottom-2 right-4 z-50 bg-red-700 text-white p-2 rounded-md">
+            <CiWifiOff className="inline mx-2 text-2xl " />
+            You are now offline
+          </div>
+        </Offline>
+
         <RouterProvider router={routes}></RouterProvider>
       </CounterContextProvider>
     </TokenContextProvider>

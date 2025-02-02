@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { tokenContext } from "../../Context/Token/TokenContext";
+import { Helmet } from "react-helmet";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +47,9 @@ export default function SignIn() {
   });
   return (
     <section className="md:w-2/3 lg:w-1/2 mx-auto bg-gray-100  my-4 rounded-md shadow p-4">
+      <Helmet>
+        <title>Log In</title>
+      </Helmet>
       <h1 className="text-3xl font-semibold my-3 text-center">Login Now</h1>
       {errorMsg && <p className="bg-red-300 p-3 rounded-md my-2">{errorMsg}</p>}
       <form onSubmit={formik.handleSubmit}>
