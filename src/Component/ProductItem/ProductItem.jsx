@@ -2,7 +2,7 @@ import { CiHeart } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-export default function ProductItem({ product }) {
+export default function ProductItem({ product, handleAddToCart }) {
   return (
     <div className="group/product inner product p-1 border border-transparent rounded-md relative ">
       <Link to={`/productdetails/${product._id}`}>
@@ -22,7 +22,12 @@ export default function ProductItem({ product }) {
       <div>
         <CiHeart className="favorite " />
       </div>
-      <button className="btn-main capitalize">add to cart</button>
+      <button
+        className="btn-main capitalize"
+        onClick={() => handleAddToCart(product.id)}
+      >
+        add to cart
+      </button>
     </div>
   );
 }
