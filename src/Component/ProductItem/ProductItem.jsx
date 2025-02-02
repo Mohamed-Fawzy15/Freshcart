@@ -3,7 +3,7 @@ import { FaStar } from "react-icons/fa";
 
 export default function ProductItem({ product }) {
   return (
-    <div className="inner product p-1 ">
+    <div className="inner product p-1 border border-transparent rounded-md ">
       <img src={product.imageCover} className="w-full " alt="" />
       <small className="text-green-600">{product.category?.name}</small>
       <h5 className="font-semibold mb-2 line-clamp-1">
@@ -16,6 +16,7 @@ export default function ProductItem({ product }) {
           <span>{product.ratingsAverage}</span>
         </div>
       </div>
+      <button className="btn-main capitalize">add to cart</button>
     </div>
   );
 }

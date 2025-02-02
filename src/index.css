@@ -16,6 +16,7 @@
 
 .active {
   color: rgb(4, 108, 78);
+  font-weight: 800 !important;
 }
 
 @layer components {
@@ -23,7 +24,7 @@
     @apply bg-gray-50 border border-gray-300 outline-green-500 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500;
   }
   .btn-main {
-    @apply text-white bg-green-700 hover:bg-green-800 disabled:bg-green-400 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800;
+    @apply text-white w-full mt-4 bg-green-700 hover:bg-green-800 disabled:bg-green-400 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800;
   }
   .row {
     @apply flex flex-wrap;
@@ -37,15 +38,26 @@
     box-shadow: var(--shadow);
     border: solid 1px var(--main-color);
   }
-  .product .btn {
+  .product .btn-main {
     transition: transform 1s, opacity 1s;
     transform: translateY(100%);
     opacity: 0;
   }
-  .product:hover .btn {
+  .product:hover .btn-main {
     opacity: 1;
     transform: translateY(0%);
   }
 }
 
+.slick-prev:before,
+.slick-next:before {
+  color: green !important;
+}
 
+.slick-dots li button:before {
+  background-color: black;
+  border-radius: 20px;
+  width: 20px !important;
+  height: 5px !important;
+  content: "" !important;
+}

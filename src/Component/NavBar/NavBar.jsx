@@ -25,7 +25,7 @@ export default function NavBar() {
     setIsOpen(!isOpen);
   };
   return (
-    <nav className="bg-gray-200 border-gray-200 dark:bg-gray-900 sticky top-0 start-0 end-0">
+    <nav className="bg-gray-200 border-gray-200 dark:bg-gray-900 sticky top-0 start-0 end-0 z-50">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <div className="flex items-center justify-between w-full lg:w-auto">
           <Link
