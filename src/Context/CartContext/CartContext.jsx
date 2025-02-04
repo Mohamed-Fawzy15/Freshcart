@@ -21,9 +21,57 @@ const addToCart = (id) => {
     .catch((err) => err);
 };
 
+const getLoggedCart = () => {
+  return axios
+    .get("https://ecommerce.routemisr.com/api/v1/cart", { headers })
+    .then((res) => res.data)
+    .catch((err) => err);
+};
+
+const removeCartItem = (productId) => {
+  return axios
+    .delete(`https://ecommerce.routemisr.com/api/v1/cart/${productId}`, {
+      headers,
+    })
+    .then((res) => res.data)
+    .catch((err) => err);
+};
+
+const updateCartItem = (productId, count) => {
+  return axios
+    .put(
+      `https://ecommerce.routemisr.com/api/v1/cart/${productId}`,
+      {
+        count,
+      },
+      {
+        headers,
+      }
+    )
+    .then((res) => res.data)
+    .catch((err) => err);
+};
+
+const clearCartItem = () => {
+  return axios
+    .delete("https://ecommerce.routemisr.com/api/v1/cart", {
+      headers,
+    })
+    .then((res) => res.data)
+    .catch((err) => err);
+};
+
 export default function CartContextProvider({ children }) {
   return (
-    <CartContext.Provider value={{ addToCart }}>
+    <CartContext.Provider
+      value={{
+        addToCart,
+        getLoggedCart,
+        removeCartItem,
+        updateCartItem,
+        clearCartItem,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
