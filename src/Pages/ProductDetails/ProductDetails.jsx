@@ -1,18 +1,41 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { FaStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
+import { CartContext } from "../../Context/CartContext/CartContext";
+import toast from "react-hot-toast";
 
 export default function ProductDetails() {
   const [details, setDetails] = useState({});
   const { productId } = useParams();
+  const { addToCart, setNumOfCartItems } = useContext(CartContext);
+
   const getProductDetails = async () => {
     await axios
       .get(`https://ecommerce.routemisr.com/api/v1/products/${productId}`)
       .then((res) => setDetails(res.data.data))
       .catch((err) => console.log(err));
+  };
+
+  const handleAddToCart = async () => {
+    let res = await addToCart(productId);
+    setNumOfCartItems(res.numOfCartItems);
+
+    if (res.status === "success") {
+      toast.success(res.message, {
+        style: {
+          fontWeight: 600,
+        },
+      });
+    } else {
+      toast.error("Something went wrong", {
+        style: {
+          fontWeight: 600,
+        },
+      });
+    }
   };
 
   useEffect(() => {
@@ -70,7 +93,9 @@ export default function ProductDetails() {
               <span>{details.ratingsAverage}</span>
             </div>
           </div>
-          <button className="btn-main">add to cart</button>
+          <button className="btn-main" onClick={() => handleAddToCart()}>
+            add to cart
+          </button>
         </div>
       </div>
     </div>
