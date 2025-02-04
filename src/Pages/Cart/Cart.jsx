@@ -6,6 +6,7 @@ import { CartContext } from "../../Context/CartContext/CartContext";
 import { useState } from "react";
 import Loader from "../../Component/Loader/Loader";
 import { FaTrashCan } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const {
@@ -16,6 +17,7 @@ export default function Cart() {
     setNumOfCartItems,
   } = useContext(CartContext);
   const [cartData, setCartData] = useState(null);
+  const navigate = useNavigate();
 
   const getData = async () => {
     const data = await getLoggedCart();
@@ -181,9 +183,10 @@ export default function Cart() {
             </table>
           </div>
 
-          <div>
+          <div className="flex justify-between">
+            <button className="btn-main w-1/5">Checkout</button>
             <button
-              className="btn-main"
+              className="btn-main w-1/5"
               disabled={cartData === null}
               onClick={() => deleteAllProducts()}
             >
@@ -194,7 +197,9 @@ export default function Cart() {
       ) : (
         <div className="flex justify-center items-center flex-col my-5 w-1/2 mx-auto">
           <h3>Add product to the cart</h3>
-          <button className="btn-main">Continue Shopping</button>
+          <button className="btn-main" onClick={() => navigate("/")}>
+            Continue Shopping
+          </button>
         </div>
       )}
     </div>
