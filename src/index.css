@@ -32,6 +32,9 @@
   .row {
     @apply flex flex-wrap;
   }
+  .category-inner {
+    @apply absolute inset-0 bg-black/60 flex justify-center items-center -translate-x-full group-hover/category:translate-x-0 duration-700 transition-all opacity-0 group-hover/category:opacity-100;
+  }
 
   body {
     font-family: var(--font-family) !important;
