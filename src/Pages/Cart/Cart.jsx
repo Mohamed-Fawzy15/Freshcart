@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import { useState } from "react";
-import Loader from "../../Component/Loader/Loader";
+// import Loader from "../../Component/Loader/Loader";
 import { FaTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
@@ -15,6 +15,7 @@ export default function Cart() {
     updateCartItem,
     clearCartItem,
     setNumOfCartItems,
+    setCartId,
   } = useContext(CartContext);
   const [cartData, setCartData] = useState(null);
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function Cart() {
     const data = await getLoggedCart();
     setCartData(data.data);
     setNumOfCartItems(data.numOfCartItems);
+    setCartId(data.cartId);
     console.log(data);
   };
 
@@ -184,7 +186,13 @@ export default function Cart() {
           </div>
 
           <div className="flex justify-between">
-            <button className="btn-main w-1/5">Checkout</button>
+            <button
+              className="btn-main w-1/5"
+              onClick={() => navigate("/checkout")}
+            >
+              Checkout
+            </button>
+
             <button
               className="btn-main w-1/5"
               disabled={cartData === null}
