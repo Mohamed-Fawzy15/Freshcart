@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 export default function ProductDetails() {
   const [details, setDetails] = useState({});
   const { productId } = useParams();
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, setNumOfCartItems } = useContext(CartContext);
 
   const getProductDetails = async () => {
     await axios
@@ -21,7 +21,7 @@ export default function ProductDetails() {
 
   const handleAddToCart = async () => {
     let res = await addToCart(productId);
-    console.log(res);
+    setNumOfCartItems(res.numOfCartItems);
 
     if (res.status === "success") {
       toast.success(res.message, {

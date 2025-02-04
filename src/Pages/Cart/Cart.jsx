@@ -8,19 +8,26 @@ import Loader from "../../Component/Loader/Loader";
 import { FaTrashCan } from "react-icons/fa6";
 
 export default function Cart() {
-  const { getLoggedCart, removeCartItem, updateCartItem, clearCartItem } =
-    useContext(CartContext);
+  const {
+    getLoggedCart,
+    removeCartItem,
+    updateCartItem,
+    clearCartItem,
+    setNumOfCartItems,
+  } = useContext(CartContext);
   const [cartData, setCartData] = useState(null);
 
   const getData = async () => {
     const data = await getLoggedCart();
     setCartData(data.data);
-    // console.log(cartData);
+    setNumOfCartItems(data.numOfCartItems);
+    console.log(data);
   };
 
   const deleteProduct = async (id) => {
     const newData = await removeCartItem(id);
     setCartData(newData.data);
+    setNumOfCartItems(newData.numOfCartItems);
   };
 
   const updateProduct = async (id, count) => {

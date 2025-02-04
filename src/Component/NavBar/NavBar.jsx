@@ -6,12 +6,13 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import logo from "../../assets/logo.svg";
 import { useContext, useState } from "react";
-import { CounterContext } from "../../Context/CounterContext/CounterContext";
 import { tokenContext } from "../../Context/Token/TokenContext";
+import { CartContext } from "../../Context/CartContext/CartContext";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { counter } = useContext(CounterContext);
+  const { numOfCartItems } = useContext(CartContext);
   const { token, setToken } = useContext(tokenContext);
   const navigate = useNavigate();
 
@@ -79,14 +80,7 @@ export default function NavBar() {
                   Home
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to={"cart"}
-                  className="block py-2 px-3 text-gray-900 hover:text-green-700 dark:text-white dark:hover:text-green-500"
-                >
-                  Cart {counter}
-                </NavLink>
-              </li>
+
               <li>
                 <NavLink
                   to={"products"}
@@ -112,7 +106,7 @@ export default function NavBar() {
           id="navbar-default"
         >
           <div className="flex items-center justify-between gap-x-3">
-            <ul className="font-medium flex p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul className="font-medium flex items-center p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <Link
                   to={"/www.facebook.com"}
@@ -146,14 +140,20 @@ export default function NavBar() {
                   <FaTiktok />
                 </Link>
               </li>
-              <li>
-                <Link
-                  to={"www.youtube.com"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                >
-                  <BsYoutube />
-                </Link>
-              </li>
+
+              {token && (
+                <li>
+                  <NavLink
+                    to={"cart"}
+                    className="block relative py-2 px-3 text-green-900  dark:text-white dark:hover:text-green-500"
+                  >
+                    <MdOutlineShoppingCart className="inline text-2xl" />
+                    <span className="text-xs text-white absolute top-0 -right-1 w-5 h-5 bg-gray-500 rounded-full flex justify-center items-center">
+                      {numOfCartItems}
+                    </span>
+                  </NavLink>
+                </li>
+              )}
             </ul>
 
             <ul className="font-medium flex p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">

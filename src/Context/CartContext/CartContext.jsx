@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useState } from "react";
 import { createContext } from "react";
 
 export const CartContext = createContext(null);
@@ -62,6 +63,8 @@ const clearCartItem = () => {
 };
 
 export default function CartContextProvider({ children }) {
+  const [numOfCartItems, setNumOfCartItems] = useState(0);
+  const [cartId, setCartId] = useState(null);
   return (
     <CartContext.Provider
       value={{
@@ -70,6 +73,10 @@ export default function CartContextProvider({ children }) {
         removeCartItem,
         updateCartItem,
         clearCartItem,
+        numOfCartItems,
+        setNumOfCartItems,
+        cartId,
+        setCartId,
       }}
     >
       {children}

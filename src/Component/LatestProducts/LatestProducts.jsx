@@ -8,7 +8,7 @@ import { CartContext } from "../../Context/CartContext/CartContext";
 
 export default function LatestProducts() {
   const [products, setProducts] = useState([]);
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, setNumOfCartItems } = useContext(CartContext);
 
   const getProducts = async () => {
     await axios
@@ -23,7 +23,7 @@ export default function LatestProducts() {
 
   const handleAddToCart = async (id) => {
     let res = await addToCart(id);
-    console.log(res);
+    setNumOfCartItems(res.numOfCartItems);
 
     if (res.status === "success") {
       toast.success(res.message, {
