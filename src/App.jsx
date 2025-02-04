@@ -16,6 +16,7 @@ import { Offline } from "react-detect-offline";
 import { CiWifiOff } from "react-icons/ci";
 import CartContextProvider from "./Context/CartContext/CartContext";
 import { Toaster } from "react-hot-toast";
+import Checkout from "./Pages/Checkout/Checkout";
 
 function App() {
   const routes = createBrowserRouter([
@@ -44,6 +45,14 @@ function App() {
           element: (
             <ProtectedRoutes>
               <Products />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "checkout",
+          element: (
+            <ProtectedRoutes>
+              <Checkout />
             </ProtectedRoutes>
           ),
         },

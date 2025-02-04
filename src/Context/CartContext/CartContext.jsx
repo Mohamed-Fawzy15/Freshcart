@@ -65,6 +65,28 @@ const clearCartItem = () => {
 export default function CartContextProvider({ children }) {
   const [numOfCartItems, setNumOfCartItems] = useState(0);
   const [cartId, setCartId] = useState(null);
+
+  const cashOrder = (data) => {
+    return axios
+      .post(
+        `https://ecommerce.routemisr.com/api/v1/orders/${cartId}`,
+        { data },
+        { headers }
+      )
+      .then((res) => res.data)
+      .catch((err) => err);
+  };
+
+  const onlineOrder = (data) => {
+    return axios
+      .post(
+        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=http://localhost:5173`,
+        { data },
+        { headers }
+      )
+      .then((res) => res.data)
+      .catch((err) => err);
+  };
   return (
     <CartContext.Provider
       value={{
@@ -77,6 +99,8 @@ export default function CartContextProvider({ children }) {
         setNumOfCartItems,
         cartId,
         setCartId,
+        cashOrder,
+        onlineOrder,
       }}
     >
       {children}
