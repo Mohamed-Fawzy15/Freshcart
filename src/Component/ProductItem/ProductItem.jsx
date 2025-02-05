@@ -1,12 +1,14 @@
-import { useContext } from "react";
+import { useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import SpringModel from "../SpringModel/SpringModel";
 
 export default function ProductItem({ product, handleAddToCart }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="group/product inner product p-1 border border-transparent rounded-md relative ">
-      <Link to={`/productdetails/${product._id}`}>
+      <div className="cursor-pointer" onClick={() => setIsOpen(true)}>
         <img src={product.imageCover} className="w-full " alt="" />
         <small className="text-green-600">{product.category?.name}</small>
         <h5 className="font-semibold mb-2 line-clamp-1">
@@ -19,7 +21,7 @@ export default function ProductItem({ product, handleAddToCart }) {
             <span>{product.ratingsAverage}</span>
           </div>
         </div>
-      </Link>
+      </div>
       <div>
         <CiHeart className="favorite " />
       </div>
@@ -29,6 +31,12 @@ export default function ProductItem({ product, handleAddToCart }) {
       >
         add to cart
       </button>
+
+      <SpringModel
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        productId={product.id}
+      />
     </div>
   );
 }

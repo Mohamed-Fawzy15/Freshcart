@@ -56,14 +56,14 @@ function App() {
             </ProtectedRoutes>
           ),
         },
-        {
-          path: "productdetails/:productId",
-          element: (
-            <ProtectedRoutes>
-              <ProductDetails />
-            </ProtectedRoutes>
-          ),
-        },
+        // {
+        //   path: "productdetails/:productId",
+        //   element: (
+        //     <ProtectedRoutes>
+        //       <ProductDetails />
+        //     </ProtectedRoutes>
+        //   ),
+        // },
         { path: "register", element: <Register /> },
         { path: "signin", element: <SignIn /> },
         { path: "categories", element: <Categories /> },

@@ -3,6 +3,7 @@ import CategorySilder from "../../Component/CategorySilder/CategorySilder";
 import LatestProducts from "../../Component/LatestProducts/LatestProducts";
 import MainSlider from "../../Component/MainSlider/MainSlider";
 
+
 export default function Home() {
   return (
     <div>
@@ -23,6 +24,7 @@ export default function Home() {
         <button className="btn-main w-1/5">Shop Now</button>
       </div>
       <LatestProducts />
+   
     </div>
   );
 }

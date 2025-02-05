@@ -2,14 +2,14 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { FaStar } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import toast from "react-hot-toast";
 
-export default function ProductDetails() {
+export default function ProductDetails({ productId }) {
   const [details, setDetails] = useState({});
-  const { productId } = useParams();
+  // const { productId } = useParams();
   const { addToCart, setNumOfCartItems } = useContext(CartContext);
 
   const getProductDetails = async () => {
