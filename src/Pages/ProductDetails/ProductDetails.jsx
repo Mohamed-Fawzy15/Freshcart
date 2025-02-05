@@ -43,19 +43,7 @@ export default function ProductDetails({ productId }) {
   }, []);
 
   const settings = {
-    customPaging: function (i) {
-      return (
-        <a>
-          <img
-            src={details.images[i + 1]}
-            className="w-full"
-            alt={details.title}
-          />
-        </a>
-      );
-    },
     dots: true,
-    dotsClass: "slick-dots slick-thumb",
     infinite: true,
     speed: 500,
     slidesToShow: 1,
