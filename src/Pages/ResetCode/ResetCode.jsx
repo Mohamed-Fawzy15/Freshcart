@@ -68,68 +68,6 @@ export default function ResetCode() {
             >
               Enter The Code
             </label>
-            {/* <div className="flex gap-2 justify-center items-center">
-              <input
-                type="tel"
-                id="tel"
-                name="tel"
-                className="input-style text-center "
-                placeholder="o"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                onBlur={formik.handleBlur}
-              />
-              <input
-                type="tel"
-                id="tel"
-                name="tel"
-                className="input-style  text-center "
-                placeholder="o"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                onBlur={formik.handleBlur}
-              />
-              <input
-                type="tel"
-                id="tel"
-                name="tel"
-                className="input-style  text-center "
-                placeholder="o"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                onBlur={formik.handleBlur}
-              />
-              <input
-                type="tel"
-                id="tel"
-                name="tel"
-                className="input-style  text-center "
-                placeholder="o"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                onBlur={formik.handleBlur}
-              />
-              <input
-                type="tel"
-                id="tel"
-                name="tel"
-                className="input-style  text-center "
-                placeholder="o"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                onBlur={formik.handleBlur}
-              />
-              <input
-                type="tel"
-                id="tel"
-                name="tel"
-                className="input-style text-center "
-                placeholder="o"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                onBlur={formik.handleBlur}
-              />
-            </div> */}
             <div className="flex gap-2 justify-center items-center">
               {[0, 1, 2, 3, 4, 5].map((index) => (
                 <input
