@@ -11,12 +11,14 @@ import Categories from "./Pages/Categories/Categories";
 import CounterContextProvider from "./Context/CounterContext/CounterContext";
 import TokenContextProvider from "./Context/Token/TokenContext";
 import ProtectedRoutes from "./Component/ProtectedRoutes/ProtectedRoutes";
-import ProductDetails from "./Pages/ProductDetails/ProductDetails";
+// import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import { Offline } from "react-detect-offline";
 import { CiWifiOff } from "react-icons/ci";
 import CartContextProvider from "./Context/CartContext/CartContext";
 import { Toaster } from "react-hot-toast";
 import Checkout from "./Pages/Checkout/Checkout";
+import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
+import ResetCode from "./Pages/ResetCode/ResetCode";
 
 function App() {
   const routes = createBrowserRouter([
@@ -64,6 +66,14 @@ function App() {
         //     </ProtectedRoutes>
         //   ),
         // },
+        {
+          path: "forgetpassword",
+          element: <ForgetPassword />,
+        },
+        {
+          path: "resetcode",
+          element: <ResetCode />,
+        },
         { path: "register", element: <Register /> },
         { path: "signin", element: <SignIn /> },
         { path: "categories", element: <Categories /> },
