@@ -4,9 +4,23 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "./ResetCode.module.css";
+import { MdOutlineLockReset } from "react-icons/md";
+import { useRef } from "react";
 
 export default function ResetCode() {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const inputRefs = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ];
 
   const initialValues = {
     resetCode: ["", "", "", "", "", ""],
@@ -29,7 +43,10 @@ export default function ResetCode() {
       })
       .then((res) => {
         console.log(res.data);
-        setIsLoading(false);
+        if (res.data.status === "success") {
+          navigate("/newpassword");
+          setIsLoading(false);
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -42,6 +59,19 @@ export default function ResetCode() {
     validationSchema,
     onSubmit: handleResetCode,
   });
+
+  const handleInputChange = (index, e) => {
+    const value = e.target.value;
+
+    const newResetCode = [...formik.values.resetCode];
+    newResetCode[index] = value;
+    formik.setFieldValue("resetCode", newResetCode);
+
+    if (value && index < 5) {
+      inputRefs[index + 1].current.focus();
+    }
+  };
+
   return (
     <div className="container flex justify-center items-center h-[90vh]">
       <Helmet>
@@ -52,14 +82,15 @@ export default function ResetCode() {
         initial={{ y: -200, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 2 }}
-        className="rounded-lg bg-gray-100 p-10 shadow-lg border-2 border-green-400 w-1/3 "
+        className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/3`}
       >
-        <h2 className="capitalize text-2xl font-semibold">
+        <h2 className="capitalize text-2xl font-semibold ">
+          <MdOutlineLockReset className="inline me-2 text-4xl text-green-500" />
           Reset code sent to your email
         </h2>
         <form
           onSubmit={formik.handleSubmit}
-          className="w-full flex gap-2 justify-center items-center flex-col"
+          className="w-full flex gap-2 justify-center items-center flex-col my-4"
         >
           <div className="mb-5  ">
             <label
@@ -75,15 +106,11 @@ export default function ResetCode() {
                   type="tel"
                   id={`resetCode-${index}`}
                   name={`resetCode[${index}]`}
-                  className="input-style text-center"
-                  placeholder="0"
+                  className="w-10  rounded-lg  text-center "
+                  placeholder="-"
                   maxLength={1}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    const newResetCode = [...formik.values.resetCode];
-                    newResetCode[index] = value;
-                    formik.setFieldValue("resetCode", newResetCode);
-                  }}
+                  ref={inputRefs[index]}
+                  onChange={(e) => handleInputChange(index, e)}
                   value={formik.values.resetCode[index]}
                   onBlur={formik.handleBlur}
                 />
@@ -92,14 +119,16 @@ export default function ResetCode() {
           </div>
 
           {isLoading ? (
-            <button className="btn-main">loading...</button>
+            <button className="newBtn">
+              <p>loading...</p>
+            </button>
           ) : (
             <button
               type="submit"
-              className="btn-main mt-0"
+              className="newBtn mt-0 text-lg w-full"
               disabled={!formik.isValid || !formik.dirty}
             >
-              Verify Code
+              <p>Verify Code</p>
             </button>
           )}
         </form>

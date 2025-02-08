@@ -28,7 +28,7 @@ export default function NavBar() {
 
   return (
     <nav className="bg-gray-200 border-gray-200 dark:bg-gray-900 sticky top-0 start-0 end-0 z-50">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 lg:p-1">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 lg:p-2">
         <div className="flex items-center justify-between w-full lg:w-auto">
           <Link
             to={"/"}

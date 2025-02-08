@@ -1,12 +1,13 @@
 import { Helmet } from "react-helmet";
 import "./ForgetPassword.module.css";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
 import { useState } from "react";
-import image from "../../assets/mobile-login-concept-illustration_114360-83.avif";
 import { motion } from "framer-motion";
+import styles from "./ForgetPassword.module.css";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 export default function ForgetPassword() {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +23,8 @@ export default function ForgetPassword() {
 
   const handleForgetPassword = async (values) => {
     setIsLoading(true);
+    console.log(values);
+
     await axios
       .post(
         "https://ecommerce.routemisr.com/api/v1/auth/forgotPasswords",
@@ -46,7 +49,7 @@ export default function ForgetPassword() {
     onSubmit: handleForgetPassword,
   });
   return (
-    <div className="flex justify-center items-center h-[90vh]">
+    <div className=" container flex justify-center items-center h-[90vh]">
       <Helmet>
         <title>Forget Password</title>
       </Helmet>
@@ -55,61 +58,79 @@ export default function ForgetPassword() {
         initial={{ y: -200, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 2 }}
-        className="rounded-lg bg-gray-100 p-10 shadow-lg border-2 border-green-400"
+        className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/4`}
       >
-        <h2 className="capitalize text-2xl font-semibold">
+        <h2 className="capitalize text-2xl font-semibold flex items-center">
+          <RiLockPasswordFill className="inline me-2 text-3xl text-green-500" />
           forget your password
         </h2>
         <p className="my-4">
           Don&apos;t fret! Just type in your email and we will send you a code
           to reset your password!
         </p>
-        <form onSubmit={formik.handleSubmit}>
-          <div className="mb-5">
+        <form
+          className={`${styles.form} w-full`}
+          onSubmit={formik.handleSubmit}
+        >
+          <div className="w-full">
             <label
               htmlFor="email"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm ps-2 font-medium text-gray-900 dark:text-white"
             >
               Your Email
             </label>
             <input
               type="email"
               id="email"
+              className={styles.input}
+              placeholder="Email"
               name="email"
-              className="input-style"
-              placeholder="Enter Your Email"
               onChange={formik.handleChange}
               value={formik.values.email}
               onBlur={formik.handleBlur}
             />
             {formik.touched.email && formik.errors.email && (
-              <p className="text-red-500">{formik.errors.email}</p>
+              <div>
+                <div className="relative w-full mt-2 flex flex-wrap items-center justify-center py-1 pl-4 pr-4 rounded-full text-base font-medium [transition:all_0.5s_ease] border-solid border border-[#f85149] text-[#b22b2b] [&_svg]:text-[#b22b2b] group bg-[linear-gradient(#f851491a,#f851491a)]">
+                  <p className="flex w-full flex-row items-center mr-auto gap-x-2">
+                    <svg
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      height={28}
+                      width={28}
+                      className="h-7 w-7"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                      <path d="M12 9v4" />
+                      <path d="M12 17h.01" />
+                    </svg>
+                    {formik.errors.email}
+                  </p>
+                </div>
+              </div>
             )}
           </div>
 
           {isLoading ? (
-            <button className="btn-main">loading...</button>
+            <button className="newBtn px-5 py-2.5">
+              <p>loading...</p>
+            </button>
           ) : (
             <button
+              className="newBtn px-5 py-2.5 "
               type="submit"
-              className="btn-main mt-0"
-              disabled={!formik.isValid}
+              disabled={!formik.isValid || !formik.dirty}
             >
-              Log In
+              <p>Send code</p>
             </button>
           )}
-          <small>
-            don&apos;t have account{" "}
-            <Link to={"/register"} className="text-green-500 underline">
-              Register
-            </Link>
-          </small>
         </form>
       </motion.div>
-
-      <div>
-        <img src={image} className="w-full" alt="forget password image" />
-      </div>
     </div>
   );
 }

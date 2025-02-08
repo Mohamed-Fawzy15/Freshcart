@@ -1,78 +1,70 @@
-import axios from "axios";
-import { useFormik } from "formik";
-import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import * as Yup from "yup";
-import { tokenContext } from "../../Context/Token/TokenContext";
 import { Helmet } from "react-helmet";
-import styles from "./SignIn.module.css";
 import { motion } from "framer-motion";
-import image from "../../assets/logo.svg";
+import { useFormik } from "formik";
+import { useState } from "react";
+import * as Yup from "yup";
+import styles from "./NewPassword.module.css";
+import axios from "axios";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-export default function SignIn() {
+export default function NewPassword() {
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const { setToken } = useContext(tokenContext);
 
-  const navigate = useNavigate();
-  const validationSchema = Yup.object({
-    email: Yup.string().required("Email Is Required").email(),
-    password: Yup.string()
-      .required("This Field is required")
-      .matches(/^[A-Za-z0-9]{8,16}$/, "Invalid Password"),
-  });
   const initialValues = {
     email: "",
-    password: "",
+    newPassword: "",
   };
 
-  const handleLogin = async (values) => {
+  const validationSchema = Yup.object({
+    email: Yup.string().required("Email is required").email(),
+    newPassword: Yup.string()
+      .required("Password is required")
+      .matches(/^[A-Za-z0-9]{8,16}$/, "Invalid Password"),
+  });
+
+  const handleNewPassword = async (values) => {
     setIsLoading(true);
+
     await axios
-      .post("https://ecommerce.routemisr.com/api/v1/auth/signin", values)
+      .put("https://ecommerce.routemisr.com/api/v1/auth/resetPassword", values)
       .then((res) => {
-        setToken(res.data.token);
-        localStorage.setItem("token", res.data.token);
+        console.log(res.data);
         setIsLoading(false);
-        setErrorMsg(null);
-        navigate("/");
       })
-      .catch((error) => {
-        setErrorMsg(error.response.data.message);
+      .catch((err) => {
+        console.log(err);
         setIsLoading(false);
       });
   };
-
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: handleLogin,
+    onSubmit: handleNewPassword,
   });
+  //   console.log(formik);
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
   };
   return (
-    <section className="md:w-2/3 lg:w-1/2 mx-auto h-[80vh] flex items-center my-4 rounded-md p-4">
+    <div className="md:w-2/3 lg:w-1/2 mx-auto h-[80vh] flex items-center my-4 rounded-md p-4">
       <Helmet>
-        <title>Log In</title>
+        <title>Forget Password</title>
       </Helmet>
+
       <motion.div
         initial={{ y: -300, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 2 }}
         className={styles.formContainer}
       >
-        <p className={styles.title}>
+        {/* <p className={styles.title}>
           <img src={image} alt="logo image" />
-        </p>
-        {errorMsg && (
-          <p className="bg-red-300 p-3 rounded-md my-2">{errorMsg}</p>
-        )}
+        </p> */}
+
         <form className={styles.form} onSubmit={formik.handleSubmit}>
           <div className="w-full">
             <label
@@ -124,7 +116,7 @@ export default function SignIn() {
           </div>
           <div className="w-full">
             <label
-              htmlFor="password"
+              htmlFor="newPassword"
               className="block mb-2 text-sm ps-2 font-medium text-gray-900 dark:text-white"
             >
               Your Password
@@ -134,12 +126,12 @@ export default function SignIn() {
               <RiLockPasswordFill className="absolute top-3 left-2 text-green-500 text-lg" />
               <input
                 type={showPassword ? "text" : "password"}
-                id="password"
+                id="newPassword"
                 className="input-style px-7"
                 placeholder="Password"
-                name="password"
+                name="newPassword"
                 onChange={formik.handleChange}
-                value={formik.values.password}
+                value={formik.values.newPassword}
                 onBlur={formik.handleBlur}
               />
 
@@ -152,7 +144,7 @@ export default function SignIn() {
               </button>
             </div>
 
-            {formik.touched.password && formik.errors.password && (
+            {formik.touched.newPassword && formik.errors.newPassword && (
               <div>
                 <div className="relative w-full mt-2 flex flex-wrap items-center justify-center py-1 pl-4 pr-4 rounded-full text-base font-medium [transition:all_0.5s_ease] border-solid border border-[#f85149] text-[#b22b2b] [&_svg]:text-[#b22b2b] group bg-[linear-gradient(#f851491a,#f851491a)]">
                   <p className="flex w-full flex-row items-center mr-auto gap-x-2">
@@ -172,7 +164,7 @@ export default function SignIn() {
                       <path d="M12 9v4" />
                       <path d="M12 17h.01" />
                     </svg>
-                    {formik.errors.password}
+                    {formik.errors.newPassword}
                   </p>
                 </div>
               </div>
@@ -190,20 +182,8 @@ export default function SignIn() {
               <p>Log in</p>
             </button>
           )}
-
-          <p className={styles.pageLink}>
-            <Link to={"/forgetpassword"} className={styles.pageLinkLabel}>
-              Forgot Password?
-            </Link>
-          </p>
         </form>
-        <p className={styles.signUpLabel}>
-          Don&apos;t have an account?
-          <Link to={"/register"} className={styles.signUpLink}>
-            Sign up
-          </Link>
-        </p>
       </motion.div>
-    </section>
+    </div>
   );
 }

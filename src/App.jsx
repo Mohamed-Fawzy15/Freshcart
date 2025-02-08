@@ -19,6 +19,7 @@ import { Toaster } from "react-hot-toast";
 import Checkout from "./Pages/Checkout/Checkout";
 import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import ResetCode from "./Pages/ResetCode/ResetCode";
+import NewPassword from "./Pages/NewPassword/NewPassword";
 
 function App() {
   const routes = createBrowserRouter([
@@ -73,6 +74,10 @@ function App() {
         {
           path: "resetcode",
           element: <ResetCode />,
+        },
+        {
+          path: "newpassword",
+          element: <NewPassword />,
         },
         { path: "register", element: <Register /> },
         { path: "signin", element: <SignIn /> },

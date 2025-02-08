@@ -21,7 +21,7 @@
 
 @layer components {
   .input-style {
-    @apply bg-gray-50 border border-gray-300 outline-green-500 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500;
+    @apply bg-gray-50 border border-gray-300 outline-green-500 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 px-8 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500;
   }
   .btn-main {
     @apply text-white capitalize w-full mt-4 bg-green-700 hover:bg-green-800 disabled:bg-green-400 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800;
@@ -66,4 +66,76 @@
   width: 20px !important;
   height: 5px !important;
   content: "" !important;
+}
+
+.newBtn {
+  all: unset;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0.25rem 1rem;
+  border: var(--main-color) solid 0.15em;
+  border-radius: 20px;
+  color: black;
+  font-size: 1.5em;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border 300ms, color 300ms;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  width: 60%;
+}
+
+.newBtn:disabled {
+  cursor: not-allowed;
+  border-color: rgba(4, 108, 78, 0.5);
+}
+.newBtn p {
+  z-index: 1;
+  font-size: 20px;
+}
+
+.newBtn:hover {
+  color: #212121;
+}
+
+.newBtn:active {
+  border-color: rgb(4, 108, 78);
+}
+
+.newBtn::after,
+.newBtn::before {
+  content: "";
+  position: absolute;
+  width: 9em;
+  aspect-ratio: 1;
+  background: var(--main-color);
+  opacity: 50%;
+  border-radius: 50%;
+  transition: transform 500ms, background 300ms;
+}
+
+.newBtn::before {
+  left: 0;
+  transform: translateX(-8em);
+}
+
+.newBtn::after {
+  right: 0;
+  transform: translateX(8em);
+}
+
+.newBtn:hover:before {
+  transform: translateX(-1em);
+}
+
+.newBtn:hover:after {
+  transform: translateX(1em);
+}
+
+.newBtn:active:before,
+.newBtn:active:after {
+  background: rgb(4, 108, 78);
 }
