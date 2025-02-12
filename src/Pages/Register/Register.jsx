@@ -9,8 +9,8 @@ import image from "../../assets/logo.svg";
 import styles from "./Register.module.css";
 import { MdEmail } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
-import { FaEye, FaEyeSlash, FaPhoneAlt } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
+import { FaEye, FaEyeSlash, FaPhoneAlt, FaSignOutAlt } from "react-icons/fa";
+import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 
 // import styles from "./Register.module.css";
 export default function Register() {
@@ -339,14 +339,26 @@ export default function Register() {
           </div>
 
           {isLoading ? (
-            <button className={styles.formBtn}>loading...</button>
-          ) : (
             <button
-              className="newBtn px-5 py-2.5"
+              className="CartBtn"
               type="submit"
               disabled={!formik.isValid || !formik.dirty}
             >
-              <p>Sign Up</p>
+              <span className="IconContainer">
+                <RiLoader2Fill className="text-white text-lg me-2" />
+              </span>
+              <p className="text">...loading</p>
+            </button>
+          ) : (
+            <button
+              className="CartBtn"
+              type="submit"
+              disabled={!formik.isValid || !formik.dirty}
+            >
+              <span className="IconContainer">
+                <FaSignOutAlt className="text-white text-lg me-2" />
+              </span>
+              <p className="text">Sign Up</p>
             </button>
           )}
           <small>

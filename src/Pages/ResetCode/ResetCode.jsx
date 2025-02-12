@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "./ResetCode.module.css";
 import { MdOutlineLockReset } from "react-icons/md";
 import { useRef } from "react";
+import { PiLockKeyFill } from "react-icons/pi";
+import { RiLoader2Fill } from "react-icons/ri";
 
 export default function ResetCode() {
   const [isLoading, setIsLoading] = useState(false);
@@ -119,16 +121,26 @@ export default function ResetCode() {
           </div>
 
           {isLoading ? (
-            <button className="newBtn">
-              <p>loading...</p>
+            <button
+              className="CartBtn"
+              type="submit"
+              disabled={!formik.isValid || !formik.dirty}
+            >
+              <span className="IconContainer">
+                <RiLoader2Fill className="text-white text-lg me-2" />
+              </span>
+              <p className="text">...loading</p>
             </button>
           ) : (
             <button
+              className="CartBtn"
               type="submit"
-              className="newBtn mt-0 text-lg w-full"
               disabled={!formik.isValid || !formik.dirty}
             >
-              <p>Verify Code</p>
+              <span className="IconContainer">
+                <PiLockKeyFill className="text-white text-lg me-2" />
+              </span>
+              <p className="text">Send code</p>
             </button>
           )}
         </form>

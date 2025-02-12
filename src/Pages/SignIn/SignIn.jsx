@@ -9,8 +9,9 @@ import styles from "./SignIn.module.css";
 import { motion } from "framer-motion";
 import image from "../../assets/logo.svg";
 import { MdEmail } from "react-icons/md";
-import { RiLockPasswordFill } from "react-icons/ri";
+import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { IoLogIn } from "react-icons/io5";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
@@ -180,14 +181,26 @@ export default function SignIn() {
           </div>
 
           {isLoading ? (
-            <button className={styles.formBtn}>loading...</button>
-          ) : (
             <button
-              className="newBtn  px-5 py-2.5"
+              className="CartBtn"
               type="submit"
               disabled={!formik.isValid || !formik.dirty}
             >
-              <p>Log in</p>
+              <span className="IconContainer">
+                <RiLoader2Fill className="text-white text-lg me-2" />
+              </span>
+              <p className="text">..loading</p>
+            </button>
+          ) : (
+            <button
+              className="CartBtn"
+              type="submit"
+              disabled={!formik.isValid || !formik.dirty}
+            >
+              <span className="IconContainer">
+                <IoLogIn className="text-white text-lg me-2" />
+              </span>
+              <p className="text">Log In</p>
             </button>
           )}
 

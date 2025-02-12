@@ -7,7 +7,8 @@ import axios from "axios";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./ForgetPassword.module.css";
-import { RiLockPasswordFill } from "react-icons/ri";
+import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
+import { IoSend } from "react-icons/io5";
 
 export default function ForgetPassword() {
   const [isLoading, setIsLoading] = useState(false);
@@ -117,16 +118,26 @@ export default function ForgetPassword() {
           </div>
 
           {isLoading ? (
-            <button className="newBtn px-5 py-2.5">
-              <p>loading...</p>
-            </button>
-          ) : (
             <button
-              className="newBtn px-5 py-2.5 "
+              className="CartBtn"
               type="submit"
               disabled={!formik.isValid || !formik.dirty}
             >
-              <p>Send code</p>
+              <span className="IconContainer">
+                <RiLoader2Fill className="text-white text-lg me-2" />
+              </span>
+              <p className="text">...loading</p>
+            </button>
+          ) : (
+            <button
+              className="CartBtn"
+              type="submit"
+              disabled={!formik.isValid || !formik.dirty}
+            >
+              <span className="IconContainer">
+                <IoSend className="text-white text-lg me-2" />
+              </span>
+              <p className="text">Send code</p>
             </button>
           )}
         </form>
