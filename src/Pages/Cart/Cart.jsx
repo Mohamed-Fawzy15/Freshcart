@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import { useState } from "react";
 // import Loader from "../../Component/Loader/Loader";
-import { FaEye, FaStar } from "react-icons/fa6";
+import { FaBackward, FaEye, FaStar } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import styles from "./Cart.module.css";
 import { IoBagCheckOutline } from "react-icons/io5";
@@ -59,7 +59,7 @@ export default function Cart() {
   }, []);
 
   return (
-    <div className="container mx-auto h-screen">
+    <div className="container mx-auto">
       <Helmet>
         <title>Cart</title>
       </Helmet>
@@ -245,7 +245,7 @@ export default function Cart() {
             </div>
 
             <div className="sticky w-1/3 p-5 pt-2 ">
-              <div className=" fixed w-1/4 inner p-2  rounded-lg shadow-lg">
+              <div className="  inner p-2  rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold text-center my-4 text-gray-600 ">
                   Order
                 </h2>
@@ -301,7 +301,22 @@ export default function Cart() {
           </div>
         </>
       ) : (
-        <Loader />
+        <div className="h-screen flex flex-col justify-center items-center gap-5">
+          <Loader />
+
+          <div className="flex justify-center w-1/4">
+            <button
+              className={styles.CartBtn}
+              type="button"
+              onClick={() => navigate("/checkout")}
+            >
+              <span className="IconContainer">
+                <FaBackward className="text-white text-lg me-2" />
+              </span>
+              <p className="text">go back to home Page</p>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
