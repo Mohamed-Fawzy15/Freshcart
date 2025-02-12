@@ -1,4 +1,4 @@
-import { BsYoutube } from "react-icons/bs";
+// import { BsYoutube } from "react-icons/bs";
 import { FaFacebook, FaTiktok } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { RiInstagramFill } from "react-icons/ri";
@@ -28,7 +28,7 @@ export default function NavBar() {
 
   return (
     <nav className="bg-gray-200 border-gray-200 dark:bg-gray-900 sticky top-0 start-0 end-0 z-50">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 lg:p-1">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 lg:p-2">
         <div className="flex items-center justify-between w-full lg:w-auto">
           <Link
             to={"/"}
@@ -74,7 +74,7 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"/"}
-                  className="block py-2 px-3 text-gray-900  hover:text-green-700 dark:text-white dark:hover:text-green-500"
+                  className="block py-2 px-2 mx-1 linkHover text-gray-900   dark:text-white "
                   aria-current="page"
                 >
                   Home
@@ -84,7 +84,7 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"products"}
-                  className="block py-2 px-3 text-gray-900 hover:text-green-700 dark:text-white dark:hover:text-green-500"
+                  className="block py-2 px-2 mx-1 linkHover text-gray-900  dark:text-white "
                 >
                   Products
                 </NavLink>
@@ -92,7 +92,7 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"categories"}
-                  className="block py-2 px-3 text-gray-900 hover:text-green-700 dark:text-white dark:hover:text-green-500"
+                  className="block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
                 >
                   Categories
                 </NavLink>
