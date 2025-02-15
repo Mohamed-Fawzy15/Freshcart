@@ -44,22 +44,14 @@ export default function ProductItem({ product, handleAddToCart }) {
           </div>
 
           <div className="p-6 pt-0 flex justify-between">
-            {/* <button
-              data-ripple-light="true"
-              type="button"
-              className="select-none rounded-lg bg-green-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            >
-              
-            </button> */}
-
             <button
-              className={styles.CartBtn}
+              className="CartBtn"
               onClick={() => handleAddToCart(product.id)}
             >
-              <span className={styles.IconContainer}>
+              <span className="IconContainer">
                 <FaShoppingCart className="text-white text-lg me-2" />
               </span>
-              <p className={styles.text}>Add to Cart</p>
+              <p className="text">Add to Cart</p>
             </button>
 
             <div className={styles.heartContainer} title="Like">

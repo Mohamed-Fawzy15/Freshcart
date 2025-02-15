@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import { useState } from "react";
 // import Loader from "../../Component/Loader/Loader";
-import { FaEye, FaStar } from "react-icons/fa6";
+import { FaBackward, FaEye, FaStar } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import styles from "./Cart.module.css";
 import { IoBagCheckOutline } from "react-icons/io5";
@@ -324,7 +324,22 @@ export default function Cart() {
           </div>
         </>
       ) : (
-        <Loader />
+        <div className="h-screen flex flex-col justify-center items-center gap-5">
+          <Loader />
+
+          <div className="flex justify-center w-1/4">
+            <button
+              className={styles.CartBtn}
+              type="button"
+              onClick={() => navigate("/checkout")}
+            >
+              <span className="IconContainer">
+                <FaBackward className="text-white text-lg me-2" />
+              </span>
+              <p className="text">go back to home Page</p>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

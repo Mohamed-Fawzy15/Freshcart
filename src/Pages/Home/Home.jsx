@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet";
 import CategorySilder from "../../Component/CategorySilder/CategorySilder";
 import LatestProducts from "../../Component/LatestProducts/LatestProducts";
 import MainSlider from "../../Component/MainSlider/MainSlider";
+import ScrollVelocityDemo from "../../Component/ScrollVelocityDemo/ScrollVelocityDemo";
 
 export default function Home() {
   return (
@@ -11,8 +12,7 @@ export default function Home() {
       </Helmet>
       <MainSlider />
       <CategorySilder />
-
-      <div className="bg-[url('assets/banner-4.jpeg')] bg-cover bg-right-bottom h-[400px] flex flex-col px-8 justify-center text-white">
+      <div className="bg-[url('assets/banner-4.jpeg')] bg-fixed bg-cover bg-right-bottom h-[400px] flex flex-col px-8 justify-center text-white">
         <div className="container ">
           <p>$30 discount for your first order</p>
           <h3 className="text-3xl font-semibold">
@@ -40,6 +40,7 @@ export default function Home() {
         </div>
       </div>
       <LatestProducts />
+      <ScrollVelocityDemo />
     </div>
   );
 }
