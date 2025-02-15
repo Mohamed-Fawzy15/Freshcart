@@ -2,13 +2,13 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
-// import styles from "./Categories.module.css";
+import styles from "./Categories.module.css";
+import { useNavigate } from "react-router-dom";
 // import Loader from "../../Component/Loader/Loader";
-
-import { Timeline } from "../../Component/TimeLine/TimeLine";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
+  const naviagte = useNavigate();
 
   const getCategory = async () => {
     await axios
@@ -21,35 +21,65 @@ export default function Categories() {
     getCategory();
   }, []);
 
-  const data = categories.map((category) => ({
-    title: category.name, // Assuming API returns category name
-    content: (
-      <div>
-        <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-normal mb-4">
-          {category.slug} {/* Adjust this based on actual API response */}
-        </p>
-        <div className="grid grid-cols-1 gap-4">
-          {category.image && (
-            <img
-              src={category.image} // Assuming each category has an image URL
-              alt={category.name}
-              width={500}
-              height={500}
-              className="rounded-lg object-cover h- md:h- lg:h-full w-full shadow"
-            />
-          )}
-        </div>
-      </div>
-    ),
-  }));
-
   return (
     <div className="min-h-screen w-full">
       <Helmet>
         <title>Categories</title>
       </Helmet>
-      <div className="relative top-0 left-0 w-full">
-        <Timeline data={data} />
+
+      <div className="bg-[url('assets/banner-4.jpeg')] bg-cover bg-right-bottom h-[400px] flex flex-col px-8 justify-center text-white">
+        <div className="container">
+          <h1 className="font-bold text-4xl">Get What you want in FreshCart</h1>
+          <p className="my-4 font-semibold">
+            Discover the best deals, latest trends, and more.
+          </p>
+          <button
+            className="animated-button  bg-black"
+            onClick={() => naviagte("/products")}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="arr-2"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+            </svg>
+            <span className="text text-white">Shop Now</span>
+            <span className="circle" />
+            <svg
+              viewBox="0 0 24 24"
+              className="arr-1"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div className="container">
+        <h2 className="capitalize text-3xl font-bold my-10 flex gap-5 items-center justify-center ">
+          <div className="header"></div>
+          <p> shop popular category</p>
+        </h2>
+
+        <div className="row gap-3 justify-center ">
+          {categories &&
+            categories.map((category) => (
+              <div className="p-4" key={category._id}>
+                <div
+                  className={`${styles.card} shadow-lg rounded-lg overflow-hidden  `}
+                  style={{ "--category-name": `"${category.name}"` }}
+                >
+                  <img
+                    src={category.image}
+                    className="w-full h-full "
+                    alt={category.name}
+                  />
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

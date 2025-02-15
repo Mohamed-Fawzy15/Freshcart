@@ -10,8 +10,8 @@ export default function ProductItem({ product, handleAddToCart }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      initial={{ y: 100, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
       transition={{ duration: 1 }}
       className="group/product p-5 border border-transparent rounded-md relative "
     >

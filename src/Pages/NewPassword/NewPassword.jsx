@@ -6,12 +6,15 @@ import * as Yup from "yup";
 import styles from "./NewPassword.module.css";
 import axios from "axios";
 import { MdEmail } from "react-icons/md";
-import { RiLockPasswordFill } from "react-icons/ri";
+import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { CiLogin } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 export default function NewPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const initialValues = {
     email: "",
@@ -33,6 +36,7 @@ export default function NewPassword() {
       .then((res) => {
         console.log(res.data);
         setIsLoading(false);
+        navigate("/signin");
       })
       .catch((err) => {
         console.log(err);
@@ -172,14 +176,26 @@ export default function NewPassword() {
           </div>
 
           {isLoading ? (
-            <button className={styles.formBtn}>loading...</button>
-          ) : (
             <button
-              className="newBtn  px-5 py-2.5"
+              className="CartBtn"
               type="submit"
               disabled={!formik.isValid || !formik.dirty}
             >
-              <p>Log in</p>
+              <span className="IconContainer">
+                <RiLoader2Fill className="text-white text-lg me-2" />
+              </span>
+              <p className="text">...loading</p>
+            </button>
+          ) : (
+            <button
+              className="CartBtn"
+              type="submit"
+              disabled={!formik.isValid || !formik.dirty}
+            >
+              <span className="IconContainer">
+                <CiLogin className="text-white text-lg me-2" />
+              </span>
+              <p className="text">Log In</p>
             </button>
           )}
         </form>
