@@ -25,6 +25,7 @@ export default function Cart() {
   const [cartData, setCartData] = useState(null);
   const navigate = useNavigate();
   const [openProductId, setOpenProductId] = useState(null); // Track which product's modal is open
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   const getData = async () => {
     const data = await getLoggedCart();
@@ -290,16 +291,30 @@ export default function Cart() {
                       </div>
                     </div>
 
-                    <button
-                      className={`${styles.CartBtn} mt-6`}
-                      type="button"
-                      onClick={() => navigate("/checkout")}
-                    >
-                      <span className="IconContainer">
-                        <IoBagCheckOutline className="text-white text-lg me-2" />
-                      </span>
-                      <p className="text">CheckOut</p>
-                    </button>
+                    <div className="flex items-center gap-2 mt-6">
+                      <select
+                        name="payment"
+                        id="payment"
+                        className="rounded-lg border-green-500 outline-green-600 "
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      >
+                        <option value="cash">Cash</option>
+                        <option value="online">Online</option>
+                      </select>
+
+                      <button
+                        className={`${styles.CartBtn} `}
+                        type="button"
+                        onClick={() =>
+                          navigate("/checkout", { state: paymentMethod })
+                        }
+                      >
+                        <span className="IconContainer">
+                          <IoBagCheckOutline className="text-white text-lg me-2" />
+                        </span>
+                        <p className="text">CheckOut</p>
+                      </button>
+                    </div>
                   </div>
                 </>
               ) : (

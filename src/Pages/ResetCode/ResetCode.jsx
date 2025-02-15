@@ -45,7 +45,7 @@ export default function ResetCode() {
       })
       .then((res) => {
         console.log(res.data);
-        if (res.data.status === "success") {
+        if (res.data.status === "Success") {
           navigate("/newpassword");
           setIsLoading(false);
         }

@@ -3,12 +3,18 @@ import { useState } from "react";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
 import SpringModel from "../SpringModel/SpringModel";
 import styles from "./ProductItem.module.css";
+import { motion } from "framer-motion";
 
 export default function ProductItem({ product, handleAddToCart }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="group/product p-5 border border-transparent rounded-md relative ">
+    <motion.div
+      initial={{ y: 100, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="group/product p-5 border border-transparent rounded-md relative "
+    >
       <div>
         <div className="relative flex w-full flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
           <div className="cursor-pointer " onClick={() => setIsOpen(true)}>
@@ -101,6 +107,6 @@ export default function ProductItem({ product, handleAddToCart }) {
         setIsOpen={setIsOpen}
         productId={product.id}
       />
-    </div>
+    </motion.div>
   );
 }
