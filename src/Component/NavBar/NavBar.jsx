@@ -3,7 +3,7 @@ import { FaFacebook, FaTiktok } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { RiInstagramFill } from "react-icons/ri";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import styles from "./NavBar.module.css";
+// import styles from "./NavBar.module.css";
 import logo from "../../assets/logo.svg";
 import { useContext, useState } from "react";
 import { tokenContext } from "../../Context/Token/TokenContext";
@@ -95,6 +95,14 @@ export default function NavBar() {
                   className="block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
                 >
                   Categories
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to={"brands"}
+                  className="block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
+                >
+                  Brands
                 </NavLink>
               </li>
             </ul>

@@ -11,7 +11,6 @@ import Categories from "./Pages/Categories/Categories";
 import CounterContextProvider from "./Context/CounterContext/CounterContext";
 import TokenContextProvider from "./Context/Token/TokenContext";
 import ProtectedRoutes from "./Component/ProtectedRoutes/ProtectedRoutes";
-// import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import { Offline } from "react-detect-offline";
 import { CiWifiOff } from "react-icons/ci";
 import CartContextProvider from "./Context/CartContext/CartContext";
@@ -20,6 +19,7 @@ import Checkout from "./Pages/Checkout/Checkout";
 import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import ResetCode from "./Pages/ResetCode/ResetCode";
 import NewPassword from "./Pages/NewPassword/NewPassword";
+import Brands from "./Pages/Brands/Brands";
 
 function App() {
   const routes = createBrowserRouter([
@@ -56,6 +56,14 @@ function App() {
           element: (
             <ProtectedRoutes>
               <Checkout />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "brands",
+          element: (
+            <ProtectedRoutes>
+              <Brands />
             </ProtectedRoutes>
           ),
         },
