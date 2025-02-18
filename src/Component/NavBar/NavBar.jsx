@@ -8,12 +8,14 @@ import logo from "../../assets/logo.svg";
 import { useContext, useState } from "react";
 import { tokenContext } from "../../Context/Token/TokenContext";
 import { CartContext } from "../../Context/CartContext/CartContext";
-import { MdOutlineShoppingCart } from "react-icons/md";
+import { MdFavorite, MdOutlineShoppingCart } from "react-icons/md";
+import { ApiContext } from "../../Context/APi/ApiContext";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const { numOfCartItems } = useContext(CartContext);
   const { token, setToken } = useContext(tokenContext);
+  const { wishlistItem } = useContext(ApiContext);
   const navigate = useNavigate();
 
   const handleLogOut = () => {
@@ -74,7 +76,7 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"/"}
-                  className="block py-2 px-2 mx-1 linkHover text-gray-900   dark:text-white "
+                  className="inline-block py-2 px-2 mx-1 linkHover text-gray-900   dark:text-white "
                   aria-current="page"
                 >
                   Home
@@ -84,7 +86,7 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"products"}
-                  className="block py-2 px-2 mx-1 linkHover text-gray-900  dark:text-white "
+                  className="inline-block py-2 px-2 mx-1 linkHover text-gray-900  dark:text-white "
                 >
                   Products
                 </NavLink>
@@ -92,7 +94,7 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"categories"}
-                  className="block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
+                  className="inline-block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
                 >
                   Categories
                 </NavLink>
@@ -100,7 +102,7 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"brands"}
-                  className="block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
+                  className="inline-block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
                 >
                   Brands
                 </NavLink>
@@ -114,7 +116,7 @@ export default function NavBar() {
           id="navbar-default"
         >
           <div className="flex items-center justify-between gap-x-3">
-            <ul className="font-medium flex items-center p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            {/* <ul className="font-medium flex items-center p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <Link
                   to={"/www.facebook.com"}
@@ -150,19 +152,32 @@ export default function NavBar() {
               </li>
 
               {token && (
-                <li>
-                  <NavLink
-                    to={"cart"}
-                    className="block relative py-2 px-3 text-green-900  dark:text-white dark:hover:text-green-500"
-                  >
-                    <MdOutlineShoppingCart className="inline text-2xl" />
-                    <span className="text-xs text-white absolute top-0 -right-1 w-5 h-5 bg-gray-500 rounded-full flex justify-center items-center">
-                      {numOfCartItems}
-                    </span>
-                  </NavLink>
-                </li>
+                <>
+                  <li>
+                    <NavLink
+                      to={"cart"}
+                      className="block relative py-2 px- text-green-900  dark:text-white dark:hover:text-green-500"
+                    >
+                      <MdOutlineShoppingCart className="inline text-2xl" />
+                      <span className="text-xs text-white absolute top-0 -right-2 w-5 h-5 bg-gray-500 rounded-full flex justify-center items-center">
+                        {numOfCartItems}
+                      </span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to={"wishlist"}
+                      className="block relative py-2  text-green-900  dark:text-white dark:hover:text-green-500"
+                    >
+                      <MdFavorite className="inline text-2xl" />
+                      <span className="text-xs text-white absolute top-0 -right-2 w-5 h-5 bg-gray-500 rounded-full flex justify-center items-center">
+                        {wishlistItem}
+                      </span>
+                    </NavLink>
+                  </li>
+                </>
               )}
-            </ul>
+            </ul> */}
 
             <ul className="font-medium flex p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               {!token && (

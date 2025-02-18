@@ -25,7 +25,7 @@
 
 .heartContainer .svgOutline,
 .heartContainer .svgFilled {
-  fill: var(--main-color);
+  fill: red;
   position: absolute;
 }
 
@@ -39,8 +39,8 @@
   animation: keyframes-svg-celebrate 0.5s;
   animation-fill-mode: forwards;
   display: none;
-  stroke: var(--main-color);
-  fill: var(--main-color);
+  stroke: red;
+  fill: red;
   stroke-width: 2px;
 }
 

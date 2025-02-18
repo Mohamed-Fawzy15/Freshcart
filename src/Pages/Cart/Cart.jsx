@@ -1,10 +1,8 @@
 import { Helmet } from "react-helmet";
-// import styles from "./Cart.module.css";
 import { useContext } from "react";
 import { useEffect } from "react";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import { useState } from "react";
-// import Loader from "../../Component/Loader/Loader";
 import { FaBackward, FaEye, FaStar } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import styles from "./Cart.module.css";

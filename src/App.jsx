@@ -20,6 +20,8 @@ import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import ResetCode from "./Pages/ResetCode/ResetCode";
 import NewPassword from "./Pages/NewPassword/NewPassword";
 import Brands from "./Pages/Brands/Brands";
+import ApiContextProvider from "./Context/APi/ApiContext";
+import Wishlist from "./Pages/Wishlist/Wishlist";
 
 function App() {
   const routes = createBrowserRouter([
@@ -67,6 +69,14 @@ function App() {
             </ProtectedRoutes>
           ),
         },
+        {
+          path: "wishlist",
+          element: (
+            <ProtectedRoutes>
+              <Wishlist />
+            </ProtectedRoutes>
+          ),
+        },
         // {
         //   path: "productdetails/:productId",
         //   element: (
@@ -96,19 +106,21 @@ function App() {
   ]);
   return (
     <TokenContextProvider>
-      <CartContextProvider>
-        <CounterContextProvider>
-          <Toaster position="bottom-right" />
-          <Offline>
-            <div className="offline fixed bottom-2 right-4 z-50 bg-red-700 text-white p-2 rounded-md">
-              <CiWifiOff className="inline mx-2 text-2xl " />
-              You are now offline
-            </div>
-          </Offline>
+      <ApiContextProvider>
+        <CartContextProvider>
+          <CounterContextProvider>
+            <Toaster position="bottom-right" />
+            <Offline>
+              <div className="offline fixed bottom-2 right-4 z-50 bg-red-700 text-white p-2 rounded-md">
+                <CiWifiOff className="inline mx-2 text-2xl " />
+                You are now offline
+              </div>
+            </Offline>
 
-          <RouterProvider router={routes}></RouterProvider>
-        </CounterContextProvider>
-      </CartContextProvider>
+            <RouterProvider router={routes}></RouterProvider>
+          </CounterContextProvider>
+        </CartContextProvider>
+      </ApiContextProvider>
     </TokenContextProvider>
   );
 }
