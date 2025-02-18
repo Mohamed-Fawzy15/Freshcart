@@ -8,29 +8,38 @@ import { CartContext } from "../../Context/CartContext/CartContext";
 import { useEffect } from "react";
 import Loader from "../../Component/Loader/Loader";
 import ProductItem from "../../Component/ProductItem/ProductItem";
+import { ApiContext } from "../../Context/APi/ApiContext";
 // import styles from "./Products.module.css";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedBrand, setSelectedBrand] = useState("all");
 
   const { addToCart, setNumOfCartItems } = useContext(CartContext);
+  const { getProducts, getCategories, getBrands } = useContext(ApiContext);
 
-  const getProducts = async () => {
+  const productData = async () => {
     setLoading(true);
-    await axios
-      .get("https://ecommerce.routemisr.com/api/v1/products")
-      .then((res) => {
-        setProducts(res.data.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
+    const data = await getProducts();
+    setProducts(data.data);
+    setLoading(false);
+  };
+
+  const categoriesData = async () => {
+    const data = await getCategories();
+    console.log(data.data);
+
+    setCategories(data.data);
+  };
+
+  const brandsData = async () => {
+    const data = await getBrands();
+    setBrands(data.data);
   };
 
   const handleAddToCart = async (id) => {
@@ -53,14 +62,16 @@ export default function Products() {
   };
 
   useEffect(() => {
-    getProducts();
+    productData();
+    categoriesData();
+    brandsData();
   }, []);
 
   const filteredProducts = products.filter((product) => {
     const productCategory = product.category?.name.toLowerCase();
-    const productBrand = product.brand?.name.toLowerCase(); // ✅ Category name from API
+    const productBrand = product.brand?.name.toLowerCase();
     return (
-      product.title.toLowerCase().includes(search.toLowerCase()) && // ✅ Search filter
+      product.title.toLowerCase().includes(search.toLowerCase()) &&
       (selectedCategory === "all" ||
         productCategory === selectedCategory.toLowerCase()) &&
       (selectedBrand === "all" || productBrand === selectedBrand.toLowerCase())
@@ -88,9 +99,16 @@ export default function Products() {
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <option value="all">All Categories</option>
-              <option value="men's fashion">Men&apos;s Fashion</option>
-              <option value="women's fashion">Women&apos;s Fashion</option>
-              <option value="electronics">Electronics</option>
+
+              {categories.length > 0 &&
+                categories.map((category) => (
+                  <option
+                    value={category.name.toLowerCase()}
+                    key={category._id}
+                  >
+                    {category.name}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="relative flex items-center rounded-3xl w-1/2">
@@ -113,7 +131,12 @@ export default function Products() {
               onChange={(e) => setSelectedBrand(e.target.value)}
             >
               <option value="all">All Brands</option>
-              <option value="DeFacto">DeFacto</option>
+              {brands.length > 0 &&
+                brands.map((brand) => (
+                  <option value={brand.name.toLowerCase()} key={brand._id}>
+                    {brand.name}
+                  </option>
+                ))}
               <option value="Jack & Jones">Jack & Jones</option>
               <option value="Puma">Puma</option>
             </select>

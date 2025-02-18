@@ -1,24 +1,18 @@
-import axios from "axios";
-// import style from "./LatestProducts.module.css";
 import { useContext, useEffect, useState } from "react";
 import ProductItem from "../ProductItem/ProductItem";
 import Loader from "../Loader/Loader";
 import toast from "react-hot-toast";
 import { CartContext } from "../../Context/CartContext/CartContext";
+import { ApiContext } from "../../Context/APi/ApiContext";
 
 export default function LatestProducts() {
   const [products, setProducts] = useState([]);
   const { addToCart, setNumOfCartItems } = useContext(CartContext);
+  const { getProducts } = useContext(ApiContext);
 
-  const getProducts = async () => {
-    await axios
-      .get("https://ecommerce.routemisr.com/api/v1/products")
-      .then((res) => {
-        setProducts(res.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const getData = async () => {
+    const data = await getProducts();
+    setProducts(data.data);
   };
 
   const handleAddToCart = async (id) => {
@@ -40,7 +34,7 @@ export default function LatestProducts() {
     }
   };
   useEffect(() => {
-    getProducts();
+    getData();
   }, []);
 
   return (

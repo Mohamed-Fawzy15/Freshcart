@@ -1,19 +1,24 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./CategorySilder.module.css";
+import { ApiContext } from "../../Context/APi/ApiContext";
 
 export default function CategorySilder() {
   const [categories, setCategories] = useState([]);
+  const { getCategories } = useContext(ApiContext);
 
-  const getCategory = async () => {
-    await axios
-      .get("https://ecommerce.routemisr.com/api/v1/categories")
-      .then((res) => setCategories(res.data.data))
-      .catch((err) => console.log(err));
+  const getData = async () => {
+    const data = await getCategories();
+    setCategories(data.data);
   };
 
+  //   await axios
+  //     .get("https://ecommerce.routemisr.com/api/v1/categories")
+  //     .then((res) => setCategories(res.data.data))
+  //     .catch((err) => console.log(err));
+  // };
+
   useEffect(() => {
-    getCategory();
+    getData();
   }, []);
 
   return (

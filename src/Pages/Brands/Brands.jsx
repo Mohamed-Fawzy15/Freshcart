@@ -1,22 +1,22 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
-import { FaLocationArrow } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import styles from "./Brands.module.css";
+import { ApiContext } from "../../Context/APi/ApiContext";
 
 export default function Brands() {
   const [brands, setBrands] = useState([]);
-  const getBrands = async () => {
-    await axios
-      .get("https://ecommerce.routemisr.com/api/v1/brands")
-      .then((res) => setBrands(res.data.data))
-      .catch((err) => console.log(err));
+
+  const { getBrands } = useContext(ApiContext);
+  const getData = async () => {
+    const data = await getBrands();
+    setBrands(data.data);
   };
 
   useEffect(() => {
-    getBrands();
+    getData();
   }, []);
 
   return (
