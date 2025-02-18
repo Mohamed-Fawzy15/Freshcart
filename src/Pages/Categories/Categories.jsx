@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";

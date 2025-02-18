@@ -22,6 +22,10 @@ import NewPassword from "./Pages/NewPassword/NewPassword";
 import Brands from "./Pages/Brands/Brands";
 import ApiContextProvider from "./Context/APi/ApiContext";
 import Wishlist from "./Pages/Wishlist/Wishlist";
+import Profile from "./Pages/Profile/Profile";
+import Account from "./Component/Account/Account";
+import Address from "./Component/Address/Address";
+import Orders from "./Component/Orders/Orders";
 
 function App() {
   const routes = createBrowserRouter([
@@ -76,6 +80,19 @@ function App() {
               <Wishlist />
             </ProtectedRoutes>
           ),
+        },
+        {
+          path: "profile",
+          element: (
+            <ProtectedRoutes>
+              <Profile />
+            </ProtectedRoutes>
+          ),
+          children: [
+            { index: true, element: <Account /> },
+            { path: "address", element: <Address /> },
+            { path: "orders", element: <Orders /> },
+          ],
         },
         // {
         //   path: "productdetails/:productId",

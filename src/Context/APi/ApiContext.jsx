@@ -62,8 +62,24 @@ const getWishList = () => {
     .then((res) => res.data)
     .catch((err) => console.log(err));
 };
+
+// update user data
+const updateUserInfo = (data) => {
+  return axios
+    .put(
+      "https://ecommerce.routemisr.com/api/v1/users/updateMe/",
+      { data },
+      {
+        headers,
+      }
+    )
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
+};
+
 export default function ApiContextProvider({ children }) {
   const [wishlistItem, setWishlistItem] = useState(0);
+  const [userEmail, setUserEmail] = useState("");
 
   return (
     <ApiContext.Provider
@@ -76,6 +92,9 @@ export default function ApiContextProvider({ children }) {
         getWishList,
         wishlistItem,
         setWishlistItem,
+        userEmail,
+        setUserEmail,
+        updateUserInfo,
       }}
     >
       {children}

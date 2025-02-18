@@ -12,12 +12,14 @@ import { MdEmail } from "react-icons/md";
 import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoLogIn } from "react-icons/io5";
+import { ApiContext } from "../../Context/APi/ApiContext";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const { setToken } = useContext(tokenContext);
+  const { setUserEmail, userEmail } = useContext(ApiContext);
 
   const navigate = useNavigate();
   const validationSchema = Yup.object({
@@ -40,6 +42,7 @@ export default function SignIn() {
         localStorage.setItem("token", res.data.token);
         setIsLoading(false);
         setErrorMsg(null);
+        setUserEmail(values.email);
         navigate("/");
       })
       .catch((error) => {

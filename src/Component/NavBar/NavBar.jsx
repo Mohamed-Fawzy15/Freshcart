@@ -1,7 +1,3 @@
-// import { BsYoutube } from "react-icons/bs";
-// import { FaFacebook, FaTiktok } from "react-icons/fa";
-// import { FaSquareXTwitter } from "react-icons/fa6";
-// import { RiInstagramFill } from "react-icons/ri";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 // import styles from "./NavBar.module.css";
 import logo from "../../assets/logo.svg";
@@ -169,40 +165,6 @@ export default function NavBar() {
         >
           <div className="flex items-center justify-between gap-x-3">
             <ul className="font-medium flex items-center p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              {/* <li>
-                <Link
-                  to={"/www.facebook.com"}
-                  className="block py-2 px-3 text-gray-900 rounded md:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:text-green-500"
-                  aria-current="page"
-                >
-                  <FaFacebook />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={"/www.instagram.com"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:text-white md:dark:hover:bg-transparent"
-                >
-                  <RiInstagramFill />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={"/www.twitter.com"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                >
-                  <FaSquareXTwitter />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={"/www.tiktok.com"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                >
-                  <FaTiktok />
-                </Link>
-              </li> */}
-
               {token && (
                 <>
                   <li>
@@ -237,7 +199,7 @@ export default function NavBar() {
                   <li>
                     <Link
                       to={"register"}
-                      className="block py-2 px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                      className="block py-2 font-semibold px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     >
                       Register
                     </Link>
@@ -245,7 +207,7 @@ export default function NavBar() {
                   <li>
                     <Link
                       to={"signin"}
-                      className="block py-2 px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                      className="block py-2 font-semibold px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     >
                       Login
                     </Link>
@@ -275,7 +237,7 @@ export default function NavBar() {
                             aria-orientation="vertical"
                           >
                             <Link
-                              to={""}
+                              to={"profile"}
                               className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
                             >
                               <FaUser />
