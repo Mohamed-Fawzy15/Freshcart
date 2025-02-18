@@ -1,32 +1,84 @@
 // import { BsYoutube } from "react-icons/bs";
-import { FaFacebook, FaTiktok } from "react-icons/fa";
-import { FaSquareXTwitter } from "react-icons/fa6";
-import { RiInstagramFill } from "react-icons/ri";
+// import { FaFacebook, FaTiktok } from "react-icons/fa";
+// import { FaSquareXTwitter } from "react-icons/fa6";
+// import { RiInstagramFill } from "react-icons/ri";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 // import styles from "./NavBar.module.css";
 import logo from "../../assets/logo.svg";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { tokenContext } from "../../Context/Token/TokenContext";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import { MdFavorite, MdOutlineShoppingCart } from "react-icons/md";
 import { ApiContext } from "../../Context/APi/ApiContext";
+import { jwtDecode } from "jwt-decode";
+import { FaUser, FaUserCircle } from "react-icons/fa";
+import { IoSettings } from "react-icons/io5";
+import { BiLogOutCircle } from "react-icons/bi";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const { numOfCartItems } = useContext(CartContext);
   const { token, setToken } = useContext(tokenContext);
   const { wishlistItem } = useContext(ApiContext);
   const navigate = useNavigate();
 
+  // decode the token
+  let decoded = null;
+  try {
+    decoded = jwtDecode(token);
+  } catch (error) {
+    console.error("Invalid token", error);
+  }
+  const MySwal = withReactContent(Swal);
+
   const handleLogOut = () => {
     localStorage.removeItem("token");
-    setToken(null);
-    navigate("/signin");
+    MySwal.fire({
+      title: "Are you sure you want to logout?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#0aad0a",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        MySwal.fire({
+          title: "logout successfully!",
+          icon: "success",
+        });
+        setToken(null);
+        navigate("/signin");
+      }
+    });
   };
 
   const handleNavbarMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  // dropdown
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="bg-gray-200 border-gray-200 dark:bg-gray-900 sticky top-0 start-0 end-0 z-50">
@@ -116,8 +168,8 @@ export default function NavBar() {
           id="navbar-default"
         >
           <div className="flex items-center justify-between gap-x-3">
-            {/* <ul className="font-medium flex items-center p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              <li>
+            <ul className="font-medium flex items-center p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              {/* <li>
                 <Link
                   to={"/www.facebook.com"}
                   className="block py-2 px-3 text-gray-900 rounded md:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:text-green-500"
@@ -149,7 +201,7 @@ export default function NavBar() {
                 >
                   <FaTiktok />
                 </Link>
-              </li>
+              </li> */}
 
               {token && (
                 <>
@@ -177,7 +229,7 @@ export default function NavBar() {
                   </li>
                 </>
               )}
-            </ul> */}
+            </ul>
 
             <ul className="font-medium flex p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               {!token && (
@@ -203,11 +255,56 @@ export default function NavBar() {
 
               {token && (
                 <li>
-                  <div
-                    onClick={handleLogOut}
-                    className="cursor-pointer block py-2 px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  >
-                    Log Out
+                  <div className="flex items-center justify-center ">
+                    <div
+                      className="relative inline-block text-left"
+                      ref={dropdownRef}
+                    >
+                      <button
+                        onClick={toggleDropdown}
+                        className="inline-flex justify-center w-full px-2 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-green-500"
+                      >
+                        <FaUserCircle className="text-3xl text-green-500" />
+                      </button>
+
+                      {isDropdownOpen && (
+                        <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                          <div
+                            className="py-2 p-2"
+                            role="menu"
+                            aria-orientation="vertical"
+                          >
+                            <Link
+                              to={""}
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
+                            >
+                              <FaUser />
+                              {decoded.name}
+                            </Link>
+
+                            <Link
+                              to={""}
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
+                            >
+                              <IoSettings />
+                              Setting
+                            </Link>
+
+                            <hr />
+
+                            <div
+                              onClick={() => {
+                                handleLogOut();
+                              }}
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
+                            >
+                              <BiLogOutCircle />
+                              logOut
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </li>
               )}
