@@ -1,19 +1,14 @@
-import { jwtDecode } from "jwt-decode";
 import { useContext } from "react";
 import { Helmet } from "react-helmet";
 import { Link, Outlet } from "react-router-dom";
-import { tokenContext } from "../../Context/Token/TokenContext";
-import { FaUser } from "react-icons/fa";
+import { FaAddressCard, FaUser } from "react-icons/fa";
+import { ApiContext } from "../../Context/APi/ApiContext";
+import { MdAccountCircle } from "react-icons/md";
+import { TiShoppingCart } from "react-icons/ti";
 
 export default function Profile() {
-  const { token } = useContext(tokenContext);
+  const { userName } = useContext(ApiContext);
 
-  let decoded = null;
-  try {
-    decoded = jwtDecode(token);
-  } catch (error) {
-    console.error("Invalid token", error);
-  }
   return (
     <div>
       <Helmet>
@@ -26,7 +21,7 @@ export default function Profile() {
             <div className="bg-white w-24 h-24 flex items-center justify-center rounded-full">
               <FaUser className="text-green-600 text-4xl" />
             </div>
-            <h1 className="font-bold text-4xl">{decoded.name}</h1>
+            <h1 className="font-bold text-4xl">{userName}</h1>
           </div>
         </div>
       </div>
@@ -34,26 +29,32 @@ export default function Profile() {
       <div className="container my-4">
         <div className="row ">
           <div className="w-1/4 p-2">
-            <div className=" bg-white rounded-lg shadow-lg">
+            <div className=" rounded-lg shadow-lg border-2 ">
               <ul className="text-center py-5">
                 <li>
                   <Link
                     to={""}
-                    className="text-xl font-semibold border-b-2 pb-5"
+                    className="text-xl font-semibold border-b-2 pb-5 flex justify-center items-center gap-2"
                   >
+                    <MdAccountCircle className="text-2xl" />
                     Account
                   </Link>
                 </li>
-                <li className="my-10">
+                <li className="my-5">
                   <Link
                     to={"address"}
-                    className="text-xl font-semibold border-b-2 pb-5"
+                    className="text-xl font-semibold border-b-2 pb-5 flex justify-center items-center gap-2"
                   >
+                    <FaAddressCard className="text-2xl" />
                     Address
                   </Link>
                 </li>
                 <li>
-                  <Link to={"orders"} className="text-xl font-semibold ">
+                  <Link
+                    to={"orders"}
+                    className="text-xl font-semibold flex justify-center items-center gap-2"
+                  >
+                    <TiShoppingCart className="text-2xl" />
                     Orders
                   </Link>
                 </li>
@@ -62,7 +63,7 @@ export default function Profile() {
           </div>
 
           <div className="w-3/4 p-2 ">
-            <div className="bg-white rounded-lg shadow-lg">
+            <div className=" rounded-lg shadow-lg border-2">
               <Outlet />
             </div>
           </div>

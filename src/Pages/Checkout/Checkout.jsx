@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Helmet } from "react-helmet";
 import * as Yup from "yup";
 import { CartContext } from "../../Context/CartContext/CartContext";
@@ -10,7 +10,6 @@ import image from "../../assets/logo.svg";
 import { CgDetailsMore } from "react-icons/cg";
 import { FaCity, FaPhoneAlt } from "react-icons/fa";
 import { IoBagCheckOutline } from "react-icons/io5";
-import { RiLoader2Fill } from "react-icons/ri";
 
 export default function Checkout() {
   const {

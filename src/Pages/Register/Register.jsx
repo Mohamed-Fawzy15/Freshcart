@@ -17,7 +17,7 @@ export default function Register() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  
   const navigate = useNavigate();
   const initialValues = {
     name: "",

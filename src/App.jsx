@@ -26,6 +26,7 @@ import Profile from "./Pages/Profile/Profile";
 import Account from "./Component/Account/Account";
 import Address from "./Component/Address/Address";
 import Orders from "./Component/Orders/Orders";
+import Settings from "./Pages/Settings/Settings";
 
 function App() {
   const routes = createBrowserRouter([
@@ -93,6 +94,14 @@ function App() {
             { path: "address", element: <Address /> },
             { path: "orders", element: <Orders /> },
           ],
+        },
+        {
+          path: "settings",
+          element: (
+            <ProtectedRoutes>
+              <Settings />
+            </ProtectedRoutes>
+          ),
         },
         // {
         //   path: "productdetails/:productId",

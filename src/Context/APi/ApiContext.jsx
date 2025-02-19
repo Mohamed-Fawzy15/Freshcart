@@ -1,5 +1,7 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { tokenContext } from "../Token/TokenContext";
+import { jwtDecode } from "jwt-decode";
 
 export const ApiContext = createContext(null);
 
@@ -66,13 +68,28 @@ const getWishList = () => {
 // update user data
 const updateUserInfo = (data) => {
   return axios
-    .put(
-      "https://ecommerce.routemisr.com/api/v1/users/updateMe/",
-      { data },
-      {
-        headers,
-      }
-    )
+    .put("https://ecommerce.routemisr.com/api/v1/users/updateMe/", data, {
+      headers,
+    })
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
+};
+
+// user address
+const addAddress = (values) => {
+  return axios
+    .post("https://ecommerce.routemisr.com/api/v1/addresses", values, {
+      headers,
+    })
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
+};
+
+const getUserAddress = () => {
+  return axios
+    .get("https://ecommerce.routemisr.com/api/v1/addresses", {
+      headers,
+    })
     .then((res) => res.data)
     .catch((err) => console.log(err));
 };
@@ -80,6 +97,19 @@ const updateUserInfo = (data) => {
 export default function ApiContextProvider({ children }) {
   const [wishlistItem, setWishlistItem] = useState(0);
   const [userEmail, setUserEmail] = useState("");
+  const { token } = useContext(tokenContext);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUserName(decoded.name);
+      } catch (error) {
+        console.error("Invalid token", error);
+      }
+    }
+  }, [token]);
 
   return (
     <ApiContext.Provider
@@ -95,6 +125,10 @@ export default function ApiContextProvider({ children }) {
         userEmail,
         setUserEmail,
         updateUserInfo,
+        userName,
+        setUserName,
+        addAddress,
+        getUserAddress,
       }}
     >
       {children}

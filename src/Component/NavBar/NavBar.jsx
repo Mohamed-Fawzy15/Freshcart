@@ -6,7 +6,6 @@ import { tokenContext } from "../../Context/Token/TokenContext";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import { MdFavorite, MdOutlineShoppingCart } from "react-icons/md";
 import { ApiContext } from "../../Context/APi/ApiContext";
-import { jwtDecode } from "jwt-decode";
 import { FaUser, FaUserCircle } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { BiLogOutCircle } from "react-icons/bi";
@@ -20,16 +19,11 @@ export default function NavBar() {
 
   const { numOfCartItems } = useContext(CartContext);
   const { token, setToken } = useContext(tokenContext);
-  const { wishlistItem } = useContext(ApiContext);
+  const { wishlistItem, userName } = useContext(ApiContext);
   const navigate = useNavigate();
 
   // decode the token
-  let decoded = null;
-  try {
-    decoded = jwtDecode(token);
-  } catch (error) {
-    console.error("Invalid token", error);
-  }
+
   const MySwal = withReactContent(Swal);
 
   const handleLogOut = () => {
@@ -241,11 +235,11 @@ export default function NavBar() {
                               className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
                             >
                               <FaUser />
-                              {decoded.name}
+                              {userName}
                             </Link>
 
                             <Link
-                              to={""}
+                              to={"settings"}
                               className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
                             >
                               <IoSettings />
