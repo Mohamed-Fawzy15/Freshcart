@@ -46,7 +46,7 @@ export default function Wishlist() {
       setWishListData((prev) => prev.filter((product) => product.id !== id));
       setWishlistItem((prev) => prev - 1);
       setWishlistItem(data.data.length);
-
+      
       toast.success("Product removed from wishlist", {
         style: {
           fontWeight: 600,

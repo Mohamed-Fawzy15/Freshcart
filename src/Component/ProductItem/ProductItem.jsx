@@ -15,6 +15,21 @@ export default function ProductItem({ product, handleAddToCart }) {
   const { addToWishlist, removeWishList, setWishlistItem, getWishList } =
     useContext(ApiContext);
 
+  const fetchWishlist = async () => {
+    try {
+      const response = await getWishList();
+      if (response?.data) {
+        setIsWishlisted(response.data.some((item) => item.id === product.id));
+      }
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWishlist();
+  }, [product.id]);
+
   const toggleWishlist = async () => {
     setLoading(true); // Start loading
     try {
@@ -47,24 +62,6 @@ export default function ProductItem({ product, handleAddToCart }) {
     }
   };
 
-  useEffect(() => {
-    const fetchWishlist = async () => {
-      try {
-        const response = await getWishList();
-        if (response?.data) {
-          const wishlistIds = response.data.map((item) => item.id);
-          setIsWishlisted(wishlistIds.includes(product.id));
-        }
-      } catch (error) {
-        console.error("Error fetching wishlist:", error);
-      }
-    };
-
-    fetchWishlist();
-  }, [product.id, getWishList]);
-
-  // console.log(wishlistProduct);
-
   return (
     <motion.div
       initial={{ y: 100, opacity: 0 }}
@@ -76,9 +73,11 @@ export default function ProductItem({ product, handleAddToCart }) {
         <div className="relative flex w-full flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
           <div className="cursor-pointer " onClick={() => setIsOpen(true)}>
             <div className="relative mx-4 -mt-6 overflow-hidden rounded-xl bg-clip-border text-white shadow-lg shadow-green-gray-500/40 ">
-              <img
+              <motion.img
+                whileHover={{ scale: 1.2 }}
+                transition={{ duration: 1 }}
                 src={product.imageCover}
-                className="w-full bg-center "
+                className="w-full bg-center"
                 alt={product.title}
               />
             </div>

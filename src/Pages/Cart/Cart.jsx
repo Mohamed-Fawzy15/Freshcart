@@ -10,6 +10,8 @@ import { IoBagCheckOutline } from "react-icons/io5";
 import SpringModel from "../../Component/SpringModel/SpringModel";
 import Loader from "../../Component/Loader/Loader";
 
+// add the setcartitem and wishlist item to navbar or the main
+
 export default function Cart() {
   const {
     getLoggedCart,

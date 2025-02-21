@@ -94,12 +94,29 @@ const getUserAddress = () => {
     .catch((err) => console.log(err));
 };
 
+const removeAddress = (id) => {
+  return axios
+    .delete(`https://ecommerce.routemisr.com/api/v1/addresses/${id}`, {
+      headers,
+    })
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
+};
+
+// get user order
+
 export default function ApiContextProvider({ children }) {
   const [wishlistItem, setWishlistItem] = useState(0);
   const [userEmail, setUserEmail] = useState("");
-  const { token } = useContext(tokenContext);
+  const { token, cartId } = useContext(tokenContext);
   const [userName, setUserName] = useState("");
 
+  const getOrder = () => {
+    return axios
+      .get(`https://ecommerce.routemisr.com/api/v1/orders/user/${cartId}`)
+      .then((res) => res)
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
     if (token) {
       try {
@@ -129,6 +146,8 @@ export default function ApiContextProvider({ children }) {
         setUserName,
         addAddress,
         getUserAddress,
+        removeAddress,
+        getOrder,
       }}
     >
       {children}
