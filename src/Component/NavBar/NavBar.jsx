@@ -1,5 +1,4 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-// import styles from "./NavBar.module.css";
 import logo from "../../assets/logo.svg";
 import { useContext, useEffect, useRef, useState } from "react";
 import { tokenContext } from "../../Context/Token/TokenContext";
@@ -11,18 +10,37 @@ import { IoSettings } from "react-icons/io5";
 import { BiLogOutCircle } from "react-icons/bi";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { WishlistContext } from "../../Context/APi/WishlistContext";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const { numOfCartItems } = useContext(CartContext);
+  const { setNumOfCartItems, numOfCartItems, getLoggedCart } =
+    useContext(CartContext);
   const { token, setToken } = useContext(tokenContext);
-  const { wishlistItem, userName } = useContext(ApiContext);
+  const { userName } = useContext(ApiContext);
+  const { wishlistItem, setWishlistItem, getWishList } =
+    useContext(WishlistContext);
   const navigate = useNavigate();
 
   // decode the token
+
+  const getCartNum = async () => {
+    const data = await getLoggedCart();
+    setNumOfCartItems(data.numOfCartItems);
+  };
+
+  const getWishNum = async () => {
+    const data = await getWishList();
+    setWishlistItem(data.count);
+  };
+
+  useEffect(() => {
+    getCartNum();
+    getWishNum();
+  }, []);
 
   const MySwal = withReactContent(Swal);
 

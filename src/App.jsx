@@ -27,6 +27,7 @@ import Account from "./Component/Account/Account";
 import Address from "./Component/Address/Address";
 import Orders from "./Component/Orders/Orders";
 import Settings from "./Pages/Settings/Settings";
+import WishlistContextProvider from "./Context/APi/WishlistContext";
 
 function App() {
   const routes = createBrowserRouter([
@@ -133,19 +134,21 @@ function App() {
   return (
     <TokenContextProvider>
       <ApiContextProvider>
-        <CartContextProvider>
-          <CounterContextProvider>
-            <Toaster position="bottom-right" />
-            <Offline>
-              <div className="offline fixed bottom-2 right-4 z-50 bg-red-700 text-white p-2 rounded-md">
-                <CiWifiOff className="inline mx-2 text-2xl " />
-                You are now offline
-              </div>
-            </Offline>
+        <WishlistContextProvider>
+          <CartContextProvider>
+            <CounterContextProvider>
+              <Toaster position="bottom-right" />
+              <Offline>
+                <div className="offline fixed bottom-2 right-4 z-50 bg-red-700 text-white p-2 rounded-md">
+                  <CiWifiOff className="inline mx-2 text-2xl " />
+                  You are now offline
+                </div>
+              </Offline>
 
-            <RouterProvider router={routes}></RouterProvider>
-          </CounterContextProvider>
-        </CartContextProvider>
+              <RouterProvider router={routes}></RouterProvider>
+            </CounterContextProvider>
+          </CartContextProvider>
+        </WishlistContextProvider>
       </ApiContextProvider>
     </TokenContextProvider>
   );

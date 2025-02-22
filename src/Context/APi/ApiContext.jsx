@@ -31,40 +31,6 @@ const getBrands = () => {
     .catch((err) => console.log(err));
 };
 
-// wishlist api
-const addToWishlist = (id) => {
-  return axios
-    .post(
-      "https://ecommerce.routemisr.com/api/v1/wishlist",
-      {
-        productId: id,
-      },
-      {
-        headers,
-      }
-    )
-    .then((res) => res.data)
-    .catch((err) => err);
-};
-
-const removeWishList = (id) => {
-  return axios
-    .delete(`https://ecommerce.routemisr.com/api/v1/wishlist/${id}`, {
-      headers,
-    })
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
-};
-
-const getWishList = () => {
-  return axios
-    .get("https://ecommerce.routemisr.com/api/v1/wishlist", {
-      headers,
-    })
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
-};
-
 // update user data
 const updateUserInfo = (data) => {
   return axios
@@ -106,7 +72,6 @@ const removeAddress = (id) => {
 // get user order
 
 export default function ApiContextProvider({ children }) {
-  const [wishlistItem, setWishlistItem] = useState(0);
   const [userEmail, setUserEmail] = useState("");
   const { token, cartId } = useContext(tokenContext);
   const [userName, setUserName] = useState("");
@@ -134,11 +99,6 @@ export default function ApiContextProvider({ children }) {
         getProducts,
         getCategories,
         getBrands,
-        addToWishlist,
-        removeWishList,
-        getWishList,
-        wishlistItem,
-        setWishlistItem,
         userEmail,
         setUserEmail,
         updateUserInfo,

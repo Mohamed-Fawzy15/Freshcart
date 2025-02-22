@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet";
 import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useContext } from "react";
 import { CartContext } from "../../Context/CartContext/CartContext";
@@ -84,17 +83,13 @@ export default function Products() {
         <title>Products</title>
       </Helmet>
       <div className="container my-4">
-        <div className="flex justify-between">
-          <p>Sort by Category</p>
-
-          <p>Sort by Brand</p>
-        </div>
-        <div className="flex justify-between ">
-          <div>
+        <div className="flex flex-col md:flex-row justify-between items-end gap-4">
+          <div className="w-full md:w-1/4">
+            <p className="font-semibold">Sort by Category</p>
             <select
               name="categorySort"
               id="categorySort"
-              className="rounded-lg mt-2"
+              className="rounded-lg mt-2 w-full"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
@@ -111,7 +106,7 @@ export default function Products() {
                 ))}
             </select>
           </div>
-          <div className="relative flex items-center rounded-3xl w-1/2">
+          <div className="relative flex items-center rounded-3xl w-full md:2/4">
             <FaSearch className="inline absolute left-2 text-green-500" />
             <input
               type="text"
@@ -122,11 +117,12 @@ export default function Products() {
             />
           </div>
 
-          <div>
+          <div className="w-full md:w-1/4">
+            <p className="font-semibold">Sort by Brand</p>
             <select
               name="brandSort"
               id="brandSort"
-              className="rounded-lg mt-2"
+              className="rounded-lg mt-2 w-full"
               value={selectedBrand}
               onChange={(e) => setSelectedBrand(e.target.value)}
             >

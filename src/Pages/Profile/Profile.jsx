@@ -28,13 +28,13 @@ export default function Profile() {
 
       <div className="container my-4">
         <div className="row ">
-          <div className="w-1/4 p-2">
-            <div className=" rounded-lg shadow-lg border-2 ">
-              <ul className="text-center py-5">
+          <div className=" w-full lg:w-1/4 p-2">
+            <div className="w-full rounded-lg shadow-lg lg:border-2 ">
+              <ul className="flex items-center justify-between w-full text-center p-5 lg:flex-col">
                 <li>
                   <Link
                     to={""}
-                    className="text-xl font-semibold border-b-2 pb-5 flex justify-center items-center gap-2"
+                    className="text-xl font-semibold lg:border-b-2 lg:pb-5 flex justify-center items-center gap-2"
                   >
                     <MdAccountCircle className="text-2xl" />
                     Account
@@ -43,7 +43,7 @@ export default function Profile() {
                 <li className="my-5">
                   <Link
                     to={"address"}
-                    className="text-xl font-semibold border-b-2 pb-5 flex justify-center items-center gap-2"
+                    className="text-xl font-semibold lg:border-b-2 lg:pb-5 flex justify-center items-center gap-2"
                   >
                     <FaAddressCard className="text-2xl" />
                     Address
@@ -62,7 +62,7 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="w-3/4 p-2 ">
+          <div className="w-full lg:w-3/4 p-2 ">
             <div className=" rounded-lg shadow-lg border-2">
               <Outlet />
             </div>

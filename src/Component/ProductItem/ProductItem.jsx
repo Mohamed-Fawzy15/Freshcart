@@ -4,8 +4,9 @@ import { FaShoppingCart, FaStar } from "react-icons/fa";
 import SpringModel from "../SpringModel/SpringModel";
 import styles from "./ProductItem.module.css";
 import { motion } from "framer-motion";
-import { ApiContext } from "../../Context/APi/ApiContext";
+
 import toast from "react-hot-toast";
+import { WishlistContext } from "../../Context/APi/WishlistContext";
 
 export default function ProductItem({ product, handleAddToCart }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,7 @@ export default function ProductItem({ product, handleAddToCart }) {
   const [loading, setLoading] = useState(false);
 
   const { addToWishlist, removeWishList, setWishlistItem, getWishList } =
-    useContext(ApiContext);
+    useContext(WishlistContext);
 
   const fetchWishlist = async () => {
     try {

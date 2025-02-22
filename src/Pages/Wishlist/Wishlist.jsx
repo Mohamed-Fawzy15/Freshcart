@@ -1,18 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import { ApiContext } from "../../Context/APi/ApiContext";
-import image from "../../assets/logo.svg";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
 import styles from "./Wishlist.module.css";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import toast from "react-hot-toast";
 import Loader from "../../Component/Loader/Loader";
 import { Helmet } from "react-helmet";
+import { WishlistContext } from "../../Context/APi/WishlistContext";
 
 export default function Wishlist() {
   const [wishListData, setWishListData] = useState([]);
 
   const { getWishList, removeWishList, setWishlistItem } =
-    useContext(ApiContext);
+    useContext(WishlistContext);
   const { addToCart, setNumOfCartItems } = useContext(CartContext);
 
   const getData = async () => {
@@ -46,7 +45,7 @@ export default function Wishlist() {
       setWishListData((prev) => prev.filter((product) => product.id !== id));
       setWishlistItem((prev) => prev - 1);
       setWishlistItem(data.data.length);
-      
+
       toast.success("Product removed from wishlist", {
         style: {
           fontWeight: 600,
