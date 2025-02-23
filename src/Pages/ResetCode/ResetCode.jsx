@@ -75,7 +75,7 @@ export default function ResetCode() {
   };
 
   return (
-    <div className="container flex justify-center items-center h-[90vh]">
+    <div className="container flex justify-center items-center h-[50vh]">
       <Helmet>
         <title>Forget Password</title>
       </Helmet>

@@ -28,6 +28,8 @@ import Address from "./Component/Address/Address";
 import Orders from "./Component/Orders/Orders";
 import Settings from "./Pages/Settings/Settings";
 import WishlistContextProvider from "./Context/APi/WishlistContext";
+import SetNewPassword from "./Pages/SetNewPassword/SetNewPassword";
+import "flowbite";
 
 function App() {
   const routes = createBrowserRouter([
@@ -113,20 +115,31 @@ function App() {
         //   ),
         // },
         {
-          path: "forgetpassword",
-          element: <ForgetPassword />,
+          path: "setnewpassword",
+          element: <SetNewPassword />,
+          children: [
+            { index: true, element: <ForgetPassword /> },
+            {
+              path: "resetcode",
+              element: <ResetCode />,
+            },
+            {
+              path: "newpassword",
+              element: <NewPassword />,
+            },
+          ],
         },
-        {
-          path: "resetcode",
-          element: <ResetCode />,
-        },
-        {
-          path: "newpassword",
-          element: <NewPassword />,
-        },
+
         { path: "register", element: <Register /> },
         { path: "signin", element: <SignIn /> },
-        { path: "categories", element: <Categories /> },
+        {
+          path: "categories",
+          element: (
+            <ProtectedRoutes>
+              <Categories />
+            </ProtectedRoutes>
+          ),
+        },
         { path: "*", element: <NotFound /> },
       ],
     },

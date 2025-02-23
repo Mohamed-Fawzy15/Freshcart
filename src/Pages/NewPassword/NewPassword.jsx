@@ -54,7 +54,7 @@ export default function NewPassword() {
     setShowPassword((prev) => !prev);
   };
   return (
-    <div className="md:w-2/3 lg:w-1/2 mx-auto h-[80vh] flex items-center my-4 rounded-md p-4">
+    <div className="md:w-2/3 lg:w-1/2 mx-auto h-[50vh] flex items-center my-4 rounded-md p-4">
       <Helmet>
         <title>Forget Password</title>
       </Helmet>

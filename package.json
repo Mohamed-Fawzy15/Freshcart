@@ -12,6 +12,7 @@
   "dependencies": {
     "@motionone/utils": "^10.18.0",
     "axios": "^1.7.9",
+    "flowbite": "^3.1.2",
     "flowbite-react": "^0.10.2",
     "formik": "^2.4.6",
     "jwt-decode": "^4.0.0",

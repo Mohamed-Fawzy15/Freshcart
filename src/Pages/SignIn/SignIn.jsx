@@ -217,7 +217,7 @@ export default function SignIn() {
             )}
 
             <p className={styles.pageLink}>
-              <Link to={"/forgetpassword"} className={styles.pageLinkLabel}>
+              <Link to={"/setnewpassword"} className={styles.pageLinkLabel}>
                 Forgot Password?
               </Link>
             </p>
