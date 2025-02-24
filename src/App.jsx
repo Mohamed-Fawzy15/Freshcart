@@ -30,6 +30,8 @@ import Settings from "./Pages/Settings/Settings";
 import WishlistContextProvider from "./Context/APi/WishlistContext";
 import SetNewPassword from "./Pages/SetNewPassword/SetNewPassword";
 import "flowbite";
+import { Provider } from "react-redux";
+import { Store } from "./Redux/Store";
 
 function App() {
   const routes = createBrowserRouter([
@@ -145,25 +147,27 @@ function App() {
     },
   ]);
   return (
-    <TokenContextProvider>
-      <ApiContextProvider>
-        <WishlistContextProvider>
-          <CartContextProvider>
-            <CounterContextProvider>
-              <Toaster position="bottom-right" />
-              <Offline>
-                <div className="offline fixed bottom-2 right-4 z-50 bg-red-700 text-white p-2 rounded-md">
-                  <CiWifiOff className="inline mx-2 text-2xl " />
-                  You are now offline
-                </div>
-              </Offline>
+    <Provider store={Store}>
+      <TokenContextProvider>
+        <ApiContextProvider>
+          <WishlistContextProvider>
+            <CartContextProvider>
+              <CounterContextProvider>
+                <Toaster position="bottom-right" />
+                <Offline>
+                  <div className="offline fixed bottom-2 right-4 z-50 bg-red-700 text-white p-2 rounded-md">
+                    <CiWifiOff className="inline mx-2 text-2xl " />
+                    You are now offline
+                  </div>
+                </Offline>
 
-              <RouterProvider router={routes}></RouterProvider>
-            </CounterContextProvider>
-          </CartContextProvider>
-        </WishlistContextProvider>
-      </ApiContextProvider>
-    </TokenContextProvider>
+                <RouterProvider router={routes}></RouterProvider>
+              </CounterContextProvider>
+            </CartContextProvider>
+          </WishlistContextProvider>
+        </ApiContextProvider>
+      </TokenContextProvider>
+    </Provider>
   );
 }
 

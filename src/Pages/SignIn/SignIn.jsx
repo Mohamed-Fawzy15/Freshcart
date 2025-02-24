@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { tokenContext } from "../../Context/Token/TokenContext";
+// import { tokenContext } from "../../Context/Token/TokenContext";
 import { Helmet } from "react-helmet";
 import styles from "./SignIn.module.css";
 import { motion } from "framer-motion";
@@ -14,15 +14,21 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoLogIn } from "react-icons/io5";
 import { ApiContext } from "../../Context/APi/ApiContext";
 import loginImage from "../../assets/login.jpg";
+import { useDispatch } from "react-redux";
+
+import { newToken } from "../../Redux/Token/TokenSlice";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const { setToken } = useContext(tokenContext);
+  // const { setToken } = useContext(tokenContext);
   const { setUserEmail } = useContext(ApiContext);
-
   const navigate = useNavigate();
+
+  // redux function
+  const dispatch = useDispatch();
+
   const validationSchema = Yup.object({
     email: Yup.string().required("Email Is Required").email(),
     password: Yup.string()
@@ -39,15 +45,12 @@ export default function SignIn() {
     await axios
       .post("https://ecommerce.routemisr.com/api/v1/auth/signin", values)
       .then((res) => {
-        setToken(res.data.token);
-        localStorage.setItem("token", res.data.token);
+        dispatch(newToken(res.data.token));
         setIsLoading(false);
-        setErrorMsg(null);
-        setUserEmail(values.email);
         navigate("/");
       })
       .catch((error) => {
-        setErrorMsg(error.response.data.message);
+        setErrorMsg(error.response?.data?.message);
         setIsLoading(false);
       });
   };
