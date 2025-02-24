@@ -62,9 +62,9 @@ export default function ForgetPassword() {
       <AnimatePresence>
         {!isExiting && (
           <motion.div
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }} // Exit animation
+            initial={{ x: -200, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 200, opacity: 0 }} // Exit animation
             transition={{ duration: 2 }}
             className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/4`}
           >

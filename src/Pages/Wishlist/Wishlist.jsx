@@ -3,7 +3,7 @@ import { FaShoppingCart, FaStar } from "react-icons/fa";
 import styles from "./Wishlist.module.css";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import toast from "react-hot-toast";
-import Loader from "../../Component/Loader/Loader";
+// import Loader from "../../Component/Loader/Loader";
 import { Helmet } from "react-helmet";
 import { WishlistContext } from "../../Context/APi/WishlistContext";
 
@@ -157,7 +157,9 @@ export default function Wishlist() {
           </div>
         ))
       ) : (
-        <Loader />
+        <div className="text-center">
+          <p>No Data found</p>
+        </div>
       )}
     </div>
   );
