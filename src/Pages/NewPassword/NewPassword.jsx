@@ -11,11 +11,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { CiLogin } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { newPassword } from "../../Redux/Auth/AuthSlice";
 
 export default function NewPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const initialValues = {
     email: "",
@@ -29,15 +32,14 @@ export default function NewPassword() {
       .matches(/^[A-Za-z0-9]{8,16}$/, "Invalid Password"),
   });
 
-  const handleNewPassword = async (values) => {
+  const handleNewPassword = (values) => {
     setIsLoading(true);
 
-    await axios
-      .put("https://ecommerce.routemisr.com/api/v1/auth/resetPassword", values)
+    dispatch(newPassword(values))
       .then(() => {
         setIsLoading(false);
         Swal.fire({
-          title: "Drag me!",
+          title: "Password Updated Successfully",
           icon: "success",
           draggable: true,
         }).then((result) => {
@@ -46,11 +48,9 @@ export default function NewPassword() {
           }
         });
       })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
+      .catch((err) => console.log(err));
   };
+
   const formik = useFormik({
     initialValues,
     validationSchema,

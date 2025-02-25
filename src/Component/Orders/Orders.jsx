@@ -6,7 +6,7 @@ import Loader from "../Loader/Loader";
 export default function Orders() {
   const orders = useSelector((state) => state.orders.allOrders);
   const isLoading = useSelector((state) => state.orders.isLoading);
-  console.log(isLoading);
+
   const dispatch = useDispatch();
 
   useEffect(() => {

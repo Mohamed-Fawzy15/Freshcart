@@ -8,9 +8,13 @@ const initialState = {
 };
 
 const token = localStorage.getItem("token");
-const userData = jwtDecode(token);
+const userData = token ? jwtDecode(token) : null;
 
 export const getOrders = createAsyncThunk("order/getData", async () => {
+  if (!userData || !userData.id) {
+    console.error("User is not authenticated or token is invalid.");
+    return [];
+  }
   return await axios
     .get(`https://ecommerce.routemisr.com/api/v1/orders/user/${userData.id}`)
     .then((res) => res.data)

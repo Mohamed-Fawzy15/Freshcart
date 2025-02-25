@@ -17,12 +17,12 @@ import loginImage from "../../assets/login.jpg";
 import { useDispatch } from "react-redux";
 
 import { newToken } from "../../Redux/Token/TokenSlice";
+import { loginUser } from "../../Redux/Auth/AuthSlice";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  // const { setToken } = useContext(tokenContext);
   const { setUserEmail } = useContext(ApiContext);
   const navigate = useNavigate();
 
@@ -42,15 +42,14 @@ export default function SignIn() {
 
   const handleLogin = async (values) => {
     setIsLoading(true);
-    await axios
-      .post("https://ecommerce.routemisr.com/api/v1/auth/signin", values)
+    dispatch(loginUser(values))
       .then((res) => {
-        dispatch(newToken(res.data.token));
+        dispatch(newToken(res.payload.token));
         setIsLoading(false);
         navigate("/");
       })
-      .catch((error) => {
-        setErrorMsg(error.response?.data?.message);
+      .catch((err) => {
+        setErrorMsg(err.response?.data?.message);
         setIsLoading(false);
       });
   };

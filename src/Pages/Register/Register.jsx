@@ -12,12 +12,16 @@ import { IoPerson } from "react-icons/io5";
 import { FaEye, FaEyeSlash, FaPhoneAlt, FaSignOutAlt } from "react-icons/fa";
 import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import signupImage from "../../assets/signup.jpg";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../Redux/Auth/AuthSlice";
 
 // import styles from "./Register.module.css";
 export default function Register() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const initialValues = {
@@ -44,17 +48,16 @@ export default function Register() {
       .matches(/^[01][0-1-2-5][0-9]{9}$/, "Invalid Phone number"),
   });
 
-  const handleRegister = async (values) => {
+  const handleRegister = (values) => {
     setIsLoading(true);
-    await axios
-      .post("https://ecommerce.routemisr.com/api/v1/auth/signup", values)
+    dispatch(addUser(values))
       .then(() => {
         setErrorMsg(null);
         setIsLoading(false);
         navigate("/signin");
       })
-      .catch((error) => {
-        setErrorMsg(error.response.data.message);
+      .catch((err) => {
+        setErrorMsg(err || "Something went wrong");
         setIsLoading(false);
       });
   };
@@ -188,7 +191,7 @@ export default function Register() {
                   htmlFor="phone"
                   className="block mb-2 text-sm ps-2 font-medium text-gray-900 dark:text-white"
                 >
-                  Your Email
+                  Your Phone
                 </label>
 
                 <div className="relative">
@@ -237,7 +240,7 @@ export default function Register() {
                   htmlFor="password"
                   className="block mb-2 text-sm ps-2 font-medium text-gray-900 dark:text-white"
                 >
-                  Your Email
+                  Your Password
                 </label>
                 <div className="relative">
                   <RiLockPasswordFill className="absolute top-3 left-2 text-green-500 text-lg" />

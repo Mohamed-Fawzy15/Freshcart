@@ -41,47 +41,39 @@ const updateUserInfo = (data) => {
     .catch((err) => console.log(err));
 };
 
-// user address
-const addAddress = (values) => {
-  return axios
-    .post("https://ecommerce.routemisr.com/api/v1/addresses", values, {
-      headers,
-    })
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
-};
+// // user address
+// const addAddress = (values) => {
+//   return axios
+//     .post("https://ecommerce.routemisr.com/api/v1/addresses", values, {
+//       headers,
+//     })
+//     .then((res) => res.data)
+//     .catch((err) => console.log(err));
+// };
 
-const getUserAddress = () => {
-  return axios
-    .get("https://ecommerce.routemisr.com/api/v1/addresses", {
-      headers,
-    })
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
-};
+// const getUserAddress = () => {
+//   return axios
+//     .get("https://ecommerce.routemisr.com/api/v1/addresses", {
+//       headers,
+//     })
+//     .then((res) => res.data)
+//     .catch((err) => console.log(err));
+// };
 
-const removeAddress = (id) => {
-  return axios
-    .delete(`https://ecommerce.routemisr.com/api/v1/addresses/${id}`, {
-      headers,
-    })
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
-};
-
-// get user order
+// const removeAddress = (id) => {
+//   return axios
+//     .delete(`https://ecommerce.routemisr.com/api/v1/addresses/${id}`, {
+//       headers,
+//     })
+//     .then((res) => res.data)
+//     .catch((err) => console.log(err));
+// };
 
 export default function ApiContextProvider({ children }) {
   const [userEmail, setUserEmail] = useState("");
-  const { token, cartId } = useContext(tokenContext);
+  const { token } = useContext(tokenContext);
   const [userName, setUserName] = useState("");
 
-  const getOrder = () => {
-    return axios
-      .get(`https://ecommerce.routemisr.com/api/v1/orders/user/${cartId}`)
-      .then((res) => res)
-      .catch((err) => console.log(err));
-  };
   useEffect(() => {
     if (token) {
       try {
@@ -104,10 +96,6 @@ export default function ApiContextProvider({ children }) {
         updateUserInfo,
         userName,
         setUserName,
-        addAddress,
-        getUserAddress,
-        removeAddress,
-        getOrder,
       }}
     >
       {children}

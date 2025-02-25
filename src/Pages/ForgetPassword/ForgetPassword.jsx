@@ -3,16 +3,19 @@ import "./ForgetPassword.module.css";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import axios from "axios";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ForgetPassword.module.css";
 import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
+import { useDispatch } from "react-redux";
+import { forgetPassword } from "../../Redux/Auth/AuthSlice";
 
 export default function ForgetPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -24,26 +27,19 @@ export default function ForgetPassword() {
     email: Yup.string().required("Email Is Required").email(),
   });
 
-  const handleForgetPassword = async (values) => {
+  const handleForgetPassword = (values) => {
     setIsLoading(true);
-    console.log(values);
 
-    await axios
-      .post(
-        "https://ecommerce.routemisr.com/api/v1/auth/forgotPasswords",
-        values
-      )
+    dispatch(forgetPassword(values))
       .then((res) => {
-        console.log(res.data);
-        if (res.data?.statusMsg === "success") {
+        if (res.payload.statusMsg === "success") {
           setIsExiting(true); // Trigger exit animation
-
           navigate("/setnewpassword/resetcode");
           setIsLoading(false);
         }
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
         setIsLoading(false);
       });
   };
