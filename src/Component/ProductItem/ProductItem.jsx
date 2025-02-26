@@ -15,7 +15,7 @@ export default function ProductItem({ product, handleAddToCart }) {
 
   const { addToWishlist, removeWishList, setWishlistItem, getWishList } =
     useContext(WishlistContext);
-
+ 
   const fetchWishlist = async () => {
     try {
       const response = await getWishList();

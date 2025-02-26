@@ -11,11 +11,6 @@ export default function CategorySilder() {
     setCategories(data.data);
   };
 
-  //   await axios
-  //     .get("https://ecommerce.routemisr.com/api/v1/categories")
-  //     .then((res) => setCategories(res.data.data))
-  //     .catch((err) => console.log(err));
-  // };
 
   useEffect(() => {
     getData();

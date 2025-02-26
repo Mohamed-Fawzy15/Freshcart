@@ -1,9 +1,7 @@
-import axios from "axios";
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-// import { tokenContext } from "../../Context/Token/TokenContext";
 import { Helmet } from "react-helmet";
 import styles from "./SignIn.module.css";
 import { motion } from "framer-motion";
@@ -12,7 +10,6 @@ import { MdEmail } from "react-icons/md";
 import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoLogIn } from "react-icons/io5";
-import { ApiContext } from "../../Context/APi/ApiContext";
 import loginImage from "../../assets/login.jpg";
 import { useDispatch } from "react-redux";
 
@@ -23,7 +20,6 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserEmail } = useContext(ApiContext);
   const navigate = useNavigate();
 
   // redux function

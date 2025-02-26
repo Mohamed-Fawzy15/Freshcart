@@ -1,35 +1,41 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import { useContext, useEffect, useRef, useState } from "react";
-import { tokenContext } from "../../Context/Token/TokenContext";
-import { CartContext } from "../../Context/CartContext/CartContext";
 import { MdFavorite, MdOutlineShoppingCart } from "react-icons/md";
-import { ApiContext } from "../../Context/APi/ApiContext";
 import { FaUser, FaUserCircle } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { BiLogOutCircle } from "react-icons/bi";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { WishlistContext } from "../../Context/APi/WishlistContext";
+import { useDispatch, useSelector } from "react-redux";
+import { clearToken } from "../../Redux/Token/TokenSlice";
+import { getLoggedCart } from "../../Redux/Cart/CartSlice";
+import { jwtDecode } from "jwt-decode";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const { setNumOfCartItems, numOfCartItems, getLoggedCart } =
-    useContext(CartContext);
-  const { token, setToken } = useContext(tokenContext);
-  const { userName } = useContext(ApiContext);
   const { wishlistItem, setWishlistItem, getWishList } =
     useContext(WishlistContext);
+
+  // const userName = useSelector((state) => state.auth.user.name);
+  // console.log(userName);
+
+  const token = useSelector((state) => state.token.token);
+  const numOfCartItems = useSelector((state) => state.cart.numOfCartItem);
+
+  const decoded = jwtDecode(token);
+  const userName = decoded.name;
+
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
-  // decode the token
-
   const getCartNum = async () => {
-    const data = await getLoggedCart();
-    setNumOfCartItems(data.numOfCartItems);
+    dispatch(getLoggedCart());
   };
 
   const getWishNum = async () => {
@@ -60,7 +66,7 @@ export default function NavBar() {
           title: "logout successfully!",
           icon: "success",
         });
-        setToken(null);
+        dispatch(clearToken());
         navigate("/signin");
       }
     });

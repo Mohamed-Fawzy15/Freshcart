@@ -9,7 +9,7 @@ function ScrollVelocityDemo() {
   const [brands, setBrands] = useState([]);
 
   const { getBrands } = useContext(ApiContext);
-
+ 
   const getData = async () => {
     const data = await getBrands();
     setBrands(data.data);

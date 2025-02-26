@@ -7,12 +7,12 @@ import { ApiContext } from "../../Context/APi/ApiContext";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { RiLoader2Fill } from "react-icons/ri";
-
+ 
 export default function EditModal({ isOpen, setIsOpen }) {
   const [isLoading, setIsLoading] = useState(false);
   const { updateUserInfo, setUserName } = useContext(ApiContext);
 
-  const initialValues = {
+  const initialValues = { 
     name: "",
     phone: "",
   };

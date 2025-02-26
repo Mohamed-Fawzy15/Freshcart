@@ -1,13 +1,16 @@
-import { useContext, useState } from "react";
-// import { tokenContext } from "../../Context/Token/TokenContext";
+import { useState } from "react";
 
-import { ApiContext } from "../../Context/APi/ApiContext";
 import { FaRegEdit } from "react-icons/fa";
 import EditModal from "../EditModal/Editmodal";
+import { useSelector } from "react-redux";
+import { jwtDecode } from "jwt-decode";
 
 export default function Account() {
   const [isOpen, setIsOpen] = useState(false);
-  const { userEmail, userName } = useContext(ApiContext);
+  const token = useSelector((state) => state.token.token);
+  const decoded = jwtDecode(token);
+  const userName = decoded.name;
+  const userEmail = useSelector((state) => state.auth.user.email);
 
   return (
     <div className="container py-5">

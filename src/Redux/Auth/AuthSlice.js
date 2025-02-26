@@ -103,7 +103,6 @@ export const AuthSlice = createSlice({
       state.isLoading = false;
       state.user = action.payload.user;
       state.token = action.payload.token;
-      state.user = action.payload.user.email;
       localStorage.setItem("token", action.payload.token);
     });
 

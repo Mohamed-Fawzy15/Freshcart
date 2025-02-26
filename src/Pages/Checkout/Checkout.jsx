@@ -1,8 +1,6 @@
 import { useFormik } from "formik";
-import { useContext } from "react";
 import { Helmet } from "react-helmet";
 import * as Yup from "yup";
-import { CartContext } from "../../Context/CartContext/CartContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import styles from "./Checkout.module.css";
@@ -10,18 +8,22 @@ import image from "../../assets/logo.svg";
 import { CgDetailsMore } from "react-icons/cg";
 import { FaCity, FaPhoneAlt } from "react-icons/fa";
 import { IoBagCheckOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  cashOrder,
+  getLoggedCart,
+  onlineOrder,
+} from "../../Redux/Cart/CartSlice";
 
 export default function Checkout() {
-  const {
-    cashOrder,
-    setNumOfCartItems,
-    setCartId,
-    onlineOrder,
-    clearCartItem,
-  } = useContext(CartContext);
   const navigate = useNavigate();
 
   const { state } = useLocation();
+
+  const dispatch = useDispatch();
+
+  const cartId = useSelector((state) => state.cart.cartId);
+
   const initialValues = {
     details: "",
     phone: "",
@@ -38,20 +40,22 @@ export default function Checkout() {
 
   const pay = async (values) => {
     if (state === "online") {
-      let data = await onlineOrder({ shippingAddress: values });
-      if (data.status === "success") {
-        setNumOfCartItems(0);
-        setCartId(null);
-        window.location.href = data.session.url;
-        clearCartItem();
-      }
+      dispatch(onlineOrder({ values, cartId }))
+        .then((res) => {
+          if (res.payload.status === "success") {
+            dispatch(getLoggedCart());
+            window.location.href = res.payload.session.url;
+          }
+        })
+        .catch((err) => console.log(err));
     } else {
-      let data = await cashOrder({ shippingAddress: values });
-      if (data.status === "success") {
-        setNumOfCartItems(0);
-        setCartId(null);
-        navigate("/");
-      }
+      dispatch(cashOrder({ values, cartId }))
+        .then((res) => {
+          if (res.payload.status === "success") {
+            navigate("/");
+          }
+        })
+        .catch((err) => console.log(err));
     }
   };
 

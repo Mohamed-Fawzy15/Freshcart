@@ -4,11 +4,16 @@ import Loader from "../Loader/Loader";
 import toast from "react-hot-toast";
 import { CartContext } from "../../Context/CartContext/CartContext";
 import { ApiContext } from "../../Context/APi/ApiContext";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../Redux/Cart/CartSlice";
 
 export default function LatestProducts() {
   const [products, setProducts] = useState([]);
-  const { addToCart, setNumOfCartItems } = useContext(CartContext);
+  const { setNumOfCartItems } = useContext(CartContext);
   const { getProducts } = useContext(ApiContext);
+
+
+  const dispatch = useDispatch();
 
   const getData = async () => {
     const data = await getProducts();
@@ -16,22 +21,25 @@ export default function LatestProducts() {
   };
 
   const handleAddToCart = async (id) => {
-    let res = await addToCart(id);
-    setNumOfCartItems(res.numOfCartItems);
+    dispatch(addToCart(id))
+      .then((res) => {
+        if (res.payload.status === "success") {
+          console.log(res);
 
-    if (res.status === "success") {
-      toast.success(res.message, {
-        style: {
-          fontWeight: 600,
-        },
-      });
-    } else {
-      toast.error("Something went wrong", {
-        style: {
-          fontWeight: 600,
-        },
-      });
-    }
+          toast.success(res.payload.message, {
+            style: {
+              fontWeight: 600,
+            },
+          });
+        } else {
+          toast.error("Something went wrong", {
+            style: {
+              fontWeight: 600,
+            },
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   };
   useEffect(() => {
     getData();

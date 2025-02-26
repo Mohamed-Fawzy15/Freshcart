@@ -1,56 +1,69 @@
 import { Helmet } from "react-helmet";
-import { useContext } from "react";
 import { useEffect } from "react";
-import { CartContext } from "../../Context/CartContext/CartContext";
 import { useState } from "react";
-import { FaBackward, FaEye, FaStar } from "react-icons/fa6";
+import { FaEye, FaStar } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import styles from "./Cart.module.css";
 import { IoBagCheckOutline } from "react-icons/io5";
 import SpringModel from "../../Component/SpringModel/SpringModel";
-// import Loader from "../../Component/Loader/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearCart,
+  getLoggedCart,
+  removeCartItem,
+  updateCartQuantity,
+} from "../../Redux/Cart/CartSlice";
+import toast from "react-hot-toast";
 
 export default function Cart() {
-  const {
-    getLoggedCart,
-    removeCartItem,
-    updateCartItem,
-    clearCartItem,
-    setNumOfCartItems,
-    setCartId,
-    numOfCartItems,
-  } = useContext(CartContext);
   const [cartData, setCartData] = useState(null);
   const navigate = useNavigate();
-  const [openProductId, setOpenProductId] = useState(null); // Track which product's modal is open
+  const [openProductId, setOpenProductId] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("");
 
+  const dispatch = useDispatch();
+  const numOfCartItems = useSelector((state) => state.cart.numOfCartItem);
+
   const getData = async () => {
-    const data = await getLoggedCart();
-    setCartData(data.data);
-    setNumOfCartItems(data.numOfCartItems);
-    setCartId(data.cartId);
-    console.log(data);
+    dispatch(getLoggedCart())
+      .then((res) => {
+        console.log(res);
+
+        setCartData(res.payload.data);
+      })
+      .catch((err) => console.log(err));
   };
 
-  const deleteProduct = async (id) => {
-    const newData = await removeCartItem(id);
-    setCartData(newData.data);
-    setNumOfCartItems(newData.numOfCartItems);
+  const deleteProduct = (id) => {
+    dispatch(removeCartItem(id))
+      .then((res) => {
+        console.log(res.payload.data);
+        setCartData(res.payload.data);
+        console.log(res.payload);
+        toast.success("Product deleted successfully", {
+          style: {
+            fontWeight: 600,
+          },
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   const updateProduct = async (id, count) => {
-    const data = await updateCartItem(id, count);
-    setCartData(data.data);
+    dispatch(updateCartQuantity({ productId: id, count }))
+      .then((res) => {
+        console.log(res);
+        setCartData(res.payload.data);
+      })
+      .catch((err) => console.log("Error updating item quantity:", err));
   };
 
   const deleteAllProducts = async () => {
-    const data = await clearCartItem();
-    setNumOfCartItems(0);
-
-    if (data.message === "success") {
-      setCartData(null);
-    }
+    dispatch(clearCart())
+      .then((res) => {
+        if (res.payload.message === "success") setCartData(null);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
