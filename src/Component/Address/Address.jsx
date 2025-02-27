@@ -1,71 +1,65 @@
-import { useContext, useEffect, useState } from "react";
-import { ApiContext } from "../../Context/APi/ApiContext";
+import { useEffect } from "react";
 import styles from "./Address.module.css";
-import { div } from "motion/react-client";
 import toast from "react-hot-toast";
 import { MdAddLocationAlt, MdLocationOff } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAddress, removeAddress } from "../../Redux/Address/AddressSlice";
+import Loader from "../Loader/Loader";
 
 export default function Address() {
-  const [address, setAddress] = useState([]);
-  const { getUserAddress, removeAddress } = useContext(ApiContext);
+  const dispatch = useDispatch();
+  const { allAddress, isLoading } = useSelector((state) => state.address);
   const navigate = useNavigate();
-
-  const getData = async () => {
-    const data = await getUserAddress();
-    if (data.status === "success") {
-      setAddress(data.data);
-    }
-  };
-
-  const handleRemoveAddress = async (id) => {
-    const data = await removeAddress(id);
-    if (data.status === "success") {
-      setAddress(data.data);
-      toast.success(data.message, {
-        style: {
-          fontWeight: 600,
-        },
-      });
-    } else {
-      toast.error("Something went wrong", {
-        style: {
-          fontWeight: 600,
-        },
-      });
-    }
-  };
+  console.log(allAddress.data);
 
   useEffect(() => {
-    getData();
-  }, []);
+    dispatch(getAddress());
+  }, [dispatch]);
+
+  const handleRemoveAddress = async (id) => {
+    await dispatch(removeAddress(id));
+    toast.success("Address deleted successfully", {
+      style: { fontWeight: 600 },
+    });
+  };
 
   return (
     <div className="container">
       <div className="p-4">
-        <h2 className="capitalize text-3xl font-bold my-5 flex gap-5 items-center justify-center ">
-          <div className="header"></div>
-          <p> user address</p>
+        <h2 className="capitalize text-3xl font-bold my-5 flex gap-5 items-center justify-center">
+          <p className="dark:text-white">User Address</p>
         </h2>
-        {address.length > 0 ? (
-          address.map((add) => (
+
+        {isLoading ? (
+          <Loader />
+        ) : allAddress.data?.length > 0 ? (
+          allAddress.data.map((add) => (
             <div key={add._id} className="p-4 border-b-2">
               <ul>
                 <li>
-                  <span className="text-xl font-medium">Name: </span>
-                  <p className="font-semibold inline">{add.name}</p>
+                  <span className="text-xl font-medium dark:text-white">
+                    Name:{" "}
+                  </span>
+                  {add.name}
                 </li>
                 <li>
-                  <span className="text-xl font-medium">Details: </span>
-                  <p className="font-semibold inline">{add.details}</p>
+                  <span className="text-xl font-medium dark:text-white">
+                    Details:{" "}
+                  </span>
+                  {add.details}
                 </li>
                 <li>
-                  <span className="text-xl font-medium">phone: </span>
-                  <p className="font-semibold inline">{add.phone}</p>
+                  <span className="text-xl font-medium dark:text-white">
+                    Phone:{" "}
+                  </span>
+                  {add.phone}
                 </li>
                 <li>
-                  <span className="text-xl font-medium">city: </span>
-                  <p className="font-semibold inline">{add.city}</p>
+                  <span className="text-xl font-medium dark:text-white">
+                    City:{" "}
+                  </span>
+                  {add.city}
                 </li>
               </ul>
               <button
@@ -73,22 +67,12 @@ export default function Address() {
                 onClick={() => handleRemoveAddress(add._id)}
               >
                 <span className={styles.text}>Delete</span>
-                <span className={styles.icon}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={24}
-                    height={24}
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" />
-                  </svg>
-                </span>
               </button>
             </div>
           ))
         ) : (
           <div className="container flex flex-col items-center justify-center gap-4">
-            <h3 className="font-semibold">
+            <h3 className="font-semibold dark:text-white">
               You have not saved any address yet.
             </h3>
             <MdLocationOff className="text-green-600 text-9xl" />

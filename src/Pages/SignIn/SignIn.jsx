@@ -1,9 +1,7 @@
-import axios from "axios";
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { tokenContext } from "../../Context/Token/TokenContext";
 import { Helmet } from "react-helmet";
 import styles from "./SignIn.module.css";
 import { motion } from "framer-motion";
@@ -12,17 +10,21 @@ import { MdEmail } from "react-icons/md";
 import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoLogIn } from "react-icons/io5";
-import { ApiContext } from "../../Context/APi/ApiContext";
 import loginImage from "../../assets/login.jpg";
+import { useDispatch } from "react-redux";
+
+import { newToken } from "../../Redux/Token/TokenSlice";
+import { loginUser } from "../../Redux/Auth/AuthSlice";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const { setToken } = useContext(tokenContext);
-  const { setUserEmail } = useContext(ApiContext);
-
   const navigate = useNavigate();
+
+  // redux function
+  const dispatch = useDispatch();
+
   const validationSchema = Yup.object({
     email: Yup.string().required("Email Is Required").email(),
     password: Yup.string()
@@ -36,18 +38,14 @@ export default function SignIn() {
 
   const handleLogin = async (values) => {
     setIsLoading(true);
-    await axios
-      .post("https://ecommerce.routemisr.com/api/v1/auth/signin", values)
+    dispatch(loginUser(values))
       .then((res) => {
-        setToken(res.data.token);
-        localStorage.setItem("token", res.data.token);
+        dispatch(newToken(res.payload.token));
         setIsLoading(false);
-        setErrorMsg(null);
-        setUserEmail(values.email);
         navigate("/");
       })
-      .catch((error) => {
-        setErrorMsg(error.response.data.message);
+      .catch((err) => {
+        setErrorMsg(err.response?.data?.message);
         setIsLoading(false);
       });
   };
@@ -69,7 +67,7 @@ export default function SignIn() {
 
       <div className=" w-full flex justify-center min-h-screen">
         <div
-          className="hidden bg-cover lg:block lg:w-3/5"
+          className="hidden bg-cover lg:block lg:w-3/5 rounded-lg"
           style={{
             backgroundImage: `url(${loginImage})`,
           }}
@@ -78,7 +76,7 @@ export default function SignIn() {
           initial={{ x: 300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 2 }}
-          className={`${styles.formContainer} lg:w-2/5 `}
+          className={`${styles.formContainer} lg:w-2/5 dark:bg-[#111827]`}
         >
           <p className={styles.title}>
             <img src={image} alt="logo image" />
@@ -217,12 +215,15 @@ export default function SignIn() {
             )}
 
             <p className={styles.pageLink}>
-              <Link to={"/setnewpassword"} className={styles.pageLinkLabel}>
+              <Link
+                to={"/setnewpassword"}
+                className={`${styles.pageLinkLabel} dark:text-white`}
+              >
                 Forgot Password?
               </Link>
             </p>
           </form>
-          <p className={styles.signUpLabel}>
+          <p className={`${styles.signUpLabel} dark:text-white `}>
             Don&apos;t have an account?
             <Link to={"/register"} className={styles.signUpLink}>
               Sign up

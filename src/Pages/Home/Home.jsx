@@ -6,13 +6,13 @@ import ScrollVelocityDemo from "../../Component/ScrollVelocityDemo/ScrollVelocit
 
 export default function Home() {
   return (
-    <div>
+    <div className="dark:bg-[#111827]">
       <Helmet>
         <title>Home Page</title>
       </Helmet>
       <MainSlider />
       <CategorySilder />
-      <div className="bg-[url('assets/banner-4.jpeg')] bg-fixed bg-cover bg-right-bottom h-[400px] flex flex-col px-8 justify-center text-white">
+      <div className="bg-[url('assets/laptop.jpg')] bg-fixed bg-cover bg-right-bottom h-[400px] flex flex-col px-8 justify-center text-white">
         <div className="container ">
           <p>$30 discount for your first order</p>
           <h3 className="text-3xl font-semibold">

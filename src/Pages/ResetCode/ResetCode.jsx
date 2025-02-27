@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ResetCode.module.css";
@@ -11,10 +10,13 @@ import { useRef } from "react";
 import { PiLockKeyFill } from "react-icons/pi";
 import { RiLoader2Fill } from "react-icons/ri";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { resetCode } from "../../Redux/Auth/AuthSlice";
 
 export default function ResetCode() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const inputRefs = [
     useRef(null),
@@ -35,19 +37,15 @@ export default function ResetCode() {
       .length(6, "Reset code must be 6 digits"),
   });
 
-  const handleResetCode = async (values) => {
+  const handleResetCode = (values) => {
     setIsLoading(true);
 
-    const resetCode = values.resetCode.join("");
+    const code = values.resetCode.join("");
 
-    await axios
-      .post("https://ecommerce.routemisr.com/api/v1/auth/verifyResetCode", {
-        resetCode,
-      })
+    dispatch(resetCode({ resetCode: code }))
       .then((res) => {
-        console.log(res.data);
-        if (res.data.status === "Success") {
-          navigate("/newpassword");
+        if (res.payload.status === "Success") {
+          navigate("/setnewpassword/newpassword");
           setIsLoading(false);
         }
       })
@@ -90,9 +88,9 @@ export default function ResetCode() {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -200, opacity: 0 }}
           transition={{ duration: 2 }}
-          className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/3`}
+          className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/3 dark:bg-[#111827]`}
         >
-          <h2 className="capitalize text-2xl font-semibold ">
+          <h2 className="capitalize text-2xl font-semibold dark:text-white">
             <MdOutlineLockReset className="inline me-2 text-4xl text-green-500" />
             Reset code sent to your email
           </h2>

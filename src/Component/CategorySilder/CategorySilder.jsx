@@ -1,21 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./CategorySilder.module.css";
-import { ApiContext } from "../../Context/APi/ApiContext";
+import { useDispatch } from "react-redux";
+import { getCategories } from "../../Redux/Categories/CategoriesSlice";
 
 export default function CategorySilder() {
   const [categories, setCategories] = useState([]);
-  const { getCategories } = useContext(ApiContext);
+
+  const disptach = useDispatch();
 
   const getData = async () => {
-    const data = await getCategories();
-    setCategories(data.data);
+    await disptach(getCategories())
+      .then((res) => {
+        setCategories(res.payload.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
-
-  //   await axios
-  //     .get("https://ecommerce.routemisr.com/api/v1/categories")
-  //     .then((res) => setCategories(res.data.data))
-  //     .catch((err) => console.log(err));
-  // };
 
   useEffect(() => {
     getData();
@@ -25,7 +26,7 @@ export default function CategorySilder() {
     <div className="container my-14">
       <h2 className="capitalize text-3xl font-bold my-10 flex gap-5 items-center justify-center ">
         <div className="header"></div>
-        <p> shop popular category</p>
+        <p className="dark:text-white"> shop popular category</p>
       </h2>
 
       <div className="row gap-5 items-center justify-center ">

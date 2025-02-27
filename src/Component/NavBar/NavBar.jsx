@@ -1,40 +1,50 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.svg";
-import { useContext, useEffect, useRef, useState } from "react";
-import { tokenContext } from "../../Context/Token/TokenContext";
-import { CartContext } from "../../Context/CartContext/CartContext";
+import { useEffect, useRef, useState } from "react";
 import { MdFavorite, MdOutlineShoppingCart } from "react-icons/md";
-import { ApiContext } from "../../Context/APi/ApiContext";
-import { FaUser, FaUserCircle } from "react-icons/fa";
+import { FaMoon, FaRegSun, FaUser, FaUserCircle } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { BiLogOutCircle } from "react-icons/bi";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { WishlistContext } from "../../Context/APi/WishlistContext";
+import { useDispatch, useSelector } from "react-redux";
+import { clearToken } from "../../Redux/Token/TokenSlice";
+import { getLoggedCart } from "../../Redux/Cart/CartSlice";
+import { getWishlist } from "../../Redux/Wishlist/WishlistSlice";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode"));
   const dropdownRef = useRef(null);
 
-  const { setNumOfCartItems, numOfCartItems, getLoggedCart } =
-    useContext(CartContext);
-  const { token, setToken } = useContext(tokenContext);
-  const { userName } = useContext(ApiContext);
-  const { wishlistItem, setWishlistItem, getWishList } =
-    useContext(WishlistContext);
+  const token = useSelector((state) => state.token.token);
+  const numOfCartItems = useSelector((state) => state.cart.numOfCartItem);
+  const numOfWishlist = useSelector((state) => state.wishlist.numOfWishes);
+
+  const userName = JSON.parse(localStorage.getItem("user")).name;
+
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
-  // decode the token
+  // handle dark mode
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("darkMode", darkMode);
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.removeItem("darkMode", darkMode);
+    }
+  }, [darkMode]);
 
   const getCartNum = async () => {
-    const data = await getLoggedCart();
-    setNumOfCartItems(data.numOfCartItems);
+    dispatch(getLoggedCart());
   };
 
   const getWishNum = async () => {
-    const data = await getWishList();
-    setWishlistItem(data.count);
+    dispatch(getWishlist());
   };
 
   useEffect(() => {
@@ -60,7 +70,7 @@ export default function NavBar() {
           title: "logout successfully!",
           icon: "success",
         });
-        setToken(null);
+        dispatch(clearToken());
         navigate("/signin");
       }
     });
@@ -197,7 +207,7 @@ export default function NavBar() {
                     >
                       <MdFavorite className="inline text-2xl" />
                       <span className="text-xs text-white absolute top-0 -right-2 w-5 h-5 bg-gray-500 rounded-full flex justify-center items-center">
-                        {wishlistItem}
+                        {numOfWishlist}
                       </span>
                     </NavLink>
                   </li>
@@ -205,7 +215,7 @@ export default function NavBar() {
               )}
             </ul>
 
-            <ul className="font-medium flex p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul className="font-medium flex p-4 md:p-0 mt-4 md:flex-row items-center md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               {!token && (
                 <>
                   <li>
@@ -227,6 +237,15 @@ export default function NavBar() {
                 </>
               )}
 
+              <li className="w-8 h-8 bg-gray-50 rounded-full flex justify-center items-center mx-3">
+                <button onClick={() => setDarkMode(!darkMode)}>
+                  {darkMode ? (
+                    <FaMoon className="text-green-500 text-xl" />
+                  ) : (
+                    <FaRegSun className="text-green-500 text-xl" />
+                  )}
+                </button>
+              </li>
               {token && (
                 <li>
                   <div className="flex items-center justify-center ">
@@ -236,13 +255,13 @@ export default function NavBar() {
                     >
                       <button
                         onClick={toggleDropdown}
-                        className="inline-flex justify-center w-full px-2 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-green-500"
+                        className="inline-flex justify-center w-full px-2 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 dark:border-gray-800 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:ring-offset-black focus:ring-green-500 dark:bg-[#374151]"
                       >
                         <FaUserCircle className="text-3xl text-green-500" />
                       </button>
 
                       {isDropdownOpen && (
-                        <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500">
                           <div
                             className="py-2 p-2"
                             role="menu"
@@ -250,7 +269,7 @@ export default function NavBar() {
                           >
                             <Link
                               to={"profile"}
-                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 dark:hover:text-[#111827] hover:bg-gray-100 active:bg-blue-100 cursor-pointer dark:text-white"
                             >
                               <FaUser />
                               {userName}
@@ -258,7 +277,7 @@ export default function NavBar() {
 
                             <Link
                               to={"settings"}
-                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 dark:hover:text-[#111827] hover:bg-gray-100 active:bg-blue-100 cursor-pointer dark:text-white"
                             >
                               <IoSettings />
                               Setting
@@ -270,7 +289,7 @@ export default function NavBar() {
                               onClick={() => {
                                 handleLogOut();
                               }}
-                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 dark:hover:text-[#111827] hover:bg-gray-100 active:bg-blue-100 cursor-pointer dark:text-white"
                             >
                               <BiLogOutCircle />
                               logOut

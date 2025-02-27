@@ -17,7 +17,7 @@ export default function SpringModel({ isOpen, setIsOpen, productId }) {
             animate={{ scale: 1, rotate: "0deg" }}
             exit={{ scale: 0, rotate: "0deg" }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-gradient-to-br bg-white text-black p-6 rounded-lg w-full max-w-4xl shadow-xl cursor-default relative overflow-hidden"
+            className="bg-gradient-to-br bg-white text-black p-6 rounded-lg w-full max-w-4xl shadow-xl cursor-default relative overflow-hidden dark:bg-[#111827]"
           >
             <ProductDetails productId={productId} />
           </motion.div>

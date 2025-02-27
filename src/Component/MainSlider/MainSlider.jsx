@@ -3,6 +3,8 @@ import img1 from "../../assets/image-slider1.jpg";
 import img2 from "../../assets/image-slider2.jpg";
 import img3 from "../../assets/image-slider3.jpg";
 import { motion } from "framer-motion";
+import "animate.css";
+import { useNavigate } from "react-router-dom";
 
 const settings = {
   dots: false,
@@ -17,6 +19,7 @@ const settings = {
 };
 
 export default function MainSlider() {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="row items-center h-screen">
@@ -28,24 +31,29 @@ export default function MainSlider() {
                 className="w-full h-[100vh] rounded-lg"
                 alt="slider image 1"
               />
+
               <div className="absolute inset-0 flex flex-col justify-center items-center text-white bg-black/60">
                 <motion.h1
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 2 }}
-                  className="text-4xl font-semibold"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 2.5 }}
+                  className="text-4xl font-semibold capitalize animate__animated animate__bounce"
+                  style={{ animationDuration: 2 }}
                 >
                   power up your world{" "}
                 </motion.h1>
                 <motion.h2
-                  initial={{ opacity: 0, y: -30 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ duration: 2.5 }}
-                  className="text-3xl font-semibold my-4"
+                  className="text-3xl font-semibold my-4 capitalize"
                 >
                   with mega sale up to 25% off
                 </motion.h2>
-                <button className="animated-button">
+                <button
+                  className="animated-button"
+                  onClick={() => navigate("/products")}
+                >
                   <svg
                     viewBox="0 0 24 24"
                     className="arr-2"
@@ -73,22 +81,26 @@ export default function MainSlider() {
               />
               <div className="absolute inset-0 flex flex-col justify-center items-center text-white bg-black/60">
                 <motion.h1
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 2 }}
-                  className="text-4xl font-semibold"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 2.5 }}
+                  className="text-4xl font-semibold capitalize animate__animated animate__bounce"
+                  style={{ animationDuration: 2 }}
                 >
-                  power up your world{" "}
+                  sustainable fashion wear
                 </motion.h1>
                 <motion.h2
-                  initial={{ opacity: 0, y: -30 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ duration: 2.5 }}
-                  className="text-3xl font-semibold my-4"
+                  className="text-3xl font-semibold my-4 capitalize"
                 >
-                  with mega sale up to 25% off
+                  with Special Offers
                 </motion.h2>
-                <button className="animated-button">
+                <button
+                  className="animated-button"
+                  onClick={() => navigate("/products")}
+                >
                   <svg
                     viewBox="0 0 24 24"
                     className="arr-2"
@@ -116,22 +128,26 @@ export default function MainSlider() {
               />
               <div className="absolute inset-0 flex flex-col justify-center items-center text-white bg-black/60">
                 <motion.h1
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 2 }}
-                  className="text-4xl font-semibold"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 2.5 }}
+                  className="text-4xl font-semibold animate__animated animate__bounce"
+                  style={{ animationDuration: 2 }}
                 >
-                  power up your world{" "}
+                  Choose the lifestyle you will lead
                 </motion.h1>
                 <motion.h2
-                  initial={{ opacity: 0, y: -30 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ duration: 2.5 }}
                   className="text-3xl font-semibold my-4"
                 >
-                  with mega sale up to 25% off
+                  with awesome collection of men fashion
                 </motion.h2>
-                <button className="animated-button">
+                <button
+                  className="animated-button"
+                  onClick={() => navigate("/products")}
+                >
                   <svg
                     viewBox="0 0 24 24"
                     className="arr-2"

@@ -4,18 +4,20 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import styles from "./NewPassword.module.css";
-import axios from "axios";
 import { MdEmail } from "react-icons/md";
 import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { CiLogin } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { newPassword } from "../../Redux/Auth/AuthSlice";
 
 export default function NewPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const initialValues = {
     email: "",
@@ -29,15 +31,14 @@ export default function NewPassword() {
       .matches(/^[A-Za-z0-9]{8,16}$/, "Invalid Password"),
   });
 
-  const handleNewPassword = async (values) => {
+  const handleNewPassword = (values) => {
     setIsLoading(true);
 
-    await axios
-      .put("https://ecommerce.routemisr.com/api/v1/auth/resetPassword", values)
+    dispatch(newPassword(values))
       .then(() => {
         setIsLoading(false);
         Swal.fire({
-          title: "Drag me!",
+          title: "Password Updated Successfully",
           icon: "success",
           draggable: true,
         }).then((result) => {
@@ -46,11 +47,9 @@ export default function NewPassword() {
           }
         });
       })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
+      .catch((err) => console.log(err));
   };
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -71,7 +70,7 @@ export default function NewPassword() {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 200, opacity: 0 }}
           transition={{ duration: 2 }}
-          className={styles.formContainer}
+          className={`${styles.formContainer} dark:bg-[#111827]`}
         >
           {/* <p className={styles.title}>
           <img src={image} alt="logo image" />
@@ -152,7 +151,11 @@ export default function NewPassword() {
                   className="absolute right-2 top-3 text-lg"
                   onClick={togglePassword}
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showPassword ? (
+                    <FaEyeSlash className="dark:text-white" />
+                  ) : (
+                    <FaEye className="dark:text-white" />
+                  )}
                 </button>
               </div>
 

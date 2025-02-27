@@ -4,17 +4,18 @@ import { MdDriveFileRenameOutline } from "react-icons/md";
 import { FaCity, FaPhoneAlt } from "react-icons/fa";
 import { CgDetailsMore } from "react-icons/cg";
 import * as Yup from "yup";
-import { ApiContext } from "../../Context/APi/ApiContext";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { RiLoader2Fill } from "react-icons/ri";
 import { IoIosAddCircle } from "react-icons/io";
 import image from "../../assets/addressPage.jpg";
+import { useDispatch } from "react-redux";
+import { addAddress } from "../../Redux/Address/AddressSlice";
 
 export default function Settings() {
   const [isLoading, setIsLoading] = useState(false);
-  const { addAddress } = useContext(ApiContext);
+  const dispatch = useDispatch();
 
   const MySwal = withReactContent(Swal);
 
@@ -38,16 +39,30 @@ export default function Settings() {
 
   const handleAddAddress = async (values) => {
     setIsLoading(true);
-    const data = await addAddress(values);
-    if (data.status === "success") {
-      MySwal.fire({
-        title: "Address add successfully",
-        icon: "success",
-        draggable: true,
-      });
+    try {
+      const resultAction = await dispatch(addAddress(values));
+      if (addAddress.fulfilled.match(resultAction)) {
+        MySwal.fire({
+          title: "Address added successfully!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        formik.resetForm(); // Reset form after success
+      } else {
+        MySwal.fire({
+          title: "Failed to add address",
+          text: resultAction.payload?.message || "Something went wrong",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
+    } catch (error) {
+      console.error("Error adding address:", error);
+    } finally {
       setIsLoading(false);
     }
   };
+
   const formik = useFormik({
     initialValues,
     validationSchema,
