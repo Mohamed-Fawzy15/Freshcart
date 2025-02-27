@@ -3,11 +3,12 @@ import { Link, Outlet } from "react-router-dom";
 import { FaAddressCard, FaUser } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { TiShoppingCart } from "react-icons/ti";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 export default function Profile() {
-  // const userName = JSON.parse(localStorage.getItem("user")).name;
-  const userName = useSelector((state) => state.auth.userName);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userName = user ? user.name : "";
+  // const userName = useSelector((state) => state.auth.userName);
 
   return (
     <div>

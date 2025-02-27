@@ -1,8 +1,6 @@
 import { useState } from "react";
-
 import { FaRegEdit } from "react-icons/fa";
 import EditModal from "../EditModal/Editmodal";
-import { useSelector } from "react-redux";
 
 export default function Account() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,8 +8,9 @@ export default function Account() {
   // const userEmail = useSelector((state) => state.auth.user.email);
   // const userName = useSelector((state) => state.auth.userName);
 
-  const userName = JSON.parse(localStorage.getItem("user")).name;
-  const userEmail = JSON.parse(localStorage.getItem("user")).email;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userName = user ? user.name : "";
+  const userEmail = user ? user.email : "";
 
   return (
     <div className="container py-5">

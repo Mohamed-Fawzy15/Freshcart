@@ -22,7 +22,9 @@ export default function NavBar() {
   const numOfCartItems = useSelector((state) => state.cart.numOfCartItem);
   const numOfWishlist = useSelector((state) => state.wishlist.numOfWishes);
 
-  const userName = JSON.parse(localStorage.getItem("user")).name;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userName = user ? user.name : "";
+  // const userName = useSelector((state) => state.auth.userName);
 
   const dispatch = useDispatch();
 
