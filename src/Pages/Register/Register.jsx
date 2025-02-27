@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { motion } from "framer-motion";
-import image from "../../assets/logo.svg";
+import logo from "../../assets/logo.png";
 import styles from "./Register.module.css";
 import { MdEmail } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
@@ -85,7 +85,8 @@ export default function Register() {
             className={`${styles.formContainer} dark:bg-[#111827] `}
           >
             <p className={styles.title}>
-              <img src={image} alt="logo image" />
+              <img src={logo} className="h-8" alt="Freshcart Logo" />
+              <p className="font-bold text-2xl dark:text-white">FreshCart</p>
             </p>
             {errorMsg && (
               <p className="bg-red-300 p-3 rounded-md my-2">{errorMsg}</p>

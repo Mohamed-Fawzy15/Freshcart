@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/logo.png";
 import { useEffect, useRef, useState } from "react";
 import { MdFavorite, MdOutlineShoppingCart } from "react-icons/md";
 import { FaMoon, FaRegSun, FaUser, FaUserCircle } from "react-icons/fa";
@@ -107,6 +107,7 @@ export default function NavBar() {
             className="flex items-center space-x-3 rtl:space-x-reverse mx-2"
           >
             <img src={logo} className="h-8" alt="Freshcart Logo" />
+            <p className="font-bold text-2xl dark:text-white">FreshCart</p>
           </Link>
           <button
             data-collapse-toggle="navbar-default"
