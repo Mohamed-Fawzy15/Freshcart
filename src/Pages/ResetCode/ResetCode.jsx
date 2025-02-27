@@ -57,26 +57,6 @@ export default function ResetCode() {
           text: "Wrong  code",
         });
       });
-
-    // await axios
-    //   .post("https://ecommerce.routemisr.com/api/v1/auth/verifyResetCode", {
-    //     resetCode,
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     if (res.data.status === "Success") {
-    //       navigate("/newpassword");
-    //       setIsLoading(false);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     setIsLoading(false);
-    //     Swal.fire({
-    //       icon: "error",
-    //       text: "Wrong  code",
-    //     });
-    //   });
   };
 
   const formik = useFormik({
@@ -108,9 +88,9 @@ export default function ResetCode() {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -200, opacity: 0 }}
           transition={{ duration: 2 }}
-          className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/3`}
+          className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/3 dark:bg-[#111827]`}
         >
-          <h2 className="capitalize text-2xl font-semibold ">
+          <h2 className="capitalize text-2xl font-semibold dark:text-white">
             <MdOutlineLockReset className="inline me-2 text-4xl text-green-500" />
             Reset code sent to your email
           </h2>

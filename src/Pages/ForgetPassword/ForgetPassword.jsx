@@ -10,6 +10,7 @@ import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { forgetPassword } from "../../Redux/Auth/AuthSlice";
+import { MdEmail } from "react-icons/md";
 
 export default function ForgetPassword() {
   const [isLoading, setIsLoading] = useState(false);
@@ -62,13 +63,13 @@ export default function ForgetPassword() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 200, opacity: 0 }} // Exit animation
             transition={{ duration: 2 }}
-            className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/4`}
+            className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/4 dark:bg-[#111827] `}
           >
-            <h2 className="capitalize text-2xl font-semibold flex items-center">
+            <h2 className="capitalize text-2xl font-semibold flex items-center dark:text-white">
               <RiLockPasswordFill className="inline me-2 text-3xl text-green-500" />
               forget your password
             </h2>
-            <p className="my-4">
+            <p className="my-4 dark:text-white ">
               Don&apos;t fret! Just type in your email and we will send you a
               code to reset your password!
             </p>
@@ -83,16 +84,20 @@ export default function ForgetPassword() {
                 >
                   Your Email
                 </label>
-                <input
-                  type="email"
-                  id="email"
-                  className={styles.input}
-                  placeholder="Email"
-                  name="email"
-                  onChange={formik.handleChange}
-                  value={formik.values.email}
-                  onBlur={formik.handleBlur}
-                />
+                <div className="relative">
+                  <MdEmail className="absolute top-3 left-2 text-green-500 text-lg" />
+                  <input
+                    type="email"
+                    id="email"
+                    className="input-style"
+                    placeholder="Email"
+                    name="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    onBlur={formik.handleBlur}
+                  />
+                </div>
+
                 {formik.touched.email && formik.errors.email && (
                   <div>
                     <div className="relative w-full mt-2 flex flex-wrap items-center justify-center py-1 pl-4 pr-4 rounded-full text-base font-medium [transition:all_0.5s_ease] border-solid border border-[#f85149] text-[#b22b2b] [&_svg]:text-[#b22b2b] group bg-[linear-gradient(#f851491a,#f851491a)]">

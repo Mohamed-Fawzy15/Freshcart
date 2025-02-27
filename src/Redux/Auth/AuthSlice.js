@@ -5,6 +5,8 @@ const initialState = {
   isLoading: false,
   user: {},
   token: "",
+  userName: JSON.parse(localStorage.getItem("user"))?.name || "",
+  userEmail: JSON.parse(localStorage.getItem("user"))?.email || "",
 };
 
 export const addUser = createAsyncThunk("auth/addUser", async (values) => {
@@ -74,6 +76,26 @@ export const newPassword = createAsyncThunk(
   }
 );
 
+export const updateUserInfo = createAsyncThunk(
+  "auth/updateUserInfo",
+  async (values) => {
+    try {
+      const res = await axios.put(
+        "https://ecommerce.routemisr.com/api/v1/users/updateMe/",
+        values,
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const AuthSlice = createSlice({
   name: "auth",
   initialState,
@@ -83,15 +105,14 @@ export const AuthSlice = createSlice({
     builder.addCase(addUser.pending, (state) => {
       state.isLoading = true;
     });
+    builder.addCase(addUser.rejected, (state) => {
+      state.isLoading = false;
+    });
 
     builder.addCase(addUser.fulfilled, (state, action) => {
       state.isLoading = false;
       state.user = action.payload.user;
       state.token = action.payload.token;
-    });
-
-    builder.addCase(addUser.rejected, (state) => {
-      state.isLoading = false;
     });
 
     // login
@@ -104,6 +125,7 @@ export const AuthSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
     });
 
     builder.addCase(loginUser.rejected, (state) => {
@@ -146,6 +168,21 @@ export const AuthSlice = createSlice({
 
     builder.addCase(newPassword.fulfilled, (state) => {
       state.isLoading = false;
+    });
+
+    // update user info
+    builder.addCase(updateUserInfo.pending, (state) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(updateUserInfo.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    builder.addCase(updateUserInfo.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload;
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
     });
   },
 });

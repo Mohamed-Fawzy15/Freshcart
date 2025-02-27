@@ -1,5 +1,8 @@
 import logo from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
+import MainBtn from "../MainBtn/MainBtn";
+import { MdEmail, MdUnsubscribe } from "react-icons/md";
+import Swal from "sweetalert2";
 
 export default function Footer() {
   return (
@@ -11,67 +14,82 @@ export default function Footer() {
               <img src={logo} className="h-8 me-3" alt="Freshcart Logo" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
-            <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                Resources
-              </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
-                <li className="mb-4">
-                  <a href="https://flowbite.com/" className="hover:underline">
-                    Flowbite
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://tailwindcss.com/"
-                    className="hover:underline"
-                  >
-                    Tailwind CSS
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                Follow us
-              </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
-                <li className="mb-4">
-                  <a
-                    href="https://github.com/themesberg/flowbite"
-                    className="hover:underline "
-                  >
-                    Github
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://discord.gg/4eeurUVvTy"
-                    className="hover:underline"
-                  >
-                    Discord
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                Legal
-              </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
-                <li className="mb-4">
-                  <a href="#" className="hover:underline">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:underline">
-                    Terms &amp; Conditions
-                  </a>
-                </li>
-              </ul>
-            </div>
+          <div>
+            <p className="text-gray-600 font-semibold dark:text-gray-300  ">
+              Subscribe to our channles to get more information about our
+              products
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-2 my-5">
+          <div className="relative w-full">
+            <MdEmail className="absolute top-3 left-2 text-green-500 text-lg" />
+            <input
+              type="email"
+              className="input-style"
+              placeholder="Enter Your Email"
+            />
+          </div>
+
+          <MainBtn
+            text={"Subscribe"}
+            icon={MdUnsubscribe}
+            onClick={() => Swal.fire("Thank you for subscribing")}
+          />
+        </div>
+        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 justify-center">
+          <div>
+            <p className="font-semibold dark:text-white">Quick Link</p>
+            <ul className="px-4">
+              <li className="my-2">
+                <Link to={""} className="dark:text-white">
+                  Home
+                </Link>
+              </li>
+              <li className="my-2">
+                <Link to={"/products"} className="dark:text-white">
+                  Products
+                </Link>
+              </li>
+              <li className="my-2">
+                <Link to={"/categories"} className="dark:text-white">
+                  Categories
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p className="font-semibold dark:text-white">Legel</p>
+            <ul className="px-4">
+              <li className="my-2">
+                <Link to={""} className="dark:text-white">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li className="my-2">
+                <Link to={"/products"} className="dark:text-white">
+                  Terms & Conditions
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p className="font-semibold dark:text-white">Contact Us</p>
+            <ul className="px-4">
+              <li className="my-2">
+                <Link to={""} className="dark:text-white">
+                  +201234567895
+                </Link>
+              </li>
+              <li className="my-2">
+                <Link to={"/products"} className="dark:text-white">
+                  info@freshcart.com
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />

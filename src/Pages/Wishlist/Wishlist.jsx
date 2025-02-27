@@ -1,63 +1,68 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
 import styles from "./Wishlist.module.css";
-import { CartContext } from "../../Context/CartContext/CartContext";
 import toast from "react-hot-toast";
-// import Loader from "../../Component/Loader/Loader";
 import { Helmet } from "react-helmet";
-import { WishlistContext } from "../../Context/APi/WishlistContext";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Redux/Cart/CartSlice";
+import {
+  getWishlist,
+  removeFromWishlist,
+} from "../../Redux/Wishlist/WishlistSlice";
+import MainBtn from "../../Component/MainBtn/MainBtn";
 
 export default function Wishlist() {
   const [wishListData, setWishListData] = useState([]);
+  console.log(wishListData);
 
-  const { getWishList, removeWishList, setWishlistItem } =
-    useContext(WishlistContext);
-  const { addToCart, setNumOfCartItems } = useContext(CartContext);
+  const dispatch = useDispatch();
 
   const getData = async () => {
-    const data = await getWishList();
-    setWishListData(data.data);
+    await dispatch(getWishlist())
+      .then((res) => {
+        setWishListData(res.payload);
+      })
+      .catch((err) => console.log(err));
   };
-
   const handleAddToCart = async (id) => {
-    let res = await addToCart(id);
-    setNumOfCartItems(res.numOfCartItems);
+    dispatch(addToCart(id))
+      .then((res) => {
+        if (res.payload.status === "success") {
+          console.log(res);
 
-    if (res.status === "success") {
-      toast.success(res.message, {
-        style: {
-          fontWeight: 600,
-        },
-      });
-    } else {
-      toast.error("Something went wrong", {
-        style: {
-          fontWeight: 600,
-        },
-      });
-    }
+          toast.success(res.payload.message, {
+            style: {
+              fontWeight: 600,
+            },
+          });
+        } else {
+          toast.error("Something went wrong", {
+            style: {
+              fontWeight: 600,
+            },
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleDeleteFromWishist = async (id) => {
-    const data = await removeWishList(id);
-
-    if (data.status === "success") {
-      setWishListData((prev) => prev.filter((product) => product.id !== id));
-      setWishlistItem((prev) => prev - 1);
-      setWishlistItem(data.data.length);
-
-      toast.success("Product removed from wishlist", {
-        style: {
-          fontWeight: 600,
-        },
+    dispatch(removeFromWishlist(id))
+      .then(() => {
+        setWishListData((prev) => prev.filter((product) => product.id !== id));
+        toast.success("Product removed from wishlist", {
+          style: {
+            fontWeight: 600,
+          },
+        });
+      })
+      .catch(() => {
+        toast.error("Failed to remove product", {
+          style: {
+            fontWeight: 600,
+          },
+        });
       });
-    } else {
-      toast.error("Failed to remove product", {
-        style: {
-          fontWeight: 600,
-        },
-      });
-    }
   };
 
   useEffect(() => {
@@ -72,18 +77,18 @@ export default function Wishlist() {
 
       <h2 className="capitalize text-3xl font-bold my-10 flex gap-5 items-center justify-center ">
         <div className="header"></div>
-        <p> your wishlist</p>
+        <p className="dark:text-white"> your wishlist</p>
       </h2>
 
       {wishListData.length > 0 ? (
         wishListData.map((product) => (
           <div
             key={product.id}
-            className="max-w-screen-lg p-2 mx-auto my-10  shadow-black-600 shadow rounded-md relative"
+            className="max-w-screen-lg p-2 mx-auto my-10  shadow-black-600 shadow rounded-md relative dark:shadow-gray-300"
           >
             <div className="p-4  mx-auto">
               <div className="grid sm:grid-cols-2 gap-2">
-                <div className="rounded-md flex justify-center to-gray-50 w-full h-full p-4 shrink-0 text-center">
+                <div className="rounded-md flex justify-center to-gray-50 w-full h-full p-4 shrink-0 text-center ">
                   <img
                     src={product.imageCover}
                     className="w-56 h-[300px] "
@@ -95,43 +100,43 @@ export default function Wishlist() {
                   <p className="text-green-500 font-semibold mb-2">
                     {product.category?.name}
                   </p>
-                  <h2 className="font-bold text-2xl">{product.title}</h2>
+                  <h2 className="font-bold text-2xl dark:text-white">
+                    {product.title}
+                  </h2>
 
                   <div className="flex items-center my-2">
                     <FaStar className="text-yellow-300 mx-2" />
-                    <span>{product.ratingsAverage}</span>
+                    <span className="dark:text-white">
+                      {product.ratingsAverage}
+                    </span>
                   </div>
 
                   <ul className="list-disc">
-                    <li className="mt-2 font-semibold">
+                    <li className="mt-2 font-semibold dark:text-white">
                       <span className="font-normal">Category:</span>{" "}
                       {product.category?.name}
                     </li>
-                    <li className="mt-2 font-semibold">
-                      <span className="font-normal">SubCategory:</span>{" "}
+                    <li className="mt-2 font-semibold dark:text-white">
+                      <span className="font-normal ">SubCategory:</span>{" "}
                       {product.subcategory[0].name}
                     </li>
-                    <li className="mt-2 font-semibold">
-                      <span className="font-normal">Brand:</span>{" "}
+                    <li className="mt-2 font-semibold dark:text-white">
+                      <span className="font-normal d">Brand:</span>{" "}
                       {product?.brand.name}
                     </li>
-                    <li className="mt-2 font-semibold">
-                      <span className="font-normal">Price :</span>{" "}
+                    <li className="mt-2 font-semibold dark:text-white">
+                      <span className="font-normal ">Price :</span>{" "}
                       {product.price} LE
                     </li>
                   </ul>
 
                   <div className="py-2 pt-0 flex justify-between">
                     <div className="flex gap-1 items-center mt-4">
-                      <button
-                        className="CartBtn"
+                      <MainBtn
+                        text={"Add to Cart"}
                         onClick={() => handleAddToCart(product.id)}
-                      >
-                        <span className="IconContainer">
-                          <FaShoppingCart className="text-white text-lg me-2" />
-                        </span>
-                        <p className="text">Add to Cart</p>
-                      </button>
+                        icon={FaShoppingCart}
+                      />
 
                       <button
                         className={styles.noSelect}

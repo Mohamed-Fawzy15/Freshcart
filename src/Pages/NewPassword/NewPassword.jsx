@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import styles from "./NewPassword.module.css";
-import axios from "axios";
 import { MdEmail } from "react-icons/md";
 import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -71,7 +70,7 @@ export default function NewPassword() {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 200, opacity: 0 }}
           transition={{ duration: 2 }}
-          className={styles.formContainer}
+          className={`${styles.formContainer} dark:bg-[#111827]`}
         >
           {/* <p className={styles.title}>
           <img src={image} alt="logo image" />
@@ -152,7 +151,11 @@ export default function NewPassword() {
                   className="absolute right-2 top-3 text-lg"
                   onClick={togglePassword}
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showPassword ? (
+                    <FaEyeSlash className="dark:text-white" />
+                  ) : (
+                    <FaEye className="dark:text-white" />
+                  )}
                 </button>
               </div>
 

@@ -14,6 +14,7 @@ import {
   updateCartQuantity,
 } from "../../Redux/Cart/CartSlice";
 import toast from "react-hot-toast";
+import MainBtn from "../../Component/MainBtn/MainBtn";
 
 export default function Cart() {
   const [cartData, setCartData] = useState(null);
@@ -80,7 +81,9 @@ export default function Cart() {
         <div className="flex justify-between items-center mb-10">
           <div className="flex items-center gap-5  ">
             <div className="header"></div>
-            <h1 className="text-center text-2xl font-bold">Shopping Cart</h1>
+            <h1 className="text-center text-2xl font-bold dark:text-white">
+              Shopping Cart
+            </h1>
           </div>
           {cartData && (
             <button
@@ -109,7 +112,7 @@ export default function Cart() {
               cartData.products?.map((product) => (
                 <div
                   key={product._id}
-                  className="justify-between gap-3 mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
+                  className="justify-between gap-3 mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start dark:shadow-gray-500 dark:bg-[#111827] dark:text-white"
                 >
                   {openProductId === product.product?.id && (
                     <SpringModel
@@ -127,13 +130,13 @@ export default function Cart() {
                   <div>
                     <div className="sm:ml-4 flex sm:w-full justify-between">
                       <div className="mt-5 sm:mt-0">
-                        <h2 className="text-lg font-bold text-gray-900">
+                        <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                           {product.product?.title}
                         </h2>
                         <p className="mt-1 text-xs text-gray-700">
                           <div className="flex items-center my-2">
                             <FaStar className="text-yellow-300 mx-2 " />
-                            <span className="font-semibold">
+                            <span className="font-semibold dark:text-white">
                               {product.product?.ratingsAverage}
                             </span>
                           </div>
@@ -221,16 +224,11 @@ export default function Cart() {
                     </div>
 
                     <div className="flex items-center gap-3 mt-3">
-                      <button
-                        className="CartBtn w-1/2"
-                        type="button"
+                      <MainBtn
+                        text={"Details"}
                         onClick={() => setOpenProductId(product.product?.id)}
-                      >
-                        <span className="IconContainer">
-                          <FaEye className="text-white text-lg me-2" />
-                        </span>
-                        <p className="text">Details</p>
-                      </button>
+                        icon={FaEye}
+                      />
 
                       <button
                         className={styles.noSelect}
@@ -260,27 +258,27 @@ export default function Cart() {
           </div>
 
           {/* Subtotal Section */}
-          <div className="sticky w-full  h-full rounded-lg border bg-white p-6 shadow-md  lg:w-1/3">
-            <div className="mb-2 flex justify-between">
-              <p className="text-gray-700">Items</p>
-              <p className="text-gray-700">{numOfCartItems}</p>
+          <div className="sticky w-full  h-full rounded-lg border bg-white p-6 shadow-md  lg:w-1/3 dark:shadow-gray-400 dark:bg-[#111827] dark:text-white">
+            <div className="mb-2 flex justify-between ">
+              <p className="text-gray-700 dark:text-white">Items</p>
+              <p className="text-gray-700 dark:text-white">{numOfCartItems}</p>
             </div>
 
             <div className="mb-2 flex justify-between">
-              <p className="text-gray-700">Subtotal</p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-white">Subtotal</p>
+              <p className="text-gray-700 dark:text-white">
                 {cartData?.totalCartPrice ? cartData.totalCartPrice : "0"} LE
               </p>
             </div>
 
             <div className="mb-2 flex justify-between">
-              <p className="text-gray-700">Tax</p>
-              <p className="text-gray-700">0 LE</p>
+              <p className="text-gray-700 dark:text-white">Tax</p>
+              <p className="text-gray-700 dark:text-white">0 LE</p>
             </div>
 
             <div className="flex justify-between">
-              <p className="text-gray-700">Shipping</p>
-              <p className="text-gray-700">50 LE</p>
+              <p className="text-gray-700 dark:text-white">Shipping</p>
+              <p className="text-gray-700 dark:text-white">50 LE</p>
             </div>
 
             <hr className="my-4" />
@@ -294,7 +292,9 @@ export default function Cart() {
                     : "0"}{" "}
                   LE
                 </p>
-                <p className="text-sm text-gray-700">including VAT</p>
+                <p className="text-sm text-gray-700 dark:text-white">
+                  including VAT
+                </p>
               </div>
             </div>
 
@@ -302,23 +302,18 @@ export default function Cart() {
               <select
                 name="payment"
                 id="payment"
-                className="rounded-lg border-green-500 outline-green-600 "
+                className="rounded-lg border-green-500 outline-green-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500 "
                 onChange={(e) => setPaymentMethod(e.target.value)}
               >
                 <option value="cash">Cash</option>
                 <option value="online">Online</option>
               </select>
 
-              <button
-                className={`${styles.CartBtn} `}
-                type="button"
+              <MainBtn
+                text={"CheckOut"}
                 onClick={() => navigate("/checkout", { state: paymentMethod })}
-              >
-                <span className="IconContainer">
-                  <IoBagCheckOutline className="text-white text-lg me-2" />
-                </span>
-                <p className="text">CheckOut</p>
-              </button>
+                icon={IoBagCheckOutline}
+              />
             </div>
           </div>
         </div>

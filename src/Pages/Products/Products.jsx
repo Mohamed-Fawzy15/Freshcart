@@ -2,13 +2,14 @@ import { Helmet } from "react-helmet";
 import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useContext } from "react";
-import { CartContext } from "../../Context/CartContext/CartContext";
 import { useEffect } from "react";
 import Loader from "../../Component/Loader/Loader";
 import ProductItem from "../../Component/ProductItem/ProductItem";
-import { ApiContext } from "../../Context/APi/ApiContext";
-// import styles from "./Products.module.css";
+import { useDispatch } from "react-redux";
+import { getProducts } from "../../Redux/Products/ProductsSlice";
+import { getCategories } from "../../Redux/Categories/CategoriesSlice";
+import { addToCart } from "../../Redux/Cart/CartSlice";
+import { getBrands } from "../../Redux/Brands/BrandsSlice";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -19,45 +20,55 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedBrand, setSelectedBrand] = useState("all");
 
-  const { addToCart, setNumOfCartItems } = useContext(CartContext);
-  const { getProducts, getCategories, getBrands } = useContext(ApiContext);
+  const dispatch = useDispatch();
 
   const productData = async () => {
     setLoading(true);
-    const data = await getProducts();
-    setProducts(data.data);
-    setLoading(false);
+    await dispatch(getProducts())
+      .then((res) => {
+        setProducts(res.payload.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   const categoriesData = async () => {
-    const data = await getCategories();
-    console.log(data.data);
-
-    setCategories(data.data);
+    await dispatch(getCategories())
+      .then((res) => {
+        setCategories(res.payload.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   const brandsData = async () => {
-    const data = await getBrands();
-    setBrands(data.data);
+    await dispatch(getBrands())
+      .then((res) => {
+        setBrands(res.payload.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleAddToCart = async (id) => {
-    let res = await addToCart(id);
-    setNumOfCartItems(res.numOfCartItems);
-
-    if (res.status === "success") {
-      toast.success(res.message, {
-        style: {
-          fontWeight: 600,
-        },
-      });
-    } else {
-      toast.error("Something went wrong", {
-        style: {
-          fontWeight: 600,
-        },
-      });
-    }
+    dispatch(addToCart(id))
+      .then((res) => {
+        if (res.payload.status === "success") {
+          toast.success(res.payload.message, {
+            style: {
+              fontWeight: 600,
+            },
+          });
+        } else {
+          toast.error("Something went wrong", {
+            style: {
+              fontWeight: 600,
+            },
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -78,18 +89,18 @@ export default function Products() {
   });
 
   return (
-    <div>
+    <div className="dark:bg-[#111827]">
       <Helmet>
         <title>Products</title>
       </Helmet>
-      <div className="container my-4">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-4">
+      <div className="container ">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-4 py-4">
           <div className="w-full md:w-1/4">
-            <p className="font-semibold">Sort by Category</p>
+            <p className="font-semibold dark:text-white">Sort by Category</p>
             <select
               name="categorySort"
               id="categorySort"
-              className="rounded-lg mt-2 w-full"
+              className="rounded-lg mt-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
@@ -118,11 +129,11 @@ export default function Products() {
           </div>
 
           <div className="w-full md:w-1/4">
-            <p className="font-semibold">Sort by Brand</p>
+            <p className="font-semibold dark:text-white">Sort by Brand</p>
             <select
               name="brandSort"
               id="brandSort"
-              className="rounded-lg mt-2 w-full"
+              className="rounded-lg mt-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
               value={selectedBrand}
               onChange={(e) => setSelectedBrand(e.target.value)}
             >
@@ -143,7 +154,7 @@ export default function Products() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="container my-10">
+        <div className="container mt-10">
           <div className="row mx-auto">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (

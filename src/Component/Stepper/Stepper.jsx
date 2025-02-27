@@ -20,7 +20,7 @@ export default function Stepper() {
         return (
           <li
             key={index}
-            className={`flex items-center ${
+            className={`flex items-center dark:text-white ${
               isActive
                 ? "text-green-600 dark:text-green-500 font-semibold"
                 : "text-gray-700"

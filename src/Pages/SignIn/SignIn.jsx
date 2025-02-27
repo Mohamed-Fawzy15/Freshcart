@@ -67,7 +67,7 @@ export default function SignIn() {
 
       <div className=" w-full flex justify-center min-h-screen">
         <div
-          className="hidden bg-cover lg:block lg:w-3/5"
+          className="hidden bg-cover lg:block lg:w-3/5 rounded-lg"
           style={{
             backgroundImage: `url(${loginImage})`,
           }}
@@ -76,7 +76,7 @@ export default function SignIn() {
           initial={{ x: 300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 2 }}
-          className={`${styles.formContainer} lg:w-2/5 `}
+          className={`${styles.formContainer} lg:w-2/5 dark:bg-[#111827]`}
         >
           <p className={styles.title}>
             <img src={image} alt="logo image" />
@@ -215,12 +215,15 @@ export default function SignIn() {
             )}
 
             <p className={styles.pageLink}>
-              <Link to={"/setnewpassword"} className={styles.pageLinkLabel}>
+              <Link
+                to={"/setnewpassword"}
+                className={`${styles.pageLinkLabel} dark:text-white`}
+              >
                 Forgot Password?
               </Link>
             </p>
           </form>
-          <p className={styles.signUpLabel}>
+          <p className={`${styles.signUpLabel} dark:text-white `}>
             Don&apos;t have an account?
             <Link to={"/register"} className={styles.signUpLink}>
               Sign up

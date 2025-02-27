@@ -12,7 +12,6 @@
     rgba(145, 158, 171, 0.12) 0px 1px 10px 0px;
   --font-family: "Encode Sans Expanded", sans-serif;
   --rating-color: #ffc908;
-
   --tw-ring-shadow: green !important;
 }
 
@@ -81,9 +80,6 @@
   .btn-main {
     @apply text-white capitalize w-full mt-4 bg-green-700 hover:bg-green-800 disabled:bg-green-400 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800;
   }
-  /* .favorite {
-    @apply text-green-500 absolute bottom-7 right-4 text-3xl -translate-x-8 opacity-0  group-hover/product:translate-x-0 group-hover/product:opacity-100 duration-300;
-  } */
   .row {
     @apply flex flex-wrap;
   }

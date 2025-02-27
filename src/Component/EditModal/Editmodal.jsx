@@ -2,17 +2,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import styles from "./EditModal.module.css";
 import { FaPhoneAlt, FaSave } from "react-icons/fa";
 import { MdDriveFileRenameOutline } from "react-icons/md";
-import { useContext, useState } from "react";
-import { ApiContext } from "../../Context/APi/ApiContext";
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { RiLoader2Fill } from "react-icons/ri";
- 
+import { useDispatch } from "react-redux";
+import { updateUserInfo } from "../../Redux/Auth/AuthSlice";
+
 export default function EditModal({ isOpen, setIsOpen }) {
   const [isLoading, setIsLoading] = useState(false);
-  const { updateUserInfo, setUserName } = useContext(ApiContext);
 
-  const initialValues = { 
+  const dispatch = useDispatch();
+
+  const initialValues = {
     name: "",
     phone: "",
   };
@@ -26,14 +28,14 @@ export default function EditModal({ isOpen, setIsOpen }) {
 
   const handleEditProfile = async (values) => {
     setIsLoading(true);
-    const data = await updateUserInfo(values);
-    if (data.message === "success") {
-      setUserName(values.name);
-      console.log(values.name);
-
-      setIsLoading(false);
-      setIsOpen(false);
-    }
+    await dispatch(updateUserInfo(values))
+      .then(() => {
+        setIsLoading(false);
+        setIsOpen(false);
+      })
+      .catch((err) => {
+        console.log("error on updateUserInfo", err);
+      });
   };
 
   const formik = useFormik({
@@ -50,14 +52,14 @@ export default function EditModal({ isOpen, setIsOpen }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setIsOpen(false)}
-          className="bg-slate-900/20 backdrop-blur p-8 fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer"
+          className="bg-slate-900/20 backdrop-blur p-8 fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer "
         >
           <motion.div
             initial={{ scale: 0, rotate: "12.5deg" }}
             animate={{ scale: 1, rotate: "0deg" }}
             exit={{ scale: 0, rotate: "0deg" }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-gradient-to-br bg-white text-black p-6 rounded-lg w-full max-w-4xl shadow-xl cursor-default relative overflow-hidden"
+            className="bg-gradient-to-br bg-white text-black p-6 rounded-lg w-full max-w-4xl shadow-xl cursor-default relative overflow-hidden dark:bg-[#111827]"
           >
             <form className={styles.form} onSubmit={formik.handleSubmit}>
               <div className="w-full">

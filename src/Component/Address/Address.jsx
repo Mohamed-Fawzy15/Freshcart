@@ -28,7 +28,7 @@ export default function Address() {
     <div className="container">
       <div className="p-4">
         <h2 className="capitalize text-3xl font-bold my-5 flex gap-5 items-center justify-center">
-          <p>User Address</p>
+          <p className="dark:text-white">User Address</p>
         </h2>
 
         {isLoading ? (
@@ -38,19 +38,27 @@ export default function Address() {
             <div key={add._id} className="p-4 border-b-2">
               <ul>
                 <li>
-                  <span className="text-xl font-medium">Name: </span>
+                  <span className="text-xl font-medium dark:text-white">
+                    Name:{" "}
+                  </span>
                   {add.name}
                 </li>
                 <li>
-                  <span className="text-xl font-medium">Details: </span>
+                  <span className="text-xl font-medium dark:text-white">
+                    Details:{" "}
+                  </span>
                   {add.details}
                 </li>
                 <li>
-                  <span className="text-xl font-medium">Phone: </span>
+                  <span className="text-xl font-medium dark:text-white">
+                    Phone:{" "}
+                  </span>
                   {add.phone}
                 </li>
                 <li>
-                  <span className="text-xl font-medium">City: </span>
+                  <span className="text-xl font-medium dark:text-white">
+                    City:{" "}
+                  </span>
                   {add.city}
                 </li>
               </ul>
@@ -64,7 +72,7 @@ export default function Address() {
           ))
         ) : (
           <div className="container flex flex-col items-center justify-center gap-4">
-            <h3 className="font-semibold">
+            <h3 className="font-semibold dark:text-white">
               You have not saved any address yet.
             </h3>
             <MdLocationOff className="text-green-600 text-9xl" />

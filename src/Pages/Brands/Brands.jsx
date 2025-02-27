@@ -1,26 +1,14 @@
-import axios from "axios";
-import { useContext, useEffect } from "react";
-import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import styles from "./Brands.module.css";
-import { ApiContext } from "../../Context/APi/ApiContext";
+import { useSelector } from "react-redux";
 
 export default function Brands() {
-  const [brands, setBrands] = useState([]);
-
-  const { getBrands } = useContext(ApiContext);
-  const getData = async () => {
-    const data = await getBrands();
-    setBrands(data.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const brands = useSelector((state) => state.brands.brands);
+  console.log(brands);
 
   return (
-    <div>
+    <div className="dark:bg-[#111827]">
       <Helmet>
         <title>Products</title>
       </Helmet>
@@ -37,36 +25,12 @@ export default function Brands() {
       <div className="container">
         <h2 className="capitalize text-3xl font-bold my-10 flex gap-5 items-center justify-center ">
           <div className="header"></div>
-          <p> shop By Brands</p>
+          <p className="dark:text-white"> shop By Brands</p>
         </h2>
 
-        <div className="row gap-5">
-          {brands.length > 0 ? (
-            brands.map((brand) => (
-              //   <div className="m-auto p-4" key={brand._id}>
-              //     <div className="flex flex-col  max-w-sm shadow-md py-8 px-6 md:px-8 rounded-md">
-              //       <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-              //         <img
-              //           className="rounded-full border-4 border-gray-300 h-24 w-24 mx-auto"
-              //           src={brand.image}
-              //           alt
-              //         />
-              //         <div className="flex flex-col text-center md:text-left">
-              //           <div className="font-semibold text-lg text-gray-800">
-              //             {brand.name}
-              //           </div>
-              //           <div className="text-gray-500 mb-3 whitespace-nowrap">
-              //             {brand.slug}
-              //           </div>
-              //           <Link className="flex items-center gap-2">
-              //             <p>More</p>
-              //             <FaLocationArrow className="" />
-              //           </Link>
-              //         </div>
-              //       </div>
-              //     </div>
-              //   </div>
-
+        <div className="row gap-5 py-5">
+          {brands.data.length > 0 ? (
+            brands.data.map((brand) => (
               <Link to={"/"} className="p-4 mx-auto" key={brand._id}>
                 <div className={styles.card}>
                   <div className={styles.overlay} />

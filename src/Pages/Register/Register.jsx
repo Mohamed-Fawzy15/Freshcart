@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
@@ -83,7 +82,7 @@ export default function Register() {
             initial={{ x: -300, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 2 }}
-            className={styles.formContainer}
+            className={`${styles.formContainer} dark:bg-[#111827] `}
           >
             <p className={styles.title}>
               <img src={image} alt="logo image" />
@@ -367,7 +366,7 @@ export default function Register() {
                   <p className="text">Sign Up</p>
                 </button>
               )}
-              <small>
+              <small className="dark:text-white">
                 Already have account?
                 <Link to={"/signin"} className="text-green-500 underline">
                   login

@@ -1,27 +1,17 @@
-import { useContext, useEffect } from "react";
-import { useState } from "react";
 import { Helmet } from "react-helmet";
 import styles from "./Categories.module.css";
 import { useNavigate } from "react-router-dom";
-import { ApiContext } from "../../Context/APi/ApiContext";
-// import Loader from "../../Component/Loader/Loader";
+import { useSelector } from "react-redux";
+import Loader from "../../Component/Loader/Loader";
 
 export default function Categories() {
-  const [categories, setCategories] = useState([]);
   const naviagte = useNavigate();
-  const { getCategories } = useContext(ApiContext);
 
-  const getData = async () => {
-    const data = await getCategories();
-    setCategories(data.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const categories = useSelector((state) => state.categories.categories);
+  const isLoading = useSelector((state) => state.categories.isLoading);
 
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen w-full dark:bg-[#111827]">
       <Helmet>
         <title>Categories</title>
       </Helmet>
@@ -59,26 +49,29 @@ export default function Categories() {
       <div className="container">
         <h2 className="capitalize text-3xl font-bold my-10 flex gap-5 items-center justify-center ">
           <div className="header"></div>
-          <p> shop popular category</p>
+          <p className="dark:text-white"> shop popular category</p>
         </h2>
-
-        <div className="row gap-3 justify-center ">
-          {categories &&
-            categories.map((category) => (
-              <div className="p-4" key={category._id}>
-                <div
-                  className={`${styles.card} shadow-lg rounded-lg overflow-hidden  `}
-                  style={{ "--category-name": `"${category.name}"` }}
-                >
-                  <img
-                    src={category.image}
-                    className="w-full h-full "
-                    alt={category.name}
-                  />
+        {!isLoading ? (
+          <div className="row gap-3 justify-center ">
+            {categories.data &&
+              categories.data.map((category) => (
+                <div className="p-4" key={category._id}>
+                  <div
+                    className={`${styles.card} shadow-lg rounded-lg overflow-hidden  `}
+                    style={{ "--category-name": `"${category.name}"` }}
+                  >
+                    <img
+                      src={category.image}
+                      className="w-full h-full "
+                      alt={category.name}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
-        </div>
+              ))}
+          </div>
+        ) : (
+          <Loader />
+        )}
       </div>
     </div>
   );

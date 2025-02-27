@@ -1,13 +1,11 @@
-import { useContext } from "react";
 import { Helmet } from "react-helmet";
 import { Link, Outlet } from "react-router-dom";
 import { FaAddressCard, FaUser } from "react-icons/fa";
-import { ApiContext } from "../../Context/APi/ApiContext";
 import { MdAccountCircle } from "react-icons/md";
 import { TiShoppingCart } from "react-icons/ti";
 
 export default function Profile() {
-  const { userName } = useContext(ApiContext);
+  const userName = JSON.parse(localStorage.getItem("user")).name;
 
   return (
     <div>
@@ -18,7 +16,7 @@ export default function Profile() {
       <div className="bg-[url('assets/banner-4.jpeg')] bg-cover bg-right-bottom h-[200px] flex flex-col px-8 justify-center text-white ">
         <div className="container ">
           <div className="flex flex-col items-center justify-center">
-            <div className="bg-white w-24 h-24 flex items-center justify-center rounded-full">
+            <div className="bg-white w-24 h-24 flex items-center justify-center rounded-full dark:bg-[#374151]">
               <FaUser className="text-green-600 text-4xl" />
             </div>
             <h1 className="font-bold text-4xl">{userName}</h1>
@@ -34,7 +32,7 @@ export default function Profile() {
                 <li>
                   <Link
                     to={""}
-                    className="text-xl font-semibold lg:border-b-2 lg:pb-5 flex justify-center items-center gap-2"
+                    className="text-xl font-semibold lg:border-b-2 lg:pb-5 flex justify-center items-center gap-2 dark:text-white"
                   >
                     <MdAccountCircle className="text-2xl" />
                     Account
@@ -43,7 +41,7 @@ export default function Profile() {
                 <li className="my-5">
                   <Link
                     to={"address"}
-                    className="text-xl font-semibold lg:border-b-2 lg:pb-5 flex justify-center items-center gap-2"
+                    className="text-xl font-semibold lg:border-b-2 lg:pb-5 flex justify-center items-center gap-2 dark:text-white"
                   >
                     <FaAddressCard className="text-2xl" />
                     Address
@@ -52,7 +50,7 @@ export default function Profile() {
                 <li>
                   <Link
                     to={"orders"}
-                    className="text-xl font-semibold flex justify-center items-center gap-2"
+                    className="text-xl font-semibold flex justify-center items-center gap-2 dark:text-white"
                   >
                     <TiShoppingCart className="text-2xl" />
                     Orders

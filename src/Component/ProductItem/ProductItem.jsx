@@ -1,65 +1,73 @@
-import { useContext, useEffect, useState } from "react";
-// import { CiHeart } from "react-icons/ci";
+import { useEffect, useState } from "react";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
 import SpringModel from "../SpringModel/SpringModel";
 import styles from "./ProductItem.module.css";
 import { motion } from "framer-motion";
-
 import toast from "react-hot-toast";
-import { WishlistContext } from "../../Context/APi/WishlistContext";
+import { useDispatch } from "react-redux";
+import {
+  addToWishlist,
+  getWishlist,
+  removeFromWishlist,
+} from "../../Redux/Wishlist/WishlistSlice";
+import MainBtn from "../MainBtn/MainBtn";
 
 export default function ProductItem({ product, handleAddToCart }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { addToWishlist, removeWishList, setWishlistItem, getWishList } =
-    useContext(WishlistContext);
- 
+  const dispatch = useDispatch();
+
   const fetchWishlist = async () => {
-    try {
-      const response = await getWishList();
-      if (response?.data) {
-        setIsWishlisted(response.data.some((item) => item.id === product.id));
-      }
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
-    }
+    await dispatch(getWishlist())
+      .then((res) => {
+        setIsWishlisted(res.payload.some((item) => item.id === product.id));
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     fetchWishlist();
   }, [product.id]);
 
+  // Toggle wishlist
   const toggleWishlist = async () => {
     setLoading(true); // Start loading
     try {
       if (isWishlisted) {
-        await removeWishList(product.id);
-        toast.error("Failed to add product to wishlist", {
+        // Remove from wishlist
+        await dispatch(removeFromWishlist(product.id))
+          .unwrap()
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+        toast.success("Product removed from wishlist", {
           style: {
             fontWeight: 600,
           },
         });
+        setIsWishlisted(false);
       } else {
-        await addToWishlist(product.id);
-        toast.success("Product add successfully to wishlist", {
-          style: {
-            fontWeight: 600,
-          },
-        });
+        // Add to wishlist
+        await dispatch(addToWishlist(product.id))
+          .unwrap()
+          .then(() => {
+            toast.success("Product added to wishlist", {
+              style: {
+                fontWeight: 600,
+              },
+            });
+            setIsWishlisted(true);
+          })
+          .catch((err) => console.log(err));
       }
-
-      // Refresh wishlist from API
-      const response = await getWishList();
-      if (response?.data) {
-        setWishlistItem(response.data.length); // Update global wishlist count
-        setIsWishlisted(response.data.some((item) => item.id === product.id));
-      }
+      await dispatch(getWishlist()).then((res) =>
+        setIsWishlisted(res.data.some((item) => item.id == product.id))
+      );
     } catch (error) {
       console.error("Error updating wishlist:", error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading
     }
   };
 
@@ -68,12 +76,12 @@ export default function ProductItem({ product, handleAddToCart }) {
       initial={{ y: 100, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ duration: 1 }}
-      className="group/product p-5 border border-transparent rounded-md relative "
+      className="group/product p-5 border border-transparent rounded-md relative dark:bg-[#111827]"
     >
       <div>
-        <div className="relative flex w-full flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+        <div className="relative flex w-full flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md dark:bg-[#111827] dark:shadow-white">
           <div className="cursor-pointer " onClick={() => setIsOpen(true)}>
-            <div className="relative mx-4 -mt-6 overflow-hidden rounded-xl bg-clip-border text-white shadow-lg shadow-green-gray-500/40 ">
+            <div className="relative mx-4 -mt-6 overflow-hidden rounded-xl bg-clip-border text-white shadow-lg shadow-green-gray-500/40  ">
               <motion.img
                 whileHover={{ scale: 1.2 }}
                 transition={{ duration: 1 }}
@@ -83,12 +91,14 @@ export default function ProductItem({ product, handleAddToCart }) {
               />
             </div>
             <div className="p-6">
-              <small className="text-green-600">{product.category?.name}</small>
+              <small className="text-green-600 dark:font-semibold dark:text-green-400">
+                {product.category?.name}
+              </small>
 
-              <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+              <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased dark:text-white">
                 {product.title.split(" ").slice(0, 3).join(" ")}
               </h5>
-              <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased ">
+              <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased dark:text-white ">
                 <div className="flex justify-between">
                   <div className="font-semibold">{product.price}EGP</div>
                   <div className="flex items-center">
@@ -101,15 +111,11 @@ export default function ProductItem({ product, handleAddToCart }) {
           </div>
 
           <div className="p-6 pt-0 flex justify-between">
-            <button
-              className="CartBtn"
+            <MainBtn
+              text={"Add to Cart"}
               onClick={() => handleAddToCart(product.id)}
-            >
-              <span className="IconContainer">
-                <FaShoppingCart className="text-white text-lg me-2" />
-              </span>
-              <p className="text">Add to Cart</p>
-            </button>
+              icon={FaShoppingCart}
+            />
 
             <div
               onClick={toggleWishlist}

@@ -1,23 +1,29 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProductItem from "../ProductItem/ProductItem";
 import Loader from "../Loader/Loader";
 import toast from "react-hot-toast";
-import { CartContext } from "../../Context/CartContext/CartContext";
-import { ApiContext } from "../../Context/APi/ApiContext";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../Redux/Cart/CartSlice";
+import { getProducts } from "../../Redux/Products/ProductsSlice";
+import MainBtn from "../MainBtn/MainBtn";
+import { CgMoreVerticalO } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 
 export default function LatestProducts() {
   const [products, setProducts] = useState([]);
-  const { setNumOfCartItems } = useContext(CartContext);
-  const { getProducts } = useContext(ApiContext);
 
+  const naviagte = useNavigate();
 
   const dispatch = useDispatch();
 
   const getData = async () => {
-    const data = await getProducts();
-    setProducts(data.data);
+    dispatch(getProducts())
+      .then((res) => {
+        setProducts(res.payload.data.slice(0, 8));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleAddToCart = async (id) => {
@@ -63,6 +69,15 @@ export default function LatestProducts() {
         ) : (
           <Loader />
         )}
+      </div>
+
+      <div className="flex justify-center">
+        <MainBtn
+          text="Load More"
+          icon={CgMoreVerticalO}
+          onClick={() => naviagte("/products")}
+          className="bg-green-500 text-white hover:bg-green-600"
+        />
       </div>
     </div>
   );
