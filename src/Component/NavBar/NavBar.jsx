@@ -1,30 +1,92 @@
-// import { BsYoutube } from "react-icons/bs";
-import { FaFacebook, FaTiktok } from "react-icons/fa";
-import { FaSquareXTwitter } from "react-icons/fa6";
-import { RiInstagramFill } from "react-icons/ri";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import styles from "./NavBar.module.css";
 import logo from "../../assets/logo.svg";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { tokenContext } from "../../Context/Token/TokenContext";
 import { CartContext } from "../../Context/CartContext/CartContext";
-import { MdOutlineShoppingCart } from "react-icons/md";
+import { MdFavorite, MdOutlineShoppingCart } from "react-icons/md";
+import { ApiContext } from "../../Context/APi/ApiContext";
+import { FaUser, FaUserCircle } from "react-icons/fa";
+import { IoSettings } from "react-icons/io5";
+import { BiLogOutCircle } from "react-icons/bi";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { WishlistContext } from "../../Context/APi/WishlistContext";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { numOfCartItems } = useContext(CartContext);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const { setNumOfCartItems, numOfCartItems, getLoggedCart } =
+    useContext(CartContext);
   const { token, setToken } = useContext(tokenContext);
+  const { userName } = useContext(ApiContext);
+  const { wishlistItem, setWishlistItem, getWishList } =
+    useContext(WishlistContext);
   const navigate = useNavigate();
+
+  // decode the token
+
+  const getCartNum = async () => {
+    const data = await getLoggedCart();
+    setNumOfCartItems(data.numOfCartItems);
+  };
+
+  const getWishNum = async () => {
+    const data = await getWishList();
+    setWishlistItem(data.count);
+  };
+
+  useEffect(() => {
+    getCartNum();
+    getWishNum();
+  }, []);
+
+  const MySwal = withReactContent(Swal);
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
-    setToken(null);
-    navigate("/signin");
+    MySwal.fire({
+      title: "Are you sure you want to logout?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#0aad0a",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        MySwal.fire({
+          title: "logout successfully!",
+          icon: "success",
+        });
+        setToken(null);
+        navigate("/signin");
+      }
+    });
   };
 
   const handleNavbarMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  // dropdown
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="bg-gray-200 border-gray-200 dark:bg-gray-900 sticky top-0 start-0 end-0 z-50">
@@ -74,7 +136,7 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"/"}
-                  className="block py-2 px-2 mx-1 linkHover text-gray-900   dark:text-white "
+                  className="inline-block py-2 px-2 mx-1 linkHover text-gray-900   dark:text-white "
                   aria-current="page"
                 >
                   Home
@@ -84,7 +146,7 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"products"}
-                  className="block py-2 px-2 mx-1 linkHover text-gray-900  dark:text-white "
+                  className="inline-block py-2 px-2 mx-1 linkHover text-gray-900  dark:text-white "
                 >
                   Products
                 </NavLink>
@@ -92,9 +154,17 @@ export default function NavBar() {
               <li>
                 <NavLink
                   to={"categories"}
-                  className="block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
+                  className="inline-block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
                 >
                   Categories
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to={"brands"}
+                  className="inline-block py-2 px-2 mx-1 linkHover  text-gray-900 dark:text-white "
+                >
+                  Brands
                 </NavLink>
               </li>
             </ul>
@@ -107,52 +177,31 @@ export default function NavBar() {
         >
           <div className="flex items-center justify-between gap-x-3">
             <ul className="font-medium flex items-center p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:mt-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              <li>
-                <Link
-                  to={"/www.facebook.com"}
-                  className="block py-2 px-3 text-gray-900 rounded md:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:text-green-500"
-                  aria-current="page"
-                >
-                  <FaFacebook />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={"/www.instagram.com"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:text-white md:dark:hover:bg-transparent"
-                >
-                  <RiInstagramFill />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={"/www.twitter.com"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                >
-                  <FaSquareXTwitter />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={"/www.tiktok.com"}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                >
-                  <FaTiktok />
-                </Link>
-              </li>
-
               {token && (
-                <li>
-                  <NavLink
-                    to={"cart"}
-                    className="block relative py-2 px-3 text-green-900  dark:text-white dark:hover:text-green-500"
-                  >
-                    <MdOutlineShoppingCart className="inline text-2xl" />
-                    <span className="text-xs text-white absolute top-0 -right-1 w-5 h-5 bg-gray-500 rounded-full flex justify-center items-center">
-                      {numOfCartItems}
-                    </span>
-                  </NavLink>
-                </li>
+                <>
+                  <li>
+                    <NavLink
+                      to={"cart"}
+                      className="block relative py-2 px- text-green-900  dark:text-white dark:hover:text-green-500"
+                    >
+                      <MdOutlineShoppingCart className="inline text-2xl" />
+                      <span className="text-xs text-white absolute top-0 -right-2 w-5 h-5 bg-gray-500 rounded-full flex justify-center items-center">
+                        {numOfCartItems}
+                      </span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to={"wishlist"}
+                      className="block relative py-2  text-green-900  dark:text-white dark:hover:text-green-500"
+                    >
+                      <MdFavorite className="inline text-2xl" />
+                      <span className="text-xs text-white absolute top-0 -right-2 w-5 h-5 bg-gray-500 rounded-full flex justify-center items-center">
+                        {wishlistItem}
+                      </span>
+                    </NavLink>
+                  </li>
+                </>
               )}
             </ul>
 
@@ -162,7 +211,7 @@ export default function NavBar() {
                   <li>
                     <Link
                       to={"register"}
-                      className="block py-2 px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                      className="block py-2 font-semibold px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     >
                       Register
                     </Link>
@@ -170,7 +219,7 @@ export default function NavBar() {
                   <li>
                     <Link
                       to={"signin"}
-                      className="block py-2 px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                      className="block py-2 font-semibold px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     >
                       Login
                     </Link>
@@ -180,11 +229,56 @@ export default function NavBar() {
 
               {token && (
                 <li>
-                  <div
-                    onClick={handleLogOut}
-                    className="cursor-pointer block py-2 px-3 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  >
-                    Log Out
+                  <div className="flex items-center justify-center ">
+                    <div
+                      className="relative inline-block text-left"
+                      ref={dropdownRef}
+                    >
+                      <button
+                        onClick={toggleDropdown}
+                        className="inline-flex justify-center w-full px-2 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-green-500"
+                      >
+                        <FaUserCircle className="text-3xl text-green-500" />
+                      </button>
+
+                      {isDropdownOpen && (
+                        <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                          <div
+                            className="py-2 p-2"
+                            role="menu"
+                            aria-orientation="vertical"
+                          >
+                            <Link
+                              to={"profile"}
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
+                            >
+                              <FaUser />
+                              {userName}
+                            </Link>
+
+                            <Link
+                              to={"settings"}
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
+                            >
+                              <IoSettings />
+                              Setting
+                            </Link>
+
+                            <hr />
+
+                            <div
+                              onClick={() => {
+                                handleLogOut();
+                              }}
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer"
+                            >
+                              <BiLogOutCircle />
+                              logOut
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </li>
               )}

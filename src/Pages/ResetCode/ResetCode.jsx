@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -10,6 +10,7 @@ import { MdOutlineLockReset } from "react-icons/md";
 import { useRef } from "react";
 import { PiLockKeyFill } from "react-icons/pi";
 import { RiLoader2Fill } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 export default function ResetCode() {
   const [isLoading, setIsLoading] = useState(false);
@@ -53,6 +54,10 @@ export default function ResetCode() {
       .catch((err) => {
         console.error(err);
         setIsLoading(false);
+        Swal.fire({
+          icon: "error",
+          text: "Wrong  code",
+        });
       });
   };
 
@@ -75,76 +80,78 @@ export default function ResetCode() {
   };
 
   return (
-    <div className="container flex justify-center items-center h-[90vh]">
+    <div className="container flex justify-center items-center h-[50vh]">
       <Helmet>
         <title>Forget Password</title>
       </Helmet>
-
-      <motion.div
-        initial={{ y: -200, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 2 }}
-        className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/3`}
-      >
-        <h2 className="capitalize text-2xl font-semibold ">
-          <MdOutlineLockReset className="inline me-2 text-4xl text-green-500" />
-          Reset code sent to your email
-        </h2>
-        <form
-          onSubmit={formik.handleSubmit}
-          className="w-full flex gap-2 justify-center items-center flex-col my-4"
+      <AnimatePresence>
+        <motion.div
+          initial={{ x: -200, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -200, opacity: 0 }}
+          transition={{ duration: 2 }}
+          className={`${styles.formContainer} w-full md:w-1/2 lg:w-1/3`}
         >
-          <div className="mb-5  ">
-            <label
-              htmlFor="resetCode"
-              className="block my-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Enter The Code
-            </label>
-            <div className="flex gap-2 justify-center items-center">
-              {[0, 1, 2, 3, 4, 5].map((index) => (
-                <input
-                  key={index}
-                  type="tel"
-                  id={`resetCode-${index}`}
-                  name={`resetCode[${index}]`}
-                  className="w-10  rounded-lg  text-center "
-                  placeholder="-"
-                  maxLength={1}
-                  ref={inputRefs[index]}
-                  onChange={(e) => handleInputChange(index, e)}
-                  value={formik.values.resetCode[index]}
-                  onBlur={formik.handleBlur}
-                />
-              ))}
+          <h2 className="capitalize text-2xl font-semibold ">
+            <MdOutlineLockReset className="inline me-2 text-4xl text-green-500" />
+            Reset code sent to your email
+          </h2>
+          <form
+            onSubmit={formik.handleSubmit}
+            className="w-full flex gap-2 justify-center items-center flex-col my-4"
+          >
+            <div className="mb-5  ">
+              <label
+                htmlFor="resetCode"
+                className="block my-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Enter The Code
+              </label>
+              <div className="flex gap-2 justify-center items-center">
+                {[0, 1, 2, 3, 4, 5].map((index) => (
+                  <input
+                    key={index}
+                    type="tel"
+                    id={`resetCode-${index}`}
+                    name={`resetCode[${index}]`}
+                    className="w-10  rounded-lg  text-center "
+                    placeholder="-"
+                    maxLength={1}
+                    ref={inputRefs[index]}
+                    onChange={(e) => handleInputChange(index, e)}
+                    value={formik.values.resetCode[index]}
+                    onBlur={formik.handleBlur}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
 
-          {isLoading ? (
-            <button
-              className="CartBtn"
-              type="submit"
-              disabled={!formik.isValid || !formik.dirty}
-            >
-              <span className="IconContainer">
-                <RiLoader2Fill className="text-white text-lg me-2" />
-              </span>
-              <p className="text">...loading</p>
-            </button>
-          ) : (
-            <button
-              className="CartBtn"
-              type="submit"
-              disabled={!formik.isValid || !formik.dirty}
-            >
-              <span className="IconContainer">
-                <PiLockKeyFill className="text-white text-lg me-2" />
-              </span>
-              <p className="text">Send code</p>
-            </button>
-          )}
-        </form>
-      </motion.div>
+            {isLoading ? (
+              <button
+                className="CartBtn"
+                type="submit"
+                disabled={!formik.isValid || !formik.dirty}
+              >
+                <span className="IconContainer">
+                  <RiLoader2Fill className="text-white text-lg me-2" />
+                </span>
+                <p className="text">...loading</p>
+              </button>
+            ) : (
+              <button
+                className="CartBtn"
+                type="submit"
+                disabled={!formik.isValid || !formik.dirty}
+              >
+                <span className="IconContainer">
+                  <PiLockKeyFill className="text-white text-lg me-2" />
+                </span>
+                <p className="text">Send code</p>
+              </button>
+            )}
+          </form>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

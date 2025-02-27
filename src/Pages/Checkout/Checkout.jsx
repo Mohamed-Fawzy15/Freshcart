@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Helmet } from "react-helmet";
 import * as Yup from "yup";
 import { CartContext } from "../../Context/CartContext/CartContext";
@@ -10,7 +10,6 @@ import image from "../../assets/logo.svg";
 import { CgDetailsMore } from "react-icons/cg";
 import { FaCity, FaPhoneAlt } from "react-icons/fa";
 import { IoBagCheckOutline } from "react-icons/io5";
-import { RiLoader2Fill } from "react-icons/ri";
 
 export default function Checkout() {
   const {
@@ -66,81 +65,6 @@ export default function Checkout() {
       <Helmet>
         <title>Checkout</title>
       </Helmet>
-
-      {/* <form onSubmit={formik.handleSubmit}>
-        <div className="mb-5">
-          <label
-            htmlFor="detials"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Details
-          </label>
-          <input
-            type="details"
-            id="details"
-            name="details"
-            className="input-style"
-            placeholder="Enter Your details"
-            onChange={formik.handleChange}
-            value={formik.values.details}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.details && formik.errors.details && (
-            <p className="text-red-500">{formik.errors.details}</p>
-          )}
-        </div>
-
-        <div className="mb-5">
-          <label
-            htmlFor="phone"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Phone
-          </label>
-          <input
-            type="phone"
-            id="phone"
-            name="phone"
-            className="input-style"
-            placeholder="Enter Your phone"
-            onChange={formik.handleChange}
-            value={formik.values.phone}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.phone && formik.errors.phone && (
-            <p className="text-red-500">{formik.errors.phone}</p>
-          )}
-        </div>
-        <div className="mb-5">
-          <label
-            htmlFor="city"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            City
-          </label>
-          <input
-            type="city"
-            id="city"
-            name="city"
-            className="input-style"
-            placeholder="Enter Your city"
-            onChange={formik.handleChange}
-            value={formik.values.city}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.city && formik.errors.city && (
-            <p className="text-red-500">{formik.errors.city}</p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className="btn-main"
-          disabled={!formik.isValid || !formik.dirty}
-        >
-          Checkout
-        </button>
-      </form> */}
       <motion.div
         initial={{ y: -300, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

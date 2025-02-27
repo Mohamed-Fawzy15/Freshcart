@@ -1,24 +1,23 @@
-import axios from "axios";
 import ScrollVelocity from "../ScrollVelocity/ScrollVelocity"; // Adjust the import path based on your project structure
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Loader from "../Loader/Loader";
+import { ApiContext } from "../../Context/APi/ApiContext";
 
 const velocity = [1, -1];
 
 function ScrollVelocityDemo() {
   const [brands, setBrands] = useState([]);
-  const getBrands = async () => {
-    await axios
-      .get("https://ecommerce.routemisr.com/api/v1/brands")
-      .then((res) => setBrands(res.data.data))
-      .catch((err) => console.log(err));
+
+  const { getBrands } = useContext(ApiContext);
+
+  const getData = async () => {
+    const data = await getBrands();
+    setBrands(data.data);
   };
 
   useEffect(() => {
-    getBrands();
+    getData();
   }, []);
-
-  console.log(brands);
 
   return (
     <div className="w-full">

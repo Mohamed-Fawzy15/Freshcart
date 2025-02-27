@@ -11,7 +11,6 @@ import Categories from "./Pages/Categories/Categories";
 import CounterContextProvider from "./Context/CounterContext/CounterContext";
 import TokenContextProvider from "./Context/Token/TokenContext";
 import ProtectedRoutes from "./Component/ProtectedRoutes/ProtectedRoutes";
-// import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import { Offline } from "react-detect-offline";
 import { CiWifiOff } from "react-icons/ci";
 import CartContextProvider from "./Context/CartContext/CartContext";
@@ -20,6 +19,17 @@ import Checkout from "./Pages/Checkout/Checkout";
 import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import ResetCode from "./Pages/ResetCode/ResetCode";
 import NewPassword from "./Pages/NewPassword/NewPassword";
+import Brands from "./Pages/Brands/Brands";
+import ApiContextProvider from "./Context/APi/ApiContext";
+import Wishlist from "./Pages/Wishlist/Wishlist";
+import Profile from "./Pages/Profile/Profile";
+import Account from "./Component/Account/Account";
+import Address from "./Component/Address/Address";
+import Orders from "./Component/Orders/Orders";
+import Settings from "./Pages/Settings/Settings";
+import WishlistContextProvider from "./Context/APi/WishlistContext";
+import SetNewPassword from "./Pages/SetNewPassword/SetNewPassword";
+import "flowbite";
 
 function App() {
   const routes = createBrowserRouter([
@@ -59,6 +69,43 @@ function App() {
             </ProtectedRoutes>
           ),
         },
+        {
+          path: "brands",
+          element: (
+            <ProtectedRoutes>
+              <Brands />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "wishlist",
+          element: (
+            <ProtectedRoutes>
+              <Wishlist />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "profile",
+          element: (
+            <ProtectedRoutes>
+              <Profile />
+            </ProtectedRoutes>
+          ),
+          children: [
+            { index: true, element: <Account /> },
+            { path: "address", element: <Address /> },
+            { path: "orders", element: <Orders /> },
+          ],
+        },
+        {
+          path: "settings",
+          element: (
+            <ProtectedRoutes>
+              <Settings />
+            </ProtectedRoutes>
+          ),
+        },
         // {
         //   path: "productdetails/:productId",
         //   element: (
@@ -68,39 +115,54 @@ function App() {
         //   ),
         // },
         {
-          path: "forgetpassword",
-          element: <ForgetPassword />,
+          path: "setnewpassword",
+          element: <SetNewPassword />,
+          children: [
+            { index: true, element: <ForgetPassword /> },
+            {
+              path: "resetcode",
+              element: <ResetCode />,
+            },
+            {
+              path: "newpassword",
+              element: <NewPassword />,
+            },
+          ],
         },
-        {
-          path: "resetcode",
-          element: <ResetCode />,
-        },
-        {
-          path: "newpassword",
-          element: <NewPassword />,
-        },
+
         { path: "register", element: <Register /> },
         { path: "signin", element: <SignIn /> },
-        { path: "categories", element: <Categories /> },
+        {
+          path: "categories",
+          element: (
+            <ProtectedRoutes>
+              <Categories />
+            </ProtectedRoutes>
+          ),
+        },
         { path: "*", element: <NotFound /> },
       ],
     },
   ]);
   return (
     <TokenContextProvider>
-      <CartContextProvider>
-        <CounterContextProvider>
-          <Toaster position="bottom-right" />
-          <Offline>
-            <div className="offline fixed bottom-2 right-4 z-50 bg-red-700 text-white p-2 rounded-md">
-              <CiWifiOff className="inline mx-2 text-2xl " />
-              You are now offline
-            </div>
-          </Offline>
+      <ApiContextProvider>
+        <WishlistContextProvider>
+          <CartContextProvider>
+            <CounterContextProvider>
+              <Toaster position="bottom-right" />
+              <Offline>
+                <div className="offline fixed bottom-2 right-4 z-50 bg-red-700 text-white p-2 rounded-md">
+                  <CiWifiOff className="inline mx-2 text-2xl " />
+                  You are now offline
+                </div>
+              </Offline>
 
-          <RouterProvider router={routes}></RouterProvider>
-        </CounterContextProvider>
-      </CartContextProvider>
+              <RouterProvider router={routes}></RouterProvider>
+            </CounterContextProvider>
+          </CartContextProvider>
+        </WishlistContextProvider>
+      </ApiContextProvider>
     </TokenContextProvider>
   );
 }

@@ -1,24 +1,23 @@
-import axios from "axios";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import styles from "./Categories.module.css";
 import { useNavigate } from "react-router-dom";
+import { ApiContext } from "../../Context/APi/ApiContext";
 // import Loader from "../../Component/Loader/Loader";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const naviagte = useNavigate();
+  const { getCategories } = useContext(ApiContext);
 
-  const getCategory = async () => {
-    await axios
-      .get("https://ecommerce.routemisr.com/api/v1/categories")
-      .then((res) => setCategories(res.data.data))
-      .catch((err) => console.log(err));
+  const getData = async () => {
+    const data = await getCategories();
+    setCategories(data.data);
   };
 
   useEffect(() => {
-    getCategory();
+    getData();
   }, []);
 
   return (
