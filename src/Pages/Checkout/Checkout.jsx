@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import styles from "./Checkout.module.css";
-import image from "../../assets/logo.svg";
+import logo from "../../assets/logo.png";
 import { CgDetailsMore } from "react-icons/cg";
 import { FaCity, FaPhoneAlt } from "react-icons/fa";
 import { IoBagCheckOutline } from "react-icons/io5";
@@ -83,10 +83,11 @@ export default function Checkout() {
             initial={{ x: -300, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 2 }}
-            className={styles.formContainer}
+            className={`${styles.formContainer} dark:bg-[#111827]`}
           >
             <p className={styles.title}>
-              <img src={image} alt="logo image" />
+              <img src={logo} className="h-8" alt="Freshcart Logo" />
+              <p className="font-bold text-2xl dark:text-white">FreshCart</p>
             </p>
 
             <form className={styles.form} onSubmit={formik.handleSubmit}>
@@ -238,7 +239,7 @@ export default function Checkout() {
               </div>
 
               <button
-                className="CartBtn"
+                className="CartBtn disabled:cursor-not-allowed"
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty}
               >

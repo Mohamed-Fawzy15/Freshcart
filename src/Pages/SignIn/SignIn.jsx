@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { Helmet } from "react-helmet";
 import styles from "./SignIn.module.css";
 import { motion } from "framer-motion";
-import image from "../../assets/logo.svg";
+import logo from "../../assets/logo.png";
 import { MdEmail } from "react-icons/md";
 import { RiLoader2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -79,7 +79,8 @@ export default function SignIn() {
           className={`${styles.formContainer} lg:w-2/5 dark:bg-[#111827]`}
         >
           <p className={styles.title}>
-            <img src={image} alt="logo image" />
+            <img src={logo} className="h-8" alt="Freshcart Logo" />
+            <p className="font-bold text-2xl dark:text-white">FreshCart</p>
           </p>
           {errorMsg && (
             <p className="bg-red-300 p-3 rounded-md my-2">{errorMsg}</p>

@@ -1,4 +1,4 @@
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import MainBtn from "../MainBtn/MainBtn";
 import { MdEmail, MdUnsubscribe } from "react-icons/md";
@@ -11,7 +11,8 @@ export default function Footer() {
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <Link to={""} className="flex items-center">
-              <img src={logo} className="h-8 me-3" alt="Freshcart Logo" />
+              <img src={logo} className="h-8" alt="Freshcart Logo" />
+              <p className="font-bold text-2xl dark:text-white">FreshCart</p>
             </Link>
           </div>
           <div>
